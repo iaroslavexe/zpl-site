@@ -87,3 +87,25 @@ curl -s https://fantasy.iaroslavexe.art/api/league/stats -o app/data/player_stat
 - PDF регламента (сжать перед загрузкой);
 - страницы «Тест» и «Дух»;
 - ретроспектива сезонов.
+
+
+## Деплой на Cloudflare Pages
+
+Сайт статический: `python -m app.build` рендерит страницы в `dist/`, Cloudflare раздаёт файлы.
+
+1. Создать проект Pages `zpl-site` (Type: Direct Upload, без подключения к git).
+2. В GitHub → Settings → Secrets and variables → Actions добавить:
+   - `CLOUDFLARE_API_TOKEN` — токен с правом *Cloudflare Pages: Edit*
+   - `CLOUDFLARE_ACCOUNT_ID` — ID аккаунта (правый сайдбар дашборда)
+3. Пуш в `main` запускает `.github/workflows/deploy.yml`: установка зависимостей,
+   сборка, `wrangler pages deploy dist`. Без секретов шаг деплоя пропускается,
+   сборка при этом проверяется.
+4. В Pages → Custom domains добавить `zpl.iaroslavexe.art` и прописать
+   CNAME у регистратора на выданный `*.pages.dev`.
+
+Локально собрать и проверить:
+
+```bash
+python -m app.build
+python3 -m http.server 8910 --directory dist
+```
