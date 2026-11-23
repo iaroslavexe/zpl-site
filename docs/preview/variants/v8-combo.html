@@ -1,0 +1,263 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 8 — по комментариям</title>
+<link rel="stylesheet" href="base.css">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body { position: relative; overflow-x: hidden; }
+  .glow {
+    position: absolute; top: -320px; left: 50%; transform: translateX(-50%);
+    width: 1250px; height: 720px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(238,18,143,.16), rgba(250,183,44,.06) 48%, transparent 74%);
+    filter: blur(26px);
+  }
+  .wrap { position: relative; padding-top: 30px; }
+
+  .kicker {
+    display: flex; justify-content: space-between;
+    font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim);
+    margin: 0 0 30px;
+  }
+  .kicker b { color: var(--yellow); font-weight: 600; }
+
+  .top { display: grid; grid-template-columns: 1fr 320px; gap: 56px; align-items: end; }
+
+  h1 {
+    margin: 0;
+    font-family: Unbounded, Jost, sans-serif;
+    font-size: 74px; line-height: 1.02; letter-spacing: -.03em;
+    text-transform: uppercase; font-weight: 600;
+  }
+  h1 em { font-style: normal; color: var(--yellow); }
+
+  .cap { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin: 0 0 14px; }
+
+  .next { padding-bottom: 6px; }
+  .next__date { font-size: 40px; font-weight: 700; line-height: .95; letter-spacing: -.01em; }
+  .next__meta { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  .next__count { margin-top: 14px; font-size: 12px; color: var(--dim); }
+  .next__count b { color: var(--yellow); }
+  .reg {
+    display: inline-flex; margin-top: 18px; padding: 10px 20px; border-radius: 999px;
+    background: var(--yellow); color: #14100a; font-size: 13px; font-weight: 600;
+  }
+
+  .rule { height: 1px; background: var(--line); margin: 34px 0 0; }
+
+  .mid { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; padding-top: 26px; }
+  .mid__stand { width: 340px; flex: 0 0 auto; }
+  .mid__video { width: 420px; flex: 0 0 auto; }
+
+  .team { display: grid; grid-template-columns: 18px 30px 1fr auto; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .team__rank { font-size: 11px; color: var(--dim); }
+  .team__ava { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: var(--panel-2); }
+  .team__name { font-size: 15px; color: var(--muted); }
+  .team__pts { font-size: 17px; font-weight: 700; }
+  .more { display: inline-block; margin-top: 14px; font-size: 12px; color: var(--dim); }
+
+  .video__frame {
+    position: relative; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden;
+    border: 1px solid var(--line); background: #060c1b;
+  }
+  .video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video__meta {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    margin-top: 12px;
+  }
+  .video__meta b { font-size: 14.5px; font-weight: 600; }
+  .video__meta a { font-size: 12.5px; color: var(--muted); }
+  .video__meta a:hover { color: var(--yellow); }
+
+  .section-title {
+    margin: 34px 0 16px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+  }
+
+  .tops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .tp__title { margin: 0 0 10px; font-size: 14px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  .tp__list { display: flex; flex-direction: column; }
+  .tp__row { display: grid; grid-template-columns: 16px 30px 1fr auto; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .tp__row:last-child { border: 0; }
+  .tp__rank { font-size: 11px; color: var(--dim); }
+  .tp__ava { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: var(--panel-2); }
+  .tp__name { font-size: 13.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tp__val { font-size: 18px; font-weight: 700; }
+
+  .fantasy {
+    margin-top: 38px; padding: 34px 36px; border-radius: 22px;
+    background: linear-gradient(120deg, rgba(238,18,143,.16), rgba(14,22,38,0) 62%), var(--panel);
+    border: 1px solid rgba(238,18,143,.22);
+    display: flex; align-items: center; justify-content: space-between; gap: 30px;
+  }
+  .fantasy h2 { margin: 0 0 8px; font-size: 26px; font-weight: 600; }
+  .fantasy p { margin: 0; font-size: 14px; color: var(--muted); max-width: 52ch; }
+</style></head><body>
+<div class="glow"></div>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <p class="kicker"><span>Москва · микст · песок</span><b>Сезон 2026/27</b></p>
+
+  <div class="top">
+    <h1>Зимняя<br>песочная<br><em>лига</em></h1>
+    <div class="next">
+      <p class="cap">Ближайший этап</p>
+      <div class="next__date">19 декабря</div>
+      <div class="next__meta">III этап · суббота · Королёв</div>
+      <div class="next__count">через <b>26</b> дней</div>
+      <a class="reg">Регистрация</a>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="mid">
+    <div class="mid__stand">
+      <p class="cap">Командный зачёт</p>
+      <div class="teams">
+          <div class="team">
+            <span class="team__rank">1</span>
+            <img class="team__ava" src="https://avatar.ultisport.ru/upload/resized/192_4bb56c8c59b3ad71ad1dd62eb886fe30.jpg" alt="">
+            <span class="team__name">Гадюки</span>
+            <span class="team__pts">480</span>
+          </div>
+          <div class="team">
+            <span class="team__rank">2</span>
+            <img class="team__ava" src="https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg" alt="">
+            <span class="team__name">Pu'er tea'm</span>
+            <span class="team__pts">480</span>
+          </div>
+          <div class="team">
+            <span class="team__rank">3</span>
+            <img class="team__ava" src="https://avatar.ultisport.ru/upload/resized/192_609b8731c76e0e658920077b7e2036d7.jpg" alt="">
+            <span class="team__name">Епесок</span>
+            <span class="team__pts">444</span>
+          </div>
+          <div class="team">
+            <span class="team__rank">4</span>
+            <img class="team__ava" src="https://avatar.ultisport.ru/upload/resized/192_8957326033522d4cec876d1dfa947028.jpg" alt="">
+            <span class="team__name">RusMixed</span>
+            <span class="team__pts">420</span>
+          </div>
+      </div>
+      <a class="more">Весь зачёт</a>
+    </div>
+
+    <div class="mid__video">
+      <div class="video__frame">
+        <iframe src="https://vk.ru/video_ext.php?oid=-146209840&id=456239431&hash=f59d2ddf3057042f&hd=3"
+                allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video__meta">
+        <b>Финал II этапа</b>
+        <a>Смотреть все игры</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <p class="section-title">Лучшие за все этапы</p>
+  <div class="tops">
+      <div class="tp">
+        <p class="tp__title">Голы</p>
+        <div class="tp__list">
+          <div class="tp__row">
+            <span class="tp__rank">1</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_15ae2d96778d4d15f1689dcd32f65436.jpg" alt="">
+            <span class="tp__name">Сергей Даченков</span>
+            <span class="tp__val">43</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">2</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_58a3c64d40a396aaa63c981dc9b21861.jpg" alt="">
+            <span class="tp__name">Иван Резник</span>
+            <span class="tp__val">28</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">3</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_8bd76c241918b92438b01bddfc236db1.jpg" alt="">
+            <span class="tp__name">Евгения Заварина</span>
+            <span class="tp__val">23</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">4</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_7b4ae8d9c94601f8fc5c5fee8e00b4cb.jpg" alt="">
+            <span class="tp__name">Влада Стайновская</span>
+            <span class="tp__val">21</span>
+          </div>
+        </div>
+      </div>
+      <div class="tp">
+        <p class="tp__title">Ассисты</p>
+        <div class="tp__list">
+          <div class="tp__row">
+            <span class="tp__rank">1</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_05dd94095469104f7eaa9193ed71e15d.jpg" alt="">
+            <span class="tp__name">Ксения Казакова</span>
+            <span class="tp__val">27</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">2</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_f0e685d35e8cce2d34ab76fcee4a40f4.jpg" alt="">
+            <span class="tp__name">Евгений Фокин</span>
+            <span class="tp__val">26</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">3</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_6c63708618892c2683fa6dc9b88162a6.jpg" alt="">
+            <span class="tp__name">Ксения Ясалова</span>
+            <span class="tp__val">25</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">4</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_ed75f9eaaec39c01422ffef1f7d99e47.jpg" alt="">
+            <span class="tp__name">Анна Пустовая</span>
+            <span class="tp__val">24</span>
+          </div>
+        </div>
+      </div>
+      <div class="tp">
+        <p class="tp__title">Блоки</p>
+        <div class="tp__list">
+          <div class="tp__row">
+            <span class="tp__rank">1</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_6bba1e0b34460b4a25c5088e05022a5e.jpg" alt="">
+            <span class="tp__name">Арина Букреева</span>
+            <span class="tp__val">8</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">2</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_ee9228334cccafc03bc8a3a8457a44b9.jpg" alt="">
+            <span class="tp__name">Денис Вагин</span>
+            <span class="tp__val">8</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">3</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_7b4ae8d9c94601f8fc5c5fee8e00b4cb.jpg" alt="">
+            <span class="tp__name">Влада Стайновская</span>
+            <span class="tp__val">7</span>
+          </div>
+          <div class="tp__row">
+            <span class="tp__rank">4</span>
+            <img class="tp__ava" src="https://avatar.ultisport.ru/upload/resized/192_72d547f2b447908b3b2fd095edb0636d.jpg" alt="">
+            <span class="tp__name">Виктор Корякин</span>
+            <span class="tp__val">5</span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <section class="fantasy">
+    <div>
+      <h2>Собери состав на III этап</h2>
+      <p>Выбирай игроков лиги, зарабатывай очки, обгоняй друзей. Игра идёт параллельно с сезоном.</p>
+    </div>
+    <a class="btn btn--primary" style="padding:12px 22px;">Открыть фэнтези</a>
+  </section>
+</div>
+</body></html>

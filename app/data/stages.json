@@ -1,0 +1,619 @@
+{
+  "season": "2026/27",
+  "synced_at": "2026-11-23T18:12+03:00",
+  "stages": [
+    {
+      "id": "1",
+      "title": "I",
+      "date": "2026-11-01",
+      "status": "done",
+      "place": "Тропарево",
+      "games": [
+        {
+          "id": 15833,
+          "time": "09:00",
+          "home": "Кобры",
+          "visitor": "Pu'er tea'm",
+          "home_score": 7,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15834,
+          "time": "09:22",
+          "home": "Oo’long team",
+          "visitor": "МГУ",
+          "home_score": 7,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15835,
+          "time": "09:44",
+          "home": "Френдзона Rosso",
+          "visitor": "Angry Birds",
+          "home_score": 6,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15836,
+          "time": "10:06",
+          "home": "Pu'er tea'm",
+          "visitor": "Епесок",
+          "home_score": 10,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15837,
+          "time": "10:28",
+          "home": "Oo’long team",
+          "visitor": "495",
+          "home_score": 11,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15838,
+          "time": "10:50",
+          "home": "RusMixed",
+          "visitor": "Angry Birds",
+          "home_score": 8,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15839,
+          "time": "11:12",
+          "home": "Гадюки",
+          "visitor": "Кобры",
+          "home_score": 10,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15840,
+          "time": "11:34",
+          "home": "Френдзона Bianco",
+          "visitor": "МГУ",
+          "home_score": 9,
+          "visitor_score": 10,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15841,
+          "time": "11:56",
+          "home": "Бивни",
+          "visitor": "Френдзона Rosso",
+          "home_score": 7,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15842,
+          "time": "12:18",
+          "home": "Гадюки",
+          "visitor": "Епесок",
+          "home_score": 9,
+          "visitor_score": 10,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15843,
+          "time": "12:40",
+          "home": "495",
+          "visitor": "МГУ",
+          "home_score": 9,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15844,
+          "time": "13:02",
+          "home": "Бивни",
+          "visitor": "Angry Birds",
+          "home_score": 8,
+          "visitor_score": 4,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15845,
+          "time": "13:24",
+          "home": "Кобры",
+          "visitor": "Епесок",
+          "home_score": 8,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15846,
+          "time": "13:46",
+          "home": "Френдзона Bianco",
+          "visitor": "Oo’long team",
+          "home_score": 9,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15847,
+          "time": "14:08",
+          "home": "Френдзона Rosso",
+          "visitor": "RusMixed",
+          "home_score": 4,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15848,
+          "time": "14:30",
+          "home": "Гадюки",
+          "visitor": "Pu'er tea'm",
+          "home_score": 8,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15849,
+          "time": "14:52",
+          "home": "Френдзона Bianco",
+          "visitor": "495",
+          "home_score": 6,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15850,
+          "time": "15:14",
+          "home": "Бивни",
+          "visitor": "RusMixed",
+          "home_score": 5,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15851,
+          "time": "15:36",
+          "home": "Pu'er tea'm",
+          "visitor": "Oo’long team",
+          "home_score": 10,
+          "visitor_score": 4,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15852,
+          "time": "15:58",
+          "home": "Кобры",
+          "visitor": "RusMixed",
+          "home_score": 4,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15853,
+          "time": "16:20",
+          "home": "495",
+          "visitor": "Angry Birds",
+          "home_score": 6,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15854,
+          "time": "16:42",
+          "home": "Бивни",
+          "visitor": "МГУ",
+          "home_score": 7,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15855,
+          "time": "17:04",
+          "home": "Френдзона Bianco",
+          "visitor": "Френдзона Rosso",
+          "home_score": 10,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15856,
+          "time": "17:26",
+          "home": "Епесок",
+          "visitor": "Pu'er tea'm",
+          "home_score": 8,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15857,
+          "time": "17:48",
+          "home": "Гадюки",
+          "visitor": "RusMixed",
+          "home_score": 9,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15858,
+          "time": "18:10",
+          "home": "Кобры",
+          "visitor": "Oo’long team",
+          "home_score": 8,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15859,
+          "time": "18:32",
+          "home": "Angry Birds",
+          "visitor": "МГУ",
+          "home_score": 10,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15860,
+          "time": "18:54",
+          "home": "495",
+          "visitor": "Бивни",
+          "home_score": 7,
+          "visitor_score": 11,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15861,
+          "time": "19:16",
+          "home": "Pu'er tea'm",
+          "visitor": "Гадюки",
+          "home_score": 9,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15862,
+          "time": "19:38",
+          "home": "Епесок",
+          "visitor": "RusMixed",
+          "home_score": 9,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        }
+      ],
+      "teams": {
+        "Гадюки": "https://avatar.ultisport.ru/upload/resized/192_4bb56c8c59b3ad71ad1dd62eb886fe30.jpg",
+        "RusMixed": "https://avatar.ultisport.ru/upload/resized/192_8957326033522d4cec876d1dfa947028.jpg",
+        "Pu'er tea'm": "https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg",
+        "Кобры": "https://avatar.ultisport.ru/upload/resized/192_e5c6f9bbc5552808289ed725a9c82238.jpg",
+        "Oo’long team": "https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg",
+        "Angry Birds": "https://avatar.ultisport.ru/upload/resized/192_9540c38fd9421bfbc51ba003a2a801d9.jpg",
+        "495": "https://avatar.ultisport.ru/upload/resized/192_96b98f42b3bf3d3da8585455bc440cc3.jpg",
+        "Бивни": "https://avatar.ultisport.ru/upload/resized/192_b3989986fe119859a88b232a8a9ed180.jpg",
+        "МГУ": "https://avatar.ultisport.ru/upload/resized/192_303e1f5fcfbd8437001461f7baf60b29.jpg",
+        "Епесок": "https://avatar.ultisport.ru/upload/resized/192_609b8731c76e0e658920077b7e2036d7.jpg",
+        "Френдзона Bianco": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg",
+        "Френдзона Rosso": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg"
+      }
+    },
+    {
+      "id": "2",
+      "title": "II",
+      "date": "2026-11-21",
+      "status": "done",
+      "place": "Королёв",
+      "games": [
+        {
+          "id": 15982,
+          "time": "09:00",
+          "home": "Angry Birds",
+          "visitor": "Френдзона Бьянко",
+          "home_score": 7,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15981,
+          "time": "09:22",
+          "home": "Oo'long Tea'm",
+          "visitor": "Френдзона Россо",
+          "home_score": 9,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15980,
+          "time": "09:44",
+          "home": "Епесок",
+          "visitor": "RusMixed",
+          "home_score": 9,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15983,
+          "time": "10:06",
+          "home": "Pu'er tea'm",
+          "visitor": "Гадюки",
+          "home_score": 6,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15984,
+          "time": "10:28",
+          "home": "МГУ",
+          "visitor": "Френдзона Россо",
+          "home_score": 8,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15985,
+          "time": "10:50",
+          "home": "495",
+          "visitor": "Френдзона Бьянко",
+          "home_score": 2,
+          "visitor_score": 11,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15986,
+          "time": "11:12",
+          "home": "Гадюки",
+          "visitor": "Епесок",
+          "home_score": 8,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15987,
+          "time": "11:34",
+          "home": "Oo'long Tea'm",
+          "visitor": "МГУ",
+          "home_score": 9,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15988,
+          "time": "11:56",
+          "home": "Кобры",
+          "visitor": "Angry Birds",
+          "home_score": 9,
+          "visitor_score": 3,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15989,
+          "time": "12:18",
+          "home": "Pu'er tea'm",
+          "visitor": "RusMixed",
+          "home_score": 6,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15990,
+          "time": "12:40",
+          "home": "Бивни",
+          "visitor": "Френдзона Россо",
+          "home_score": 9,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15991,
+          "time": "13:02",
+          "home": "Кобры",
+          "visitor": "Френдзона Бьянко",
+          "home_score": 8,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15992,
+          "time": "13:24",
+          "home": "Гадюки",
+          "visitor": "RusMixed",
+          "home_score": 10,
+          "visitor_score": 4,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15993,
+          "time": "13:46",
+          "home": "МГУ",
+          "visitor": "Бивни",
+          "home_score": 6,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15994,
+          "time": "14:08",
+          "home": "Angry Birds",
+          "visitor": "495",
+          "home_score": 7,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15995,
+          "time": "14:30",
+          "home": "Pu'er tea'm",
+          "visitor": "Епесок",
+          "home_score": 7,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15996,
+          "time": "14:52",
+          "home": "Oo'long Tea'm",
+          "visitor": "Бивни",
+          "home_score": 5,
+          "visitor_score": 8,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15997,
+          "time": "15:14",
+          "home": "Кобры",
+          "visitor": "495",
+          "home_score": 11,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15998,
+          "time": "15:36",
+          "home": "RusMixed",
+          "visitor": "Бивни",
+          "home_score": 5,
+          "visitor_score": 4,
+          "status": "FINISHED"
+        },
+        {
+          "id": 15999,
+          "time": "15:58",
+          "home": "Епесок",
+          "visitor": "Кобры",
+          "home_score": 9,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16000,
+          "time": "16:20",
+          "home": "Oo'long Tea'm",
+          "visitor": "Angry Birds",
+          "home_score": 8,
+          "visitor_score": 10,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16001,
+          "time": "16:42",
+          "home": "Френдзона Бьянко",
+          "visitor": "МГУ",
+          "home_score": 9,
+          "visitor_score": 4,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16002,
+          "time": "17:04",
+          "home": "Френдзона Россо",
+          "visitor": "495",
+          "home_score": 6,
+          "visitor_score": 7,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16003,
+          "time": "17:26",
+          "home": "Гадюки",
+          "visitor": "RusMixed",
+          "home_score": 8,
+          "visitor_score": 6,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16004,
+          "time": "17:48",
+          "home": "Pu'er tea'm",
+          "visitor": "Епесок",
+          "home_score": 8,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16005,
+          "time": "18:10",
+          "home": "Кобры",
+          "visitor": "Бивни",
+          "home_score": 9,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16006,
+          "time": "18:32",
+          "home": "Angry Birds",
+          "visitor": "Френдзона Бьянко",
+          "home_score": 5,
+          "visitor_score": 11,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16007,
+          "time": "18:54",
+          "home": "МГУ",
+          "visitor": "Oo'long Tea'm",
+          "home_score": 10,
+          "visitor_score": 9,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16008,
+          "time": "19:16",
+          "home": "Гадюки",
+          "visitor": "Pu'er tea'm",
+          "home_score": 7,
+          "visitor_score": 5,
+          "status": "FINISHED"
+        },
+        {
+          "id": 16009,
+          "time": "19:38",
+          "home": "RusMixed",
+          "visitor": "Епесок",
+          "home_score": 4,
+          "visitor_score": 11,
+          "status": "FINISHED"
+        }
+      ],
+      "teams": {
+        "Кобры": "https://avatar.ultisport.ru/upload/resized/192_e5c6f9bbc5552808289ed725a9c82238.jpg",
+        "Гадюки": "https://avatar.ultisport.ru/upload/resized/192_4bb56c8c59b3ad71ad1dd62eb886fe30.jpg",
+        "Бивни": "https://avatar.ultisport.ru/upload/resized/192_b3989986fe119859a88b232a8a9ed180.jpg",
+        "Angry Birds": "https://avatar.ultisport.ru/upload/resized/192_9540c38fd9421bfbc51ba003a2a801d9.jpg",
+        "Френдзона Бьянко": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg",
+        "Френдзона Россо": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg",
+        "Pu'er tea'm": "https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg",
+        "RusMixed": "https://avatar.ultisport.ru/upload/resized/192_8957326033522d4cec876d1dfa947028.jpg",
+        "Oo'long Tea'm": "https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg",
+        "МГУ": "https://avatar.ultisport.ru/upload/resized/192_303e1f5fcfbd8437001461f7baf60b29.jpg",
+        "495": "https://avatar.ultisport.ru/upload/resized/192_96b98f42b3bf3d3da8585455bc440cc3.jpg",
+        "Епесок": "https://avatar.ultisport.ru/upload/resized/192_609b8731c76e0e658920077b7e2036d7.jpg"
+      }
+    },
+    {
+      "id": "3",
+      "title": "III",
+      "date": "2026-12-19",
+      "status": "upcoming",
+      "registration_url": "https://ultisport.ru/zimnyaya-liga-26-27-3etap",
+      "place": "Королёв",
+      "games": [],
+      "teams": {
+        "Кобры": "https://avatar.ultisport.ru/upload/resized/192_e5c6f9bbc5552808289ed725a9c82238.jpg",
+        "Гадюки": "https://avatar.ultisport.ru/upload/resized/192_4bb56c8c59b3ad71ad1dd62eb886fe30.jpg",
+        "RusMixed": "https://avatar.ultisport.ru/upload/resized/192_8957326033522d4cec876d1dfa947028.jpg",
+        "RusMixed 2": "https://avatar.ultisport.ru/upload/resized/192_8957326033522d4cec876d1dfa947028.jpg",
+        "МГУ": "https://avatar.ultisport.ru/upload/resized/192_303e1f5fcfbd8437001461f7baf60b29.jpg",
+        "Pu'er tea'm": "https://avatar.ultisport.ru/upload/resized/192_467b7013266e3acbcb153a905498c6dc.jpg",
+        "Френдзона Россо": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg",
+        "Френдзона Бьянко": "https://avatar.ultisport.ru/upload/resized/192_99a5a4fca79eaf6b42225391453cc6df.jpg"
+      }
+    },
+    {
+      "id": "4",
+      "title": "IV",
+      "date": "2027-01-23",
+      "status": "planned",
+      "place": "Королёв",
+      "games": []
+    }
+  ]
+}

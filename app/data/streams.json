@@ -1,0 +1,26 @@
+{
+  "stage_title": "II",
+  "stage_date": "2026-11-21",
+  "clips": [
+    {
+      "title": "Групповые игры",
+      "url": "https://vkvideo.ru/live-146209840_456239428",
+      "embed": "https://vk.ru/video_ext.php?oid=-146209840&id=456239428&hash=e8cfbd97db969ec8&hd=3"
+    },
+    {
+      "title": "Плей-офф",
+      "url": "https://vkvideo.ru/live-146209840_456239429",
+      "embed": "https://vk.ru/video_ext.php?oid=-146209840&id=456239429&hash=5a4eb399339a1a40&hd=3"
+    },
+    {
+      "title": "Игры за места",
+      "url": "https://vkvideo.ru/live-146209840_456239430",
+      "embed": "https://vk.ru/video_ext.php?oid=-146209840&id=456239430&hash=2b1fa83ada68bd68&hd=3"
+    },
+    {
+      "title": "Финал и бронза",
+      "url": "https://vkvideo.ru/live-146209840_456239431",
+      "embed": "https://vk.ru/video_ext.php?oid=-146209840&id=456239431&hash=f59d2ddf3057042f&hd=3"
+    }
+  ]
+}

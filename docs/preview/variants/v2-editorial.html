@@ -1,0 +1,89 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 2 — Editorial</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .wrap { max-width: 1160px; }
+  .ed__head { padding: 20px 0 34px; border-bottom: 1px solid var(--line); }
+  .ed__kicker { display: flex; justify-content: space-between; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin: 0 0 26px; }
+  .ed__kicker b { color: var(--yellow); font-weight: 600; }
+  h1 {
+    margin: 0;
+    font-size: 104px; line-height: .88; letter-spacing: -.02em; text-transform: uppercase;
+    font-weight: 700;
+  }
+  h1 i { font-style: normal; color: var(--yellow); }
+
+  .row { display: grid; grid-template-columns: 1.15fr .85fr; gap: 0; border-bottom: 1px solid var(--line); }
+  .row > div { padding: 30px 0; }
+  .row > div + div { padding-left: 40px; border-left: 1px solid var(--line); }
+
+  .label { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin: 0 0 14px; }
+  .big-num { font-size: 64px; font-weight: 700; line-height: .9; letter-spacing: -.02em; }
+  .big-num small { font-size: 15px; font-weight: 500; letter-spacing: .06em; color: var(--muted); }
+
+  .meta { display: flex; gap: 22px; margin-top: 16px; font-size: 13px; color: var(--muted); }
+  .meta b { color: var(--text); font-weight: 600; }
+
+  .stand { display: flex; flex-direction: column; }
+  .stand__row { display: grid; grid-template-columns: 26px 1fr auto; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 14px; }
+  .stand__row:last-child { border: 0; }
+  .stand__row b { color: var(--dim); font-weight: 500; font-size: 11px; }
+  .stand__row span { color: var(--muted); }
+  .stand__row em { font-style: normal; font-weight: 700; font-size: 15px; }
+
+  .results { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .result { display: flex; flex-direction: column; gap: 6px; }
+  .result span { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+  .result b { font-size: 15px; font-weight: 600; }
+  .result i { font-style: normal; color: var(--yellow); font-size: 20px; font-weight: 700; }
+
+  .tail { display: flex; justify-content: space-between; align-items: center; padding-top: 26px; font-size: 13px; color: var(--muted); }
+  .tail a { color: var(--yellow); font-weight: 600; }
+</style></head><body>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <div class="ed__head">
+    <p class="ed__kicker"><span>Москва · микст · песок</span><b>Сезон 2026/27</b></p>
+    <h1>Зимняя<br>песочная<br>лига</h1>
+  </div>
+
+  <div class="row">
+    <div>
+      <p class="label">Ближайший этап</p>
+      <div class="big-num">19 декабря<br><small>суббота · Королёв</small></div>
+      <div class="meta">
+        <span><b>III</b> этап</span>
+        <span>через <b>26</b> дней</span>
+        <span><b>Регистрация</b> открыта</span>
+      </div>
+    </div>
+    <div>
+      <p class="label">Командный зачёт</p>
+      <div class="stand">
+        <div class="stand__row"><b>01</b><span>Гадюки</span><em>480</em></div>
+        <div class="stand__row"><b>02</b><span>Pu'er tea'm</span><em>480</em></div>
+        <div class="stand__row"><b>03</b><span>Епесок</span><em>444</em></div>
+        <div class="stand__row"><b>04</b><span>RusMixed</span><em>420</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="result"><span>групповой этап</span><b>Кобры — 495</b><i>11 : 6</i></div>
+    <div class="result"><span>групповой этап</span><b>Епесок — RusMixed</b><i>9 : 7</i></div>
+    <div class="result"><span>финал</span><b>Гадюки — Pu'er</b><i>7 : 5</i></div>
+    <div class="result"><span>за 3-е место</span><b>RusMixed — Епесок</b><i>4 : 11</i></div>
+  </div>
+
+  <div class="tail">
+    <span>Трансляции II этапа — 4 записи во <a>ВКонтакте</a></span>
+    <a>Собери состав на этап</a>
+  </div>
+</div>
+</body></html>

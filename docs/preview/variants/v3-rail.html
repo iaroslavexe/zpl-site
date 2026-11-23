@@ -1,0 +1,90 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 3 — Рейка этапов</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  .hero { text-align: center; padding: 24px 0 8px; }
+  .hero h1 { margin: 0; font-size: 64px; line-height: .95; text-transform: uppercase; letter-spacing: -.01em; }
+  .hero p { margin: 14px 0 0; color: var(--muted); font-size: 15px; }
+
+  .rail { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); margin: 54px 0 10px; }
+  .rail::before {
+    content: ""; position: absolute; left: 10%; right: 10%; top: 13px; height: 1px;
+    background: linear-gradient(90deg, rgba(250,183,44,.55), rgba(250,183,44,.18) 55%, rgba(255,255,255,.08));
+  }
+  .stop { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .dot {
+    width: 27px; height: 27px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--bg); border: 1px solid var(--line-strong);
+    font-size: 10px; font-weight: 600; color: var(--dim);
+  }
+  .stop--done .dot { border-color: rgba(250,183,44,.45); color: var(--yellow); }
+  .stop--now .dot { background: var(--yellow); border-color: var(--yellow); color: #14100a; box-shadow: 0 0 0 6px rgba(250,183,44,.12); }
+  .stop b { font-size: 13px; font-weight: 600; }
+  .stop span { font-size: 11px; color: var(--dim); }
+
+  .cards { display: grid; grid-template-columns: 1.2fr .9fr .9fr; gap: 14px; margin-top: 40px; }
+  .card { padding: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 20px; }
+  .card__label { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin: 0 0 14px; }
+  .card h2 { margin: 0; font-size: 24px; font-weight: 600; }
+  .card p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+
+  .stand__row { display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; padding: 6px 0; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .stand__row:last-child { border: 0; }
+  .stand__row b { color: var(--dim); font-weight: 500; font-size: 11px; }
+  .stand__row span { color: var(--muted); }
+  .stand__row em { font-style: normal; font-weight: 700; }
+
+  .mini { display: flex; gap: 10px; margin-top: 4px; }
+  .mini div { flex: 1; aspect-ratio: 16/10; border-radius: 12px; background: #060c1b; border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--dim); }
+</style></head><body>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Зимняя песочная лига</h1>
+    <p>12 команд · микст · пять этапов с ноября по март</p>
+  </div>
+
+  <div class="rail">
+    <div class="stop stop--done"><div class="dot">I</div><b>1 ноября</b><span>Тропарево</span></div>
+    <div class="stop stop--done"><div class="dot">II</div><b>21 ноября</b><span>Королёв</span></div>
+    <div class="stop stop--now"><div class="dot">III</div><b>19 декабря</b><span>Королёв</span></div>
+    <div class="stop"><div class="dot">IV</div><b>23 января</b><span>Королёв</span></div>
+    <div class="stop"><div class="dot">Ф</div><b>13–14 марта</b><span>финал</span></div>
+  </div>
+
+  <div class="cards">
+    <section class="card">
+      <p class="card__label">Ближайший этап</p>
+      <h2>III этап · 19 декабря</h2>
+      <p>Регистрация открыта, дедлайн — за день до этапа</p>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <a class="btn btn--primary" style="padding:9px 16px;">Регистрация</a>
+        <a class="btn btn--ghost" style="padding:9px 16px;">Расписание</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="card__label">Зачёт</p>
+      <div class="stand">
+        <div class="stand__row"><b>1</b><span>Гадюки</span><em>480</em></div>
+        <div class="stand__row"><b>2</b><span>Pu'er tea'm</span><em>480</em></div>
+        <div class="stand__row"><b>3</b><span>Епесок</span><em>444</em></div>
+        <div class="stand__row"><b>4</b><span>RusMixed</span><em>420</em></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="card__label">Трансляции II этапа</p>
+      <div class="mini"><div>Финал</div><div>За места</div></div>
+      <p style="margin-top:14px;">Все записи — во ВКонтакте</p>
+    </section>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Этапы {{ season }} — {{ season_title }}{% endblock %}
+{% block content %}
+
+<div id="stages" data-current="{{ current_id }}">
+  <div class="stage-switch stage-switch--segment">
+    {% for tab in tabs %}
+    <a class="stage-switch__item{% if tab.id == current_id %} is-active{% endif %}"
+       href="/stages?stage={{ tab.id }}" data-stage-link="{{ tab.id }}">{{ tab.title }}</a>
+    {% endfor %}
+  </div>
+
+  {% for panel in panels %}
+  <section class="stage-panel" data-stage-panel="{{ panel.id }}"{% if not panel.active %} hidden{% endif %}>
+    {% if panel.human %}
+    <p class="stage-head">
+      {{ panel.human.title }}{% if panel.id != 'final' %} этап{% endif %} · {{ panel.human.human_date }}{% if panel.human.place %} · {{ panel.human.place }}{% endif %}{% if panel.games_count %} · {{ panel.games_count }} игр{% endif %}
+    </p>
+    {% endif %}
+
+    {% if panel.blocks %}
+      {% for block in panel.blocks %}
+      <section class="block{% if block.games|length == 1 %} block--solo{% endif %}">
+        <header class="block__head">
+          <h2 class="block__title">{{ block.title }}</h2>
+          {% if block.note %}<span class="block__note">{{ block.note }}</span>{% endif %}
+        </header>
+
+        <div class="block__body{% if block.table %} block__body--group{% endif %}">
+        {% if block.table %}
+        <table class="group-table">
+          <thead>
+            <tr>
+              <th class="gr-rank">#</th>
+              <th class="gr-team">Команда</th>
+              <th>В</th>
+              <th>П</th>
+              <th>+/–</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in block.table %}
+            <tr>
+              <td class="gr-rank">{{ row.place }}</td>
+              <td class="gr-team">
+                {% if panel.teams.get(row.team) %}<img src="{{ panel.teams[row.team] }}" alt="" loading="lazy">{% endif %}
+                <span>{{ row.team }}</span>
+              </td>
+              <td>{{ row.wins }}</td>
+              <td>{{ row.losses }}</td>
+              <td class="gr-diff">{{ '+' if row.diff > 0 else '' }}{{ row.diff }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+
+        <div class="games">
+          {% for game in block.games %}
+          <div class="game-row">
+            <span class="game-row__time">{{ game.time }}</span>
+            <span class="game-row__team game-row__team--home{% if game.home_score > game.visitor_score %} is-win{% endif %}">
+              {% if game.home_avatar %}<img src="{{ game.home_avatar }}" alt="" loading="lazy">{% endif %}
+              <span class="game-row__name">{{ game.home }}</span>
+            </span>
+            <span class="game-row__score">{{ game.home_score }} : {{ game.visitor_score }}</span>
+            <span class="game-row__team game-row__team--away{% if game.visitor_score > game.home_score %} is-win{% endif %}">
+              <span class="game-row__name">{{ game.visitor }}</span>
+              {% if game.visitor_avatar %}<img src="{{ game.visitor_avatar }}" alt="" loading="lazy">{% endif %}
+            </span>
+          </div>
+          {% endfor %}
+        </div>
+        </div>
+      </section>
+      {% endfor %}
+    {% else %}
+    <p class="empty">
+      {% if panel.id == 'final' %}Расписание финала ещё не опубликовано.{% else %}Расписание {{ panel.human.title }} этапа ещё не опубликовано.{% endif %}
+    </p>
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+
+<script src="/static/js/stages.js" defer></script>
+
+{% endblock %}

@@ -1,0 +1,85 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 6 — Обложка</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  body { position: relative; overflow-x: hidden; }
+  .glow {
+    position: absolute; top: -340px; right: -160px;
+    width: 900px; height: 900px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(250,183,44,.10), rgba(238,18,143,.10) 45%, transparent 75%);
+    filter: blur(30px);
+  }
+  .wrap { position: relative; padding-top: 28px; }
+
+  .cover { display: grid; grid-template-columns: 1.35fr .65fr; gap: 60px; align-items: end; padding-bottom: 44px; }
+
+  .year {
+    font-family: Oswald, sans-serif;
+    font-size: 180px; line-height: .8; letter-spacing: -.02em;
+    color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.14);
+    margin: 0 0 -18px;
+  }
+  h1 { margin: 0; font-size: 92px; line-height: .88; letter-spacing: -.02em; text-transform: uppercase; font-weight: 700; }
+  .lead { margin: 22px 0 0; max-width: 40ch; color: var(--muted); font-size: 15px; line-height: 1.55; }
+
+  .toc { border-top: 1px solid var(--line); }
+  .toc a {
+    display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: baseline;
+    padding: 13px 0; border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .toc a span { color: var(--text); }
+  .toc a em { font-style: normal; font-size: 11.5px; color: var(--dim); letter-spacing: .06em; text-transform: uppercase; }
+  .toc a:hover span { color: var(--yellow); }
+
+  .next {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 30px; align-items: center;
+    padding: 26px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .next__day { font-size: 56px; font-weight: 700; line-height: .9; color: var(--yellow); }
+  .next__day small { display: block; margin-top: 4px; font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+  .next__text b { font-size: 19px; font-weight: 600; display: block; }
+  .next__text span { font-size: 13px; color: var(--muted); }
+
+  .bottom { display: flex; justify-content: space-between; align-items: baseline; margin-top: 26px; font-size: 12.5px; color: var(--dim); }
+  .bottom a { color: var(--muted); }
+</style></head><body>
+<div class="glow"></div>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <div class="cover">
+    <div>
+      <p class="year">2026/27</p>
+      <h1>Зимняя<br>песочная<br>лига</h1>
+      <p class="lead">Пять этапов на песке с ноября по март. Двенадцать команд микста, стыки и финал в середине марта.</p>
+    </div>
+
+    <nav class="toc">
+      <a><span>Этапы и результаты</span><em>30 игр</em></a>
+      <a><span>Командный зачёт</span><em>12 команд</em></a>
+      <a><span>Статистика игроков</span><em>147 человек</em></a>
+      <a><span>Регламент</span><em>PDF, 22 стр.</em></a>
+    </nav>
+  </div>
+
+  <div class="next">
+    <div class="next__day">19<small>декабря</small></div>
+    <div class="next__text">
+      <b>III этап · Королёв</b>
+      <span>суббота · через 26 дней · регистрация открыта</span>
+    </div>
+    <a class="btn btn--primary">Регистрация</a>
+  </div>
+
+  <div class="bottom">
+    <span>Трансляции II этапа — <a>во ВКонтакте</a></span>
+    <span><a>Собери состав на этап</a> · фэнтези-лига</span>
+  </div>
+</div>
+</body></html>

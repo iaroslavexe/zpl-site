@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Зачёт {{ season }} — {{ season_title }}{% endblock %}
+{% block content %}
+
+<div class="table-wrap">
+  <table class="standings">
+    <thead>
+      <tr>
+        <th class="col-rank">#</th>
+        <th class="col-team">Команда</th>
+        {% for stage in table.stages %}
+        <th class="col-stage">{{ stage.title }}</th>
+        {% endfor %}
+        <th class="col-total">Всего</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in table.rows %}
+      <tr>
+        <td class="col-rank">{{ row.rank }}</td>
+        <td class="col-team">
+          <img class="team-avatar" src="{{ row.avatar }}" alt="" loading="lazy">
+          <span>{{ row.name }}</span>
+        </td>
+        {% for stage in table.stages %}
+          {% set cell = row.cells[stage.id] %}
+          {% if cell %}
+          <td class="cell" style="--tint: {{ cell.tint }}">
+            <span class="cell__pts">{{ cell.points }}</span>
+            <span class="cell__place">{{ cell.place }}</span>
+          </td>
+          {% else %}
+          <td class="cell cell--empty">—</td>
+          {% endif %}
+        {% endfor %}
+        <td class="col-total">{{ row.total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<p class="legend">В ячейке — очки за этап, мелкая цифра — место на этапе.</p>
+
+{% endblock %}

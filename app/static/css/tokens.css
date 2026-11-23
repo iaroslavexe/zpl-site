@@ -1,0 +1,20 @@
+/* Токены дизайн-системы ЗПЛ */
+:root {
+  --bg: #000618;
+  --panel: #0e1626;
+  --panel-2: #131a26;
+  --line: #1a2130;
+  --line-strong: #2a3549;
+  --text: #eef2f8;
+  --muted: #8d97ab;
+  --dim: #616c82;
+  --yellow: #FAB72C;
+  --pink: #EE128F;
+
+  --r-lg: 18px;
+  --r-md: 13px;
+  --r-sm: 9px;
+
+  --maxw: 1160px;
+  --pad: 18px;
+}

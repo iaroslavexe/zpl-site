@@ -1,0 +1,111 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 5 — Редакция со свечением</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  body { position: relative; overflow-x: hidden; }
+  .glow {
+    position: absolute; top: -300px; left: 50%; transform: translateX(-50%);
+    width: 1200px; height: 700px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(238,18,143,.15), rgba(250,183,44,.06) 48%, transparent 74%);
+    filter: blur(24px);
+  }
+  .wrap { position: relative; padding-top: 30px; }
+
+  .kicker {
+    display: flex; justify-content: space-between;
+    font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--dim);
+    margin: 0 0 34px;
+  }
+  .kicker b { color: var(--yellow); font-weight: 600; }
+
+  h1 {
+    margin: 0;
+    font-size: 112px; line-height: .86; letter-spacing: -.025em; text-transform: uppercase; font-weight: 700;
+  }
+
+  .rule { height: 1px; background: var(--line); margin: 36px 0 0; }
+
+  .split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 0; }
+  .split > div { padding: 30px 0 34px; }
+  .split > div + div { padding-left: 46px; }
+
+  .cap { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin: 0 0 16px; }
+
+  .date { font-size: 68px; font-weight: 700; line-height: .92; letter-spacing: -.02em; }
+  .date small { display: block; margin-top: 10px; font-size: 14px; font-weight: 500; letter-spacing: .02em; color: var(--muted); }
+
+  .meta { display: flex; gap: 26px; margin-top: 22px; font-size: 13px; color: var(--muted); }
+  .meta b { color: var(--text); }
+  .reg {
+    display: inline-flex; margin-top: 24px; padding: 10px 20px;
+    border-radius: 999px; background: var(--yellow); color: #14100a;
+    font-size: 13px; font-weight: 600;
+  }
+
+  .stand { display: flex; flex-direction: column; gap: 2px; }
+  .stand__row {
+    display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; gap: 12px;
+    padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .stand__row:last-child { border: 0; }
+  .stand__row b { font-size: 11px; font-weight: 500; color: var(--dim); }
+  .stand__row span { font-size: 15px; color: var(--muted); }
+  .stand__row em { font-style: normal; font-size: 19px; font-weight: 700; }
+
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; padding: 26px 0 4px; }
+  .strip div span { display: block; font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+  .strip div b { font-size: 14px; font-weight: 600; color: var(--muted); }
+  .strip div i { display: block; margin-top: 6px; font-style: normal; font-size: 22px; font-weight: 700; color: var(--yellow); }
+
+  .foot { display: flex; justify-content: space-between; align-items: baseline; margin-top: 34px; font-size: 12.5px; color: var(--dim); }
+  .foot a { color: var(--muted); }
+  .foot strong { color: var(--yellow); font-weight: 600; }
+</style></head><body>
+<div class="glow"></div>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <p class="kicker"><span>Москва · микст · песок</span><b>Сезон 2026/27</b></p>
+  <h1>Зимняя<br>песочная<br>лига</h1>
+
+  <div class="rule"></div>
+
+  <div class="split">
+    <div>
+      <p class="cap">Ближайший этап</p>
+      <div class="date">19 декабря<small>III этап · суббота · Королёв</small></div>
+      <div class="meta"><span>через <b>26</b> дней</span><span><b>12</b> команд</span><span><b>6</b> игр</span></div>
+      <a class="reg">Регистрация</a>
+    </div>
+
+    <div>
+      <p class="cap">Командный зачёт</p>
+      <div class="stand">
+        <div class="stand__row"><b>01</b><span>Гадюки</span><em>480</em></div>
+        <div class="stand__row"><b>02</b><span>Pu'er tea'm</span><em>480</em></div>
+        <div class="stand__row"><b>03</b><span>Епесок</span><em>444</em></div>
+        <div class="stand__row"><b>04</b><span>RusMixed</span><em>420</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="strip">
+    <div><span>Групповой этап</span><b>Кобры — 495</b><i>11 : 6</i></div>
+    <div><span>Групповой этап</span><b>Епесок — RusMixed</b><i>9 : 7</i></div>
+    <div><span>Финал</span><b>Гадюки — Pu'er</b><i>7 : 5</i></div>
+    <div><span>За 3-е место</span><b>RusMixed — Епесок</b><i>4 : 11</i></div>
+  </div>
+
+  <div class="foot">
+    <span>Трансляции II этапа — <a>финал, бронза, игры за места</a></span>
+    <span><a>Собери состав на этап</a> · <strong>фэнтези</strong></span>
+  </div>
+</div>
+</body></html>

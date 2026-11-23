@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Статистика {{ season }} — {{ season_title }}{% endblock %}
+{% block content %}
+
+<h1 class="sr-only">Статистика игроков</h1>
+
+<div class="stats">
+<div class="stats-bar">
+  <div class="stats-bar__left">
+  <div class="stage-switch stage-switch--segment" id="stats-stages">
+    <button type="button" class="stage-switch__item is-active" data-stage="all">Общий</button>
+    {% for stage in stats.with_data %}
+    <button type="button" class="stage-switch__item" data-stage="{{ stage.id }}">{{ stage.title }}</button>
+    {% endfor %}
+  </div>
+
+  <div class="stage-switch stage-switch--segment" id="stats-gender">
+    <button type="button" class="stage-switch__item is-active" data-gender="all">Все</button>
+    <button type="button" class="stage-switch__item" data-gender="FEMALE">Девушки</button>
+    <button type="button" class="stage-switch__item" data-gender="MALE">Парни</button>
+  </div>
+  </div>
+
+  <div class="stats-bar__right">
+    <input class="stats-search" id="stats-search" type="search"
+           placeholder="Найти игрока или команду" autocomplete="off" aria-label="Поиск по статистике">
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table class="stats-table">
+    <thead>
+      <tr>
+        <th class="st-rank">#</th>
+        <th class="st-player">Игрок</th>
+        <th class="st-team">Команда</th>
+        <th class="st-num is-sorted" data-sort="goals">Г</th>
+        <th class="st-num" data-sort="assists">А</th>
+        <th class="st-num" data-sort="blocks">Б</th>
+      </tr>
+    </thead>
+    <tbody id="stats-body">
+      {% for player in stats.players %}
+      <tr>
+        <td class="st-rank">{{ loop.index }}</td>
+        <td class="st-player">
+          <div class="st-player__inner">
+            {% if player.avatar_url %}
+            <img class="st-avatar" src="{{ player.avatar_url }}" alt="" loading="lazy">
+            {% else %}
+            <span class="st-avatar st-avatar--empty">{{ player.name[:1] }}</span>
+            {% endif %}
+            <span class="st-player__text">
+              <span class="st-name">{{ player.name }}</span>
+              <span class="st-team-inline">{{ player.team or '—' }}</span>
+            </span>
+          </div>
+        </td>
+        <td class="st-team">
+          {{ player.team or '—' }}
+          {% if player.teams|length > 1 %}
+          <span class="st-team-change">ранее: {{ (player.teams | reject('equalto', player.team) | list)[0] }}</span>
+          {% endif %}
+        </td>
+        <td class="st-num">{{ player.goals }}</td>
+        <td class="st-num">{{ player.assists }}</td>
+        <td class="st-num">{{ player.blocks }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if not stats.players %}
+<p class="empty">Статистики пока нет — данные появятся после первого этапа.</p>
+{% endif %}
+</div>
+
+<script type="application/json" id="stats-data">{{ stats | tojson }}</script>
+<script src="/static/js/stats.js" defer></script>
+
+{% endblock %}

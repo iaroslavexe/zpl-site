@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Регламент {{ season }} — {{ season_title }}{% endblock %}
+{% block content %}
+
+<article class="doc">
+  <a class="doc__cover" href="{{ rules_url }}" target="_blank" rel="noopener">
+    <img src="/static/img/regulations-cover.webp" alt="Обложка регламента" loading="lazy">
+  </a>
+
+  <div class="doc__body">
+    <h2 class="doc__title">Регламент турнира {{ season }}</h2>
+    <p class="doc__meta">{{ rules_pages }} страниц · PDF{% if rules_size %} · {{ rules_size }}{% endif %}</p>
+    <p class="doc__text">
+      Формат игр, тайминги, дух и многое другое!
+    </p>
+    <div class="doc__actions">
+      <a class="btn btn--primary" href="{{ rules_url }}" target="_blank" rel="noopener">Открыть регламент</a>
+      <a class="btn btn--ghost" href="{{ rules_url }}" download>Скачать PDF</a>
+    </div>
+  </div>
+</article>
+
+{% endblock %}

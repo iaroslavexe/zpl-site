@@ -1,0 +1,102 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Вариант 4 — Тихий</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  body { position: relative; overflow-x: hidden; }
+  .glow {
+    position: absolute; top: -260px; left: 50%; transform: translateX(-50%);
+    width: 1100px; height: 620px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(238,18,143,.16), rgba(250,183,44,.07) 45%, transparent 72%);
+    filter: blur(20px);
+  }
+  .wrap { position: relative; padding-top: 56px; }
+
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding-bottom: 34px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0; font-size: 88px; line-height: .9; text-transform: uppercase; letter-spacing: -.015em; font-weight: 700; }
+  .head p { margin: 0; max-width: 30ch; color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+  .grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 0; }
+  .col { padding: 30px 32px 30px 0; border-bottom: 1px solid var(--line); }
+  .col + .col { padding-left: 32px; border-left: 1px solid var(--line); }
+  .label { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin: 0 0 16px; }
+
+  .num { font-size: 46px; font-weight: 700; line-height: 1; letter-spacing: -.01em; }
+  .num small { display: block; margin-top: 8px; font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
+
+  .rows { display: flex; flex-direction: column; }
+  .row { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; padding: 6px 0; font-size: 13.5px; }
+  .row b { color: var(--dim); font-size: 11px; font-weight: 500; }
+  .row span { color: var(--muted); }
+  .row em { font-style: normal; font-weight: 700; }
+
+  .soft {
+    margin-top: 30px; padding: 22px 24px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 18px;
+    backdrop-filter: blur(14px) saturate(140%);
+    display: flex; align-items: center; justify-content: space-between; gap: 22px;
+  }
+  .soft h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+  .soft p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .foot { display: flex; justify-content: space-between; padding-top: 26px; font-size: 12.5px; color: var(--dim); }
+</style></head><body>
+<div class="glow"></div>
+<header class="topbar">
+  <a class="brand"><span class="y">ЗПЛ</span><span class="p">26/27</span></a>
+  <nav class="tabs">
+    <a class="tab is-active">Лига</a><a class="tab">Зачёт</a><a class="tab">Этапы</a><a class="tab">Статистика</a><a class="tab">Регламент</a>
+  </nav>
+  <a class="btn btn--ghost">Фэнтези</a>
+</header>
+
+<div class="wrap">
+  <div class="head">
+    <h1>Зимняя<br>песочная<br>лига</h1>
+    <p>Пять этапов на песке с ноября по март. Двенадцать команд, микст, финал в середине марта.</p>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <p class="label">Ближайший этап</p>
+      <div class="num">19 декабря<small>III этап · Королёв · через 26 дней</small></div>
+      <div style="display:flex; gap:10px; margin-top:22px;">
+        <a class="btn btn--primary" style="padding:9px 16px;">Регистрация</a>
+        <a class="btn btn--ghost" style="padding:9px 16px;">Расписание</a>
+      </div>
+    </section>
+
+    <section class="col">
+      <p class="label">Командный зачёт</p>
+      <div class="rows">
+        <div class="row"><b>1</b><span>Гадюки</span><em>480</em></div>
+        <div class="row"><b>2</b><span>Pu'er tea'm</span><em>480</em></div>
+        <div class="row"><b>3</b><span>Епесок</span><em>444</em></div>
+        <div class="row"><b>4</b><span>RusMixed</span><em>420</em></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <p class="label">Последние игры</p>
+      <div class="rows">
+        <div class="row"><b></b><span>Гадюки — Pu'er</span><em>7 : 5</em></div>
+        <div class="row"><b></b><span>RusMixed — Епесок</span><em>4 : 11</em></div>
+        <div class="row"><b></b><span>Кобры — Бивни</span><em>9 : 5</em></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="soft">
+    <div>
+      <h3>Записи II этапа</h3>
+      <p>Финал, бронза и игры за места — во ВКонтакте</p>
+    </div>
+    <a class="btn btn--ghost" style="padding:9px 16px;">Смотреть</a>
+  </div>
+
+  <div class="foot">
+    <span>Зимняя Песочная Лига · Москва · 2026/27</span>
+    <span>ВКонтакте · Telegram</span>
+  </div>
+</div>
+</body></html>

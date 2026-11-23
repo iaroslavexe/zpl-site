@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block page_class %} page--home{% endblock %}
+{% block content %}
+
+<div class="glow" aria-hidden="true"></div>
+
+<p class="home-kicker">Микст · песок · 4×4</p>
+
+<section class="home-top">
+  <h1 class="home-title">Зимняя<br>песочная<br><em>лига</em></h1>
+
+  {% if next_stage %}
+  <div class="home-next">
+    <div class="home-next__top">
+      <span class="cap">Ближайший этап</span>
+      <span class="home-next__count" data-days-to="{{ next_stage.date }}"{% if not next_stage.days_left %} hidden{% endif %}>
+        через <b>{{ next_stage.days_left }}</b> <span data-days-word>{{ next_stage.days_word }}</span>
+      </span>
+    </div>
+    <div class="home-next__date">{{ next_stage.day_month }}</div>
+    <div class="home-next__rule"></div>
+    <div class="home-next__meta">
+      <span>{{ next_stage.title }} этап</span><i>/</i><span>{{ next_stage.weekday }}</span>{% if next_stage.place %}<i>/</i><span>{{ next_stage.place }}</span>{% endif %}
+    </div>
+    {% if next_stage.registration_url %}
+    <a class="btn btn--ghost home-next__cta" href="{{ next_stage.registration_url }}">Регистрация</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+
+<div class="rule"></div>
+
+<section class="home-mid">
+  <div class="home-stand">
+    <p class="cap">Командный зачёт</p>
+    {% for row in top %}
+    <div class="team-row">
+      <span class="team-row__rank">{{ row.rank }}</span>
+      {% if row.avatar %}<img class="team-row__ava" src="{{ row.avatar }}" alt="" loading="lazy">{% endif %}
+      <span class="team-row__name">{{ row.name }}</span>
+      <span class="team-row__pts">{{ row.total }}</span>
+    </div>
+    {% endfor %}
+    <a class="home-stand__more" href="/standings">Весь зачёт</a>
+  </div>
+
+  {% if video %}
+  <div class="home-video">
+    <div class="video-frame">
+      {% if video.embed %}
+      <iframe src="{{ video.embed }}" title="Трансляция · {{ video.title }}"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      {% else %}
+      <a class="video-frame__stub" href="{{ video.url }}" target="_blank" rel="noopener">Смотреть запись</a>
+      {% endif %}
+    </div>
+    <div class="video-meta">
+      <b>Финал{% if video_stage %} {{ video_stage }}{% endif %} этапа</b>
+      <a href="{{ vk_url }}" target="_blank" rel="noopener">Смотреть все игры</a>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<div class="rule"></div>
+
+<p class="home-section">Лучшие за все этапы</p>
+
+<div class="home-tops">
+  {% for key, title in [("goals", "Голы"), ("assists", "Ассисты"), ("blocks", "Блоки")] %}
+  <div class="top-tile">
+    <p class="top-tile__title">{{ title }}</p>
+    {% for player in tops[key] %}
+    <div class="player-row">
+      <span class="player-row__rank">{{ loop.index }}</span>
+      {% if player.avatar_url %}<img class="player-row__ava" src="{{ player.avatar_url }}" alt="" loading="lazy">{% endif %}
+      <span class="player-row__name">{{ player.name }}</span>
+      <span class="player-row__val">{{ player[key] }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+<section class="home-fantasy">
+  <div>
+    <h2>Собери состав на этап</h2>
+    <p>Выбирай игроков лиги, зарабатывай очки, обгоняй друзей. Игра идёт параллельно с сезоном.</p>
+  </div>
+  <a class="btn btn--primary" href="{{ fantasy_url }}">Открыть фэнтези</a>
+</section>
+
+{% endblock %}

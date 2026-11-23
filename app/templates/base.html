@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e1626">
+  <title>{% block title %}{{ season_title }} {{ season }}{% endblock %}</title>
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+  <link rel="preload" href="/static/fonts/jost-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/unbounded-600-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/static/fonts/oswald-600-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/css/fonts.css">
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/pages.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="brand__name">
+      <span class="brand__letters">ЗПЛ</span><span class="brand__season">{{ season[2:] }}</span>
+    </span>
+  </a>
+
+  <nav class="tabs" aria-label="Разделы">
+    {% for item in nav %}
+      <a class="tab{% if active == item.key %} is-active{% endif %}" href="{{ item.url }}">{{ item.title }}</a>
+    {% endfor %}
+  </nav>
+
+  <a class="btn btn--ghost btn--sm topbar__fantasy" href="{{ fantasy_url }}">
+    Фэнтези
+  </a>
+</header>
+
+<main class="page{% block page_class %}{% endblock %}">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <span class="footer__note">{{ season_title }} · {{ season }}</span>
+  <div class="footer__links">
+    <a href="{{ vk_url }}">ВКонтакте</a>
+    <a href="{{ telegram_url }}">Telegram</a>
+  </div>
+</footer>
+
+<script src="/static/js/app.js" defer></script>
+</body>
+</html>
