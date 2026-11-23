@@ -33,7 +33,7 @@
 
 <section class="home-mid">
   <div class="home-stand">
-    <p class="cap">Командный зачёт</p>
+    <p class="cap">Рейтинг команд в сезоне</p>
     {% for row in top %}
     <div class="team-row">
       <span class="team-row__rank">{{ row.rank }}</span>
@@ -42,7 +42,7 @@
       <span class="team-row__pts">{{ row.total }}</span>
     </div>
     {% endfor %}
-    <a class="home-stand__more" href="/standings">Весь зачёт</a>
+    <a class="home-stand__more" href="/standings">Весь рейтинг</a>
   </div>
 
   {% if video %}
