@@ -11,8 +11,10 @@ jobs:
     permissions:
       contents: read
     env:
-      # секреты нельзя использовать в if, поэтому проверяем через env
-      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      # секреты нельзя использовать в if, поэтому проверяем через env.
+      # Поддерживаем и secret, и variable — чтобы не спотыкаться на том,
+      # куда именно добавили токен.
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || vars.CLOUDFLARE_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,10 +28,18 @@ jobs:
       - name: Сборка статики
         run: python -m app.build
 
+      - name: Проверка доступа к Cloudflare
+        run: |
+          if [ -n "$CF_TOKEN" ]; then
+            echo "токен найден — деплой будет выполнен"
+          else
+            echo "::warning::CLOUDFLARE_API_TOKEN не найден — деплой пропущен"
+          fi
+
       - name: Деплой на Cloudflare Pages
         if: env.CF_TOKEN != ''
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN || vars.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=zpl-site --branch=main
