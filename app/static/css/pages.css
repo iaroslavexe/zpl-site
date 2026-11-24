@@ -797,10 +797,11 @@
 .archive-duo__col .archive-h2 { margin-top: 0; }
 .archive-leaders { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
 @media (min-width: 960px) { .archive-leaders { grid-template-columns: repeat(3, 1fr); flex: 1; } }
-.leader { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 16px 14px 18px 0; background: var(--bg); text-decoration: none; color: inherit; }
-.leader__avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.leader__value { font-size: 26px; font-weight: 600; }
-.leader__name { font-size: 12.5px; line-height: 1.25; }
+.leader { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 18px 16px 18px 0; background: var(--bg); text-decoration: none; color: inherit; }
+.leader__top { display: flex; align-items: center; gap: 14px; }
+.leader__avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.leader__value { font-size: 34px; font-weight: 600; letter-spacing: -.01em; }
+.leader__name { font-size: 16px; line-height: 1.2; }
 .leader__title { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 .leader { display: grid; gap: 6px; padding: 18px; background: var(--bg); text-decoration: none; color: inherit; }
 .leader:hover .leader__name { color: var(--yellow); }

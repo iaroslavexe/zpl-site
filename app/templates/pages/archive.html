@@ -35,8 +35,10 @@
   {% for key, title in [('games','Больше всех игр'), ('goals','Больше всех голов'), ('assists','Больше всех ассистов')] %}
   {% set item = leaders[key] %}
   <a class="leader" href="/archive/player/{{ item.player.id }}">
-    {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
-    <span class="leader__value">{{ item.value }}</span>
+    <span class="leader__top">
+      {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
+      <span class="leader__value">{{ item.value }}</span>
+    </span>
     <span class="leader__name">{{ item.player.name }}</span>
     <span class="leader__title">{{ title }}</span>
   </a>
