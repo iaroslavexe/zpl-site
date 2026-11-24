@@ -197,7 +197,7 @@ def archive_landing() -> tuple[str, dict]:
     summary["teams_word"] = _plural(summary["teams"], "команда", "команды", "команд")
     summary["players_word"] = _plural(summary["players"], "игрок", "игрока", "игроков")
 
-    top_stages = max(d["players"], key=lambda p: p["stages"])
+    top_games = max(d["players"], key=lambda p: p.get("games") or 0)
     top_goals = max(d["players"], key=lambda p: p["goals"])
     top_assists = max(d["players"], key=lambda p: p["assists"])
 
@@ -220,7 +220,7 @@ def archive_landing() -> tuple[str, dict]:
         summary=summary,
         champions=champs,
         leaders={
-            "stages": {"player": top_stages, "value": top_stages["stages"]},
+            "games": {"player": top_games, "value": top_games["games"]},
             "goals": {"player": top_goals, "value": top_goals["goals"]},
             "assists": {"player": top_assists, "value": top_assists["assists"]},
         },

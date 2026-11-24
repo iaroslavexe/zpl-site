@@ -15,6 +15,8 @@
   <a class="archive-tile" href="/archive/players"><b>{{ summary.players }}</b><span>{{ summary.players_word }}</span></a>
 </div>
 
+<div class="archive-duo">
+<div class="archive-duo__col">
 <h2 class="archive-h2 archive-h2--yellow">Чемпионы</h2>
 <div class="archive-champs">
   {% for row in champions %}
@@ -26,9 +28,11 @@
   {% endfor %}
 </div>
 
+</div>
+<div class="archive-duo__col">
 <h2 class="archive-h2 archive-h2--yellow">Лидеры за всё время</h2>
 <div class="archive-leaders">
-  {% for key, title in [('stages','Больше всех этапов'), ('goals','Больше всех голов'), ('assists','Больше всех ассистов')] %}
+  {% for key, title in [('games','Больше всех игр'), ('goals','Больше всех голов'), ('assists','Больше всех ассистов')] %}
   {% set item = leaders[key] %}
   <a class="leader" href="/archive/player/{{ item.player.id }}">
     {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
@@ -37,6 +41,9 @@
     <span class="leader__title">{{ title }}</span>
   </a>
   {% endfor %}
+</div>
+
+</div>
 </div>
 
 <a class="archive-cta" href="/archive/seasons">Смотреть архив</a>
