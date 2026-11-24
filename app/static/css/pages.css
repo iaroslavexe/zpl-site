@@ -727,14 +727,26 @@
 .archive-table--sortable th[data-sort]:hover { color: var(--yellow); }
 
 /* ---------- Лендинг истории ---------- */
-.page--archive-landing { padding-top: 40px; }
+.page--archive-landing { padding-top: 40px; position: relative; }
+.page--archive-landing::before {
+  content: "";
+  position: absolute;
+  top: -160px;
+  right: 6%;
+  width: 900px;
+  height: 620px;
+  background: radial-gradient(closest-side, rgba(250, 183, 44, .055), rgba(238, 18, 143, .04) 55%, transparent 78%);
+  filter: blur(20px);
+  pointer-events: none;
+}
 .archive-hero-wrap { position: relative; margin: 0 0 28px; }
 
 /* Год-обводка как в макете обложки: крупно, контуром, под заголовком */
 .archive-year {
   position: absolute;
   right: 0;
-  top: -14px;
+  top: auto;
+  bottom: 10px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -748,11 +760,12 @@
   transform-origin: right top;
   letter-spacing: -.02em;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, .14);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .13);
   pointer-events: none;
   user-select: none;
 }
 .archive-year b { font-weight: 600; }
+.archive-year b:last-child { -webkit-text-stroke-color: rgba(250, 183, 44, .38); }
 .archive-year b:last-child { margin-left: .24em; }
 @media (max-width: 859px) { .archive-year { font-size: clamp(38px, 12vw, 64px); } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
