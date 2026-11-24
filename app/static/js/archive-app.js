@@ -211,7 +211,10 @@
       var solo = items.length === 1 && label.indexOf('Группа') !== 0;
       var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
       block += '<h3 class="archive-group">' + label + '</h3>';
-      if (label.indexOf('Группа') === 0 || label.indexOf('За ') === 0) {
+      var teamsInBlock = {};
+      items.forEach(function (g) { teamsInBlock[g.home] = 1; teamsInBlock[g.away] = 1; });
+      var isRoundRobin = items.length > 1 && Object.keys(teamsInBlock).length > 2;
+      if (isRoundRobin) {
         block += '<div class="group-standings">' +
           table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
       }
