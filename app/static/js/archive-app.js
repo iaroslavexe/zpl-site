@@ -7,7 +7,7 @@
 
   function load() {
     if (!cache) {
-      cache = fetch('/static/data/archive.json').then(function (r) { return r.json(); });
+      cache = fetch('/archive/data.json').then(function (r) { return r.json(); });
     }
     return cache;
   }

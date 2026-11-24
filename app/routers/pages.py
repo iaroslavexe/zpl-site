@@ -1,4 +1,6 @@
 """Роуты сайта: тонкий слой над app.views."""
+from pathlib import Path
+
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -7,6 +9,14 @@ from app import views
 from app.config import TEMPLATES_DIR
 
 router = APIRouter()
+
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+
+@router.get("/archive/data.json")
+def archive_data():
+    from fastapi.responses import FileResponse
+
+    return FileResponse(DATA_DIR / "archive" / "archive.json", media_type="application/json")
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 

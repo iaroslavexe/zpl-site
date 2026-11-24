@@ -72,6 +72,8 @@ def main() -> None:
         print(f"  {filename:28} {len(html) / 1024:6.0f} КБ")
 
     shutil.copytree(STATIC_DIR, DIST / "static")
+    shutil.copy(Path(__file__).resolve().parent / "data" / "archive" / "archive.json",
+                DIST / "archive" / "data.json")
     (DIST / "_headers").write_text(HEADERS, encoding="utf-8")
     (DIST / "_redirects").write_text(
         "/archive/team/* /archive/entity 200\n"
