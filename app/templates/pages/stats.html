@@ -34,7 +34,8 @@
         <th class="st-rank">#</th>
         <th class="st-player">Игрок</th>
         <th class="st-team">Команда</th>
-        <th class="st-num is-sorted" data-sort="goals">Г</th>
+        <th class="st-num is-sorted" data-sort="points">О</th>
+        <th class="st-num" data-sort="goals">Г</th>
         <th class="st-num" data-sort="assists">А</th>
         <th class="st-num" data-sort="blocks">Б</th>
       </tr>
@@ -62,6 +63,7 @@
           <span class="st-team-change">ранее: {{ (player.teams | reject('equalto', player.team) | list)[0] }}</span>
           {% endif %}
         </td>
+        <td class="st-num">{{ player.goals + player.assists }}</td>
         <td class="st-num">{{ player.goals }}</td>
         <td class="st-num">{{ player.assists }}</td>
         <td class="st-num">{{ player.blocks }}</td>

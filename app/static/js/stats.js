@@ -7,7 +7,7 @@
   var state = {
     stage: 'all',
     gender: 'all',
-    sort: 'goals',
+    sort: 'points',
     query: '',
     players: initial.players || [],
     aliases: initial.aliases || {},
@@ -38,9 +38,15 @@
   }
 
   function value(player, key) {
-    if (state.stage === 'all') return player[key] || 0;
+    if (state.stage === 'all') {
+      if (key === 'points') return (player.goals || 0) + (player.assists || 0);
+      return player[key] || 0;
+    }
+
     var stage = (player.by_stage || {})[state.stage];
-    return stage ? (stage[key] || 0) : null;
+    if (!stage) return null;
+    if (key === 'points') return (stage.goals || 0) + (stage.assists || 0);
+    return stage[key] || 0;
   }
 
   function rows() {
@@ -49,6 +55,7 @@
       .map(function (player) {
         return {
           player: player,
+          points: value(player, 'points'),
           goals: value(player, 'goals'),
           assists: value(player, 'assists'),
           blocks: value(player, 'blocks')
@@ -101,6 +108,7 @@
         '<td class="st-team">' + escape(team) +
           (previous ? '<span class="st-team-change">' + escape(previous) + '</span>' : '') +
         '</td>' +
+        '<td class="st-num">' + row.points + '</td>' +
         '<td class="st-num">' + row.goals + '</td>' +
         '<td class="st-num">' + row.assists + '</td>' +
         '<td class="st-num">' + row.blocks + '</td>' +

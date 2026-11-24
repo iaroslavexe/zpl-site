@@ -24,7 +24,10 @@ def build() -> dict:
         player["teams_by_stage"] = teams
         player["teams"] = list(dict.fromkeys(teams[k] for k in sorted(teams)))
 
-    rows = sorted(players, key=lambda p: (-p.get("goals", 0), -p.get("assists", 0), p.get("name", "")))
+    rows = sorted(
+        players,
+        key=lambda p: (-(p.get("goals", 0) + p.get("assists", 0)), -p.get("goals", 0), p.get("name", "")),
+    )
 
     return {
         "players": rows,
