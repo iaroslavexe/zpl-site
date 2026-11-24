@@ -161,16 +161,28 @@
       ];
     });
 
-    var games = stageGames.map(function (g) {
-      return [link('/archive/game/' + g.id, g.home_name + ' — ' + g.away_name), g.hs + ' : ' + g.vs];
+    var groups = {};
+    stageGames.slice().sort(function (a, b) {
+      return (a.group_order || 99) - (b.group_order || 99) || a.id - b.id;
+    }).forEach(function (g) {
+      var label = g.group || 'Игры';
+      (groups[label] || (groups[label] = [])).push(g);
     });
+
+    var gamesHtml = Object.keys(groups).map(function (label) {
+      var rows = groups[label].map(function (g) {
+        return [link('/archive/game/' + g.id, g.home_name + ' — ' + g.away_name), g.hs + ' : ' + g.vs];
+      });
+      return '<h3 class="archive-group">' + label + '</h3>' + table(['Игра', 'Счёт'], rows);
+    }).join('');
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive?tab=stages', 'Этапы'], [null, stage.season]]) +
-      '<h1 class="archive-title">' + stage.title + '</h1>' +
-      '<p class="archive-lead">' + fmtDate(stage.date) + ' · ' + stage.division + ' дивизион · ' + stage.games_count + ' игр</p>' +
+      '<h1 class="archive-title">' + stage.season + ' · ' + (stage.name || stage.title) + '</h1>' +
+      '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
+      ' · ' + stage.division + ' дивизион · ' + stage.games_count + ' игр</p>' +
       '<h2 class="archive-h2">Итоги этапа</h2>' + table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], seats) +
-      '<h2 class="archive-h2">Игры</h2>' + table(['Игра', 'Счёт'], games);
+      '<h2 class="archive-h2">Игры</h2>' + gamesHtml;
   }
 
   function renderGame(data, id) {

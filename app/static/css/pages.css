@@ -827,3 +827,6 @@
 .archive-season:first-child .archive-season__row td { padding-top: 6px; }
 
 .archive-table__note--inline { display: inline; }
+
+.archive-group { margin: 22px 0 8px; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.archive-group + .archive-table { margin-bottom: 6px; }
