@@ -183,7 +183,8 @@
         return stats[b].wins - stats[a].wins || stats[b].diff - stats[a].diff;
       }).map(function (id, index) {
         var team = teamById[id] || {};
-        return [index + 1, link('/archive/team/' + id, team.name || id), stats[id].wins,
+        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
+        return [index + 1, avatar + link('/archive/team/' + id, team.name || id), stats[id].wins,
           stats[id].losses, (stats[id].diff > 0 ? '+' : '') + stats[id].diff];
       });
     }
@@ -207,12 +208,14 @@
 
     var gamesHtml = Object.keys(groups).map(function (label) {
       var items = groups[label];
-      var block = '<h3 class="archive-group">' + label + '</h3>';
+      var solo = items.length === 1 && label.indexOf('Группа') !== 0;
+      var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
+      block += '<h3 class="archive-group">' + label + '</h3>';
       if (label.indexOf('Группа') === 0 || label.indexOf('За ') === 0) {
         block += '<div class="group-standings">' +
           table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
       }
-      block += '<div class="games">' + items.map(gameRow).join('') + '</div>';
+      block += '<div class="games">' + items.map(gameRow).join('') + '</div></section>';
       return block;
     }).join('');
 

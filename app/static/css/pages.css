@@ -840,3 +840,13 @@
 .archive-group + .group-standings { margin-top: 4px; }
 .group-standings + .games { margin-top: 12px; }
 .page--archive .games { margin-bottom: 18px; max-width: 720px; }
+
+.archive-block { margin-bottom: 26px; }
+.archive-block--solo { max-width: 660px; }
+.archive-block--solo .archive-group {
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.archive-block--solo .games { margin-top: 0; }
