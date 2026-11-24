@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "app" / "static" / "fonts"
 CSS_OUT = ROOT / "app" / "static" / "css" / "fonts.css"
 
-FAMILIES = "family=Jost:wght@400;500;600;700&family=Oswald:wght@600&family=Unbounded:wght@600&display=swap"
+FAMILIES = "family=Jost:wght@400;500;600;700&family=Oswald:wght@600&family=Unbounded:wght@600&family=Russo+One&display=swap"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
 KEEP = ("cyrillic", "latin")
 # у вариативных шрифтов начертания идут диапазоном

@@ -452,7 +452,7 @@
 
 .home-title {
   margin: 0;
-  font-family: "Unbounded", "Jost", sans-serif;
+  font-family: "Russo One", "Unbounded", "Jost", sans-serif;
   font-size: 44px;
   line-height: 1.02;
   letter-spacing: -.03em;
@@ -769,7 +769,7 @@
 .archive-year b:last-child { margin-left: .24em; }
 @media (min-width: 860px) { .archive-year { font-size: 106px; } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
-.archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: 44px; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
+.archive-hero { margin: 0; font-family: "Russo One", "Unbounded", "Jost", sans-serif; font-size: 44px; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
 @media (min-width: 860px) { .archive-hero { font-size: 74px; } }
 .archive-hero__meta { margin: 0 0 10px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
