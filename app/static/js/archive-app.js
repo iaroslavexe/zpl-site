@@ -44,6 +44,12 @@
     }).join(' / ') + '</p>';
   }
 
+  function plural(n, one, few, many) {
+    if (n % 10 === 1 && n % 100 !== 11) return one;
+    if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) return few;
+    return many;
+  }
+
   function stats(items) {
     return '<div class="archive-stats archive-stats--small">' + items.map(function (item) {
       return '<div class="archive-stat"><b>' + item[0] + '</b><span>' + item[1] + '</span></div>';
@@ -78,11 +84,13 @@
     });
 
     root.innerHTML =
-      crumbs([['/archive', 'Архив'], ['/archive?tab=teams', 'Команды'], [null, team.name]]) +
+      crumbs([['/archive', 'Архив'], ['/archive/teams', 'Команды'], [null, team.name]]) +
       '<h1 class="archive-title">' + team.name + '</h1>' +
       (team.note ? '<p class="archive-lead">' + team.note + '</p>' : '') +
-      stats([[team.stages.length, 'этапов'], [team.gold, 'золото'], [team.silver, 'серебро'],
-        [team.wins + '–' + team.losses, 'победы'], [team.goals_for + '–' + team.goals_against, 'голы']]) +
+      stats([[team.stages.length, plural(team.stages.length, 'этап', 'этапа', 'этапов')],
+        [team.gold + team.silver, plural(team.gold + team.silver, 'победа', 'победы', 'побед')],
+        [team.games, plural(team.games, 'игра', 'игры', 'игр')], [team.wins + '–' + team.losses, 'победы'],
+        [team.goals_for + '–' + team.goals_against, 'голы']]) +
       '<h2 class="archive-h2">Этапы</h2>' + table(['Дата', 'Этап', 'Дивизион', 'Место'], stages) +
       (spirit.length ? '<h2 class="archive-h2">Дух по сезонам</h2>' + table(['Сезон', 'Средний балл'], spirit) : '') +
       '<h2 class="archive-h2">Игроки</h2>' + table(['Игрок', 'Этапов', 'Голы', 'Ассисты'], players);
@@ -265,7 +273,7 @@
     }).join('');
 
     root.innerHTML =
-      crumbs([['/archive', 'Архив'], ['/archive?tab=stages', 'Этапы'], [null, stage.season]]) +
+      crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
       '<h1 class="archive-title">' + stage.season + ' · ' + (stage.name || stage.title) + '</h1>' +
       '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
       ' · ' + stage.division + ' дивизион · ' + stage.games_count + ' игр</p>' +
@@ -289,7 +297,9 @@
     }).join('');
 
     root.innerHTML =
-      crumbs([['/archive', 'Архив'], stage ? ['/archive/stage/' + stage.slug, stage.title] : [null, 'Этап'], [null, 'игра']]) +
+      crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'],
+        stage ? ['/archive/stage/' + stage.slug, stage.season + ' · ' + (stage.name || stage.title)] : [null, 'Этап'],
+        [null, 'игра']]) +
       '<h1 class="archive-title">' + game.home_name + ' <span class="archive-score">' + game.hs + ' : ' + game.vs + '</span> ' + game.away_name + '</h1>' +
       '<p class="archive-lead">' + fmtDate(game.date) + '</p>' +
       '<h2 class="archive-h2">Хронология очков</h2><ul class="timeline">' + timeline + '</ul>';
