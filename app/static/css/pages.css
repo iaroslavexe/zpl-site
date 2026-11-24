@@ -462,6 +462,7 @@
 .home-title em { font-style: normal; color: var(--yellow); }
 
 .cap { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); margin: 0 0 14px; }
+.cap--yellow { color: var(--yellow); }
 
 .home-next__top {
   display: flex;
@@ -523,6 +524,8 @@
   text-transform: uppercase;
   color: var(--muted);
 }
+
+.home-section--yellow { color: var(--yellow); }
 
 .home-tops { display: grid; gap: 26px; }
 

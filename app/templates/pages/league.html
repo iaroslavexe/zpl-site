@@ -33,7 +33,7 @@
 
 <section class="home-mid">
   <div class="home-stand">
-    <p class="cap">Рейтинг команд в сезоне</p>
+    <p class="cap cap--yellow">Рейтинг команд в сезоне</p>
     {% for row in top %}
     <div class="team-row">
       <span class="team-row__rank">{{ row.rank }}</span>
@@ -65,7 +65,7 @@
 
 <div class="rule"></div>
 
-<p class="home-section">Лучшие в этом сезоне</p>
+<p class="home-section home-section--yellow">Лучшие в этом сезоне</p>
 
 <div class="home-tops">
   {% for key, title in [("goals", "Голы"), ("assists", "Ассисты"), ("blocks", "Блоки")] %}
