@@ -7,6 +7,9 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
 
 SEASON = "2026/27"
+
+# публичный адрес сайта: используется в canonical и sitemap
+SITE_URL = "https://zpl.beachultimate.ru"
 SEASON_TITLE = "Зимняя Песочная Лига"
 
 FANTASY_URL = "https://fantasy.iaroslavexe.art"

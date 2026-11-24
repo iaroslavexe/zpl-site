@@ -9,7 +9,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from app import views
-from app.config import STATIC_DIR, TEMPLATES_DIR
+from app.config import SITE_URL, STATIC_DIR, TEMPLATES_DIR
 
 DIST = Path(__file__).resolve().parent.parent / "dist"
 
@@ -34,7 +34,11 @@ HEADERS = """# Cloudflare Pages: заголовки
 
 ROBOTS = """User-agent: *
 Allow: /
+
+Sitemap: {site}/sitemap.xml
 """
+
+SITEMAP_PAGES = ["/", "/standings", "/stages", "/stats", "/rules"]
 
 
 def main() -> None:
@@ -55,7 +59,14 @@ def main() -> None:
 
     shutil.copytree(STATIC_DIR, DIST / "static")
     (DIST / "_headers").write_text(HEADERS, encoding="utf-8")
-    (DIST / "robots.txt").write_text(ROBOTS, encoding="utf-8")
+    (DIST / "robots.txt").write_text(ROBOTS.format(site=SITE_URL), encoding="utf-8")
+
+    urls = "".join(f"  <url><loc>{SITE_URL}{path}</loc></url>\n" for path in SITEMAP_PAGES)
+    (DIST / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + "</urlset>\n",
+        encoding="utf-8",
+    )
 
     total = sum(f.stat().st_size for f in DIST.rglob("*") if f.is_file())
     print(f"готово: {DIST} · {total / 1048576:.1f} МБ")

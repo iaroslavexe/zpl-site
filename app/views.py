@@ -3,6 +3,7 @@ from datetime import date
 
 from app.config import (
     FANTASY_URL,
+    SITE_URL,
     NAV,
     RULES_URL,
     SEASON,
@@ -64,9 +65,11 @@ def pdf_size(path_part: str) -> str:
     return f"{file.stat().st_size / 1048576:.1f} МБ".replace(".", ",")
 
 
-def _base(active: str, **extra) -> dict:
+def _base(active: str, canonical: str = "", **extra) -> dict:
     return {
         "nav": NAV,
+        "site_url": SITE_URL,
+        "canonical": canonical,
         "active": active,
         "season": SEASON,
         "season_title": SEASON_TITLE,
@@ -85,6 +88,7 @@ def league() -> tuple[str, dict]:
     video = (streams_data.get("clips") or [None])[-1]
     return "pages/league.html", _base(
         "league",
+        canonical="/",
         top=table["rows"][:4],
         next_stage=upcoming,
         tops=stats_service.tops(4),
@@ -94,7 +98,7 @@ def league() -> tuple[str, dict]:
 
 
 def standings_page() -> tuple[str, dict]:
-    return "pages/standings.html", _base("standings", table=standings.build())
+    return "pages/standings.html", _base("standings", canonical="/standings", table=standings.build())
 
 
 def stages(stage: str = "") -> tuple[str, dict]:
@@ -116,16 +120,19 @@ def stages(stage: str = "") -> tuple[str, dict]:
             "games_count": page["games_count"],
         })
 
-    return "pages/stages.html", _base("stages", tabs=tabs, panels=panels, current_id=current_id)
+    return "pages/stages.html", _base(
+        "stages", canonical="/stages", tabs=tabs, panels=panels, current_id=current_id
+    )
 
 
 def stats() -> tuple[str, dict]:
-    return "pages/stats.html", _base("stats", stats=stats_service.build())
+    return "pages/stats.html", _base("stats", canonical="/stats", stats=stats_service.build())
 
 
 def rules() -> tuple[str, dict]:
     return "pages/rules.html", _base(
         "rules",
+        canonical="/rules",
         rules_url=RULES_URL,
         rules_pages=22,
         rules_size=pdf_size(RULES_URL),
