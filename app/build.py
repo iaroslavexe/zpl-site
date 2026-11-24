@@ -3,6 +3,7 @@
 Запуск: python -m app.build
 Cloudflare Pages раздаёт только готовые файлы, поэтому рендерим страницы заранее.
 """
+import json
 import shutil
 from pathlib import Path
 
@@ -74,12 +75,28 @@ def main() -> None:
     shutil.copytree(STATIC_DIR, DIST / "static")
     shutil.copy(Path(__file__).resolve().parent / "data" / "archive" / "archive.json",
                 DIST / "archive" / "data.json")
+
+    # Карточки архива: один и тот же shell на каждый путь, чтобы не было редиректов
+    shell = (DIST / "archive" / "entity.html").read_text(encoding="utf-8")
+    bundle = json.loads((Path(__file__).resolve().parent / "data" / "archive" / "archive.json")
+                        .read_text(encoding="utf-8"))
+    entity_paths = []
+    for team in bundle["teams"]:
+        entity_paths.append(f"archive/team/{team['id']}")
+    for player in bundle["players"]:
+        entity_paths.append(f"archive/player/{player['id']}")
+    for stage in bundle["stages"]:
+        entity_paths.append(f"archive/stage/{stage['slug']}")
+    for game in bundle["games"]:
+        entity_paths.append(f"archive/game/{game['id']}")
+
+    for path in entity_paths:
+        target = DIST / path / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(shell, encoding="utf-8")
     (DIST / "_headers").write_text(HEADERS, encoding="utf-8")
     (DIST / "_redirects").write_text(
-        "/archive/team/* /archive/entity.html 200\n"
-        "/archive/player/* /archive/entity.html 200\n"
-        "/archive/stage/* /archive/entity.html 200\n"
-        "/archive/game/* /archive/entity.html 200\n",
+        "",
         encoding="utf-8",
     )
     (DIST / "robots.txt").write_text(ROBOTS.format(site=SITE_URL), encoding="utf-8")
