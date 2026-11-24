@@ -247,6 +247,11 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         if first:
             winners[stage["id"]] = first[0]
 
+    teams_view = sorted(
+        d["teams"],
+        key=lambda t: (-len(t["stages"]), -(t["gold"] + t["silver"]), t["name"]),
+    )
+
     title_counts = {}
     for row in archive.champions():
         if not row["teams"]:
@@ -319,7 +324,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         matrix_spb=_archive_matrix("Северо-Западный"),
         stages=stages_view,
         stage_groups=grouped,
-        teams=d["teams"],
+        teams=teams_view,
         players=players_view,
     )
 
