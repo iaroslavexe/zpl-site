@@ -3,9 +3,10 @@
 {% block page_class %} page--archive page--archive-landing{% endblock %}
 {% block content %}
 
-<h1 class="archive-hero">Зимняя<br>песочная<br><em>лига</em></h1>
-<p class="archive-hero__meta">{{ summary.seasons }} сезонов · {{ summary.stages }} этапов · 2021–2026</p>
-<p class="archive-hero__lead">Два дивизиона — Центральный (Москва) и Северо-Западный (Санкт-Петербург). С 2024/25 у сезона есть общий финал, куда едут лучшие команды обоих дивизионов.</p>
+<div class="archive-hero-wrap">
+  <h1 class="archive-hero">Зимняя<br>песочная<br><em>лига</em></h1>
+  <span class="archive-hero__years" aria-hidden="true">2021—2026</span>
+</div>
 
 <div class="archive-tiles">
   <a class="archive-tile" href="/archive/seasons"><b>{{ summary.seasons }}</b><span>сезонов</span></a>
@@ -13,7 +14,6 @@
   <a class="archive-tile" href="/archive/teams"><b>{{ summary.teams }}</b><span>команд</span></a>
   <a class="archive-tile" href="/archive/players"><b>{{ summary.players }}</b><span>игроков</span></a>
 </div>
-<p class="archive-note">{{ summary.games }} игр · {{ summary.goals }} забитых мячей · <a href="/archive/players">вся статистика</a></p>
 
 <h2 class="archive-h2">Чемпионы</h2>
 <div class="archive-champs">

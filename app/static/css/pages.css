@@ -728,7 +728,23 @@
 
 /* ---------- Лендинг истории ---------- */
 .page--archive-landing { padding-top: 40px; }
-.archive-hero { margin: 0 0 14px; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
+.archive-hero-wrap { position: relative; margin: 0 0 28px; }
+.archive-hero__years {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "Unbounded", "Jost", sans-serif;
+  font-size: clamp(24px, 3.6vw, 54px);
+  font-weight: 600;
+  letter-spacing: -.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .14);
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 859px) { .archive-hero__years { display: none; } }
+.archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
 .archive-hero__meta { margin: 0 0 10px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
 .archive-hero__lead { margin: 0 0 30px; max-width: 640px; color: var(--muted); font-size: 14px; }
