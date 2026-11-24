@@ -15,19 +15,18 @@
   <a class="archive-tile" href="/archive/players"><b>{{ summary.players }}</b><span>игроков</span></a>
 </div>
 
-<h2 class="archive-h2">Чемпионы</h2>
+<h2 class="archive-h2 archive-h2--yellow">Чемпионы</h2>
 <div class="archive-champs">
   {% for row in champions %}
   <a class="champ" href="{{ '/archive/team/' + row.team_id if row.team_id else '/archive/seasons' }}">
     <span class="champ__season">{{ row.season }}</span>
     {% if row.avatar %}<img class="champ__avatar" src="{{ row.avatar }}" alt="" loading="lazy">{% endif %}
     <span class="champ__name">{{ row.winner }}</span>
-    {% if row.runners %}<span class="champ__rest">{{ row.runners|join(' · ') }}</span>{% endif %}
   </a>
   {% endfor %}
 </div>
 
-<h2 class="archive-h2">Лидеры за всё время</h2>
+<h2 class="archive-h2 archive-h2--yellow">Лидеры за всё время</h2>
 <div class="archive-leaders">
   {% for key, title in [('stages','Больше всех этапов'), ('goals','Больше всех голов'), ('assists','Больше всех ассистов')] %}
   {% set item = leaders[key] %}

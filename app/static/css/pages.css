@@ -734,15 +734,18 @@
 .archive-year {
   position: absolute;
   right: 0;
-  top: 0;
+  top: -14px;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-family: "Oswald", "Jost", sans-serif;
-  font-size: clamp(44px, 8.2vw, 118px);
+  font-size: clamp(56px, 13.2vw, 196px);
   font-weight: 600;
-  line-height: .78;
+  line-height: .6;
+  letter-spacing: .02em;
+  transform: scaleX(1.22);
+  transform-origin: right top;
   letter-spacing: -.02em;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, .14);
@@ -750,7 +753,7 @@
   user-select: none;
 }
 .archive-year b { font-weight: 600; }
-.archive-year b:last-child { margin-left: .3em; }
+.archive-year b:last-child { margin-left: .24em; }
 @media (max-width: 859px) { .archive-year { font-size: clamp(38px, 12vw, 64px); } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
 .archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
@@ -767,7 +770,7 @@
 .archive-note a { color: var(--dim); }
 
 .archive-champs { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); margin: 0 0 8px; }
-.champ { display: grid; grid-template-columns: 76px 34px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; background: var(--bg); text-decoration: none; color: inherit; }
+.champ { display: grid; grid-template-columns: 76px 34px 1fr; gap: 14px; align-items: center; padding: 12px 0; background: var(--bg); text-decoration: none; color: inherit; }
 .champ:hover .champ__name { color: var(--yellow); }
 .champ__season { font-size: 11.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
 .champ__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
@@ -789,3 +792,5 @@
 
 .team-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; vertical-align: -5px; margin-right: 8px; }
 .hist__team .team-avatar { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; }
+
+.archive-h2--yellow { color: var(--yellow); }
