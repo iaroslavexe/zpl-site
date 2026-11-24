@@ -213,7 +213,9 @@
       block += '<h3 class="archive-group">' + label + '</h3>';
       var teamsInBlock = {};
       items.forEach(function (g) { teamsInBlock[g.home] = 1; teamsInBlock[g.away] = 1; });
-      var isRoundRobin = items.length > 1 && Object.keys(teamsInBlock).length > 2;
+      var teamCount = Object.keys(teamsInBlock).length;
+      var fullRound = teamCount * (teamCount - 1) / 2;
+      var isRoundRobin = teamCount > 2 && (items.length === fullRound || items.length === fullRound * 2);
       if (isRoundRobin) {
         block += '<div class="group-standings">' +
           table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
