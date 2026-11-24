@@ -48,7 +48,9 @@ Allow: /
 Sitemap: {site}/sitemap.xml
 """
 
-SITEMAP_PAGES = ["/", "/standings", "/stages", "/stats", "/rules"]
+SITEMAP_PAGES = ["/", "/standings", "/stages", "/stats", "/rules",
+                 "/archive/", "/archive/seasons/", "/archive/stages/",
+                 "/archive/teams/", "/archive/players/"]
 
 
 def main() -> None:
