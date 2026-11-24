@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ team.name }} — Архив{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/archive">Архив</a> / <a href="/archive?tab=teams">Команды</a></p>
+<h1 class="archive-title">{{ team.name }}</h1>
+{% if team.note %}<p class="archive-lead">{{ team.note }}</p>{% endif %}
+
+<div class="archive-stats archive-stats--small">
+  <div class="archive-stat"><b>{{ team.stages|length }}</b><span>этапов</span></div>
+  <div class="archive-stat"><b>{{ team.gold }}</b><span>золото</span></div>
+  <div class="archive-stat"><b>{{ team.silver }}</b><span>серебро</span></div>
+  <div class="archive-stat"><b>{{ team.wins }}–{{ team.losses }}</b><span>победы</span></div>
+  <div class="archive-stat"><b>{{ team.goals_for }}–{{ team.goals_against }}</b><span>голы</span></div>
+</div>
+
+<h2 class="archive-h2">Этапы</h2>
+<table class="archive-table">
+  <thead><tr><th>Дата</th><th>Этап</th><th>Дивизион</th><th>Место</th></tr></thead>
+  <tbody>
+  {% for item in stages %}
+    <tr>
+      <td class="archive-table__dim">{{ item.stage.date[8:10] }}.{{ item.stage.date[5:7] }}.{{ item.stage.date[:4] }}</td>
+      <td><a href="/archive/stage/{{ item.stage.slug }}">{{ item.stage.title }}</a></td>
+      <td class="archive-table__dim">{{ item.stage.division }}</td>
+      <td class="{% if item.place == 1 %}medal medal--gold{% endif %}">{{ item.place }}{% if item.division %} <span class="archive-table__note">{{ item.division }}</span>{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2 class="archive-h2">Игроки</h2>
+<table class="archive-table">
+  <thead><tr><th>Игрок</th><th>Этапов</th><th>Голы</th><th>Ассисты</th></tr></thead>
+  <tbody>
+  {% for player in players %}
+    <tr>
+      <td><a href="/archive/player/{{ player.id }}">{{ player.name }}</a></td>
+      <td>{{ player.stages }}</td>
+      <td>{{ player.goals }}</td>
+      <td>{{ player.assists }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

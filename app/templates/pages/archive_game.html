@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ game.home_name }} — {{ game.away_name }} — Архив{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/archive">Архив</a> / {% if stage %}<a href="/archive/stage/{{ stage.slug }}">{{ stage.title }}</a>{% endif %}</p>
+<h1 class="archive-title">{{ game.home_name }} <span class="archive-score">{{ game.hs }} : {{ game.vs }}</span> {{ game.away_name }}</h1>
+<p class="archive-lead">{{ game.date[8:10] }}.{{ game.date[5:7] }}.{{ game.date[:4] }}</p>
+
+<h2 class="archive-h2">Хронология очков</h2>
+<ul class="timeline">
+  {% for home, away, scorer, assist in game.timeline %}
+  <li class="timeline__item{% if home > away %} timeline__item--home{% elif away > home %} timeline__item--away{% endif %}">
+    <span class="timeline__score">{{ home }} : {{ away }}</span>
+    <span class="timeline__player">
+      <a href="/archive/player/{{ scorer }}">{{ names.get(scorer, '—') }}</a>
+      {% if assist %}<span class="timeline__assist">ассист: <a href="/archive/player/{{ assist }}">{{ names.get(assist, '—') }}</a></span>{% endif %}
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

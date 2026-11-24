@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Архив {{ season_title }}{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+
+<p class="home-kicker">Архив</p>
+<h1 class="archive-title">Пять сезонов лиги</h1>
+<p class="archive-lead">Зимняя Песочная Лига — московская и питерская лига по микстовому пляжному алтимату 4×4. Здесь всё, что было: этапы, команды, игроки и каждая забитая точка.</p>
+
+<div class="archive-stats">
+  <a class="archive-stat" href="/archive?tab=seasons"><b>{{ summary.seasons }}</b><span>сезонов</span></a>
+  <a class="archive-stat" href="/archive?tab=stages"><b>{{ summary.stages }}</b><span>этапов</span></a>
+  <a class="archive-stat" href="/archive?tab=teams"><b>{{ summary.teams }}</b><span>команд</span></a>
+  <a class="archive-stat" href="/archive?tab=players"><b>{{ summary.players }}</b><span>игроков</span></a>
+</div>
+<p class="archive-note">{{ summary.games }} игр · {{ summary.goals }} забитых мячей</p>
+
+<div class="archive-champs">
+  {% for row in champions %}
+  <div class="archive-champ">
+    <span class="archive-champ__season">{{ row.season }}</span>
+    <span class="archive-champ__team">{{ row.teams[0][0] if row.teams else '—' }}</span>
+    {% if row.teams|length > 1 %}
+    <span class="archive-champ__rest">{{ row.teams[1][0] }} · {{ row.teams[2][0] }}</span>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<nav class="archive-tabs">
+  {% for key, label in [('seasons','Сезоны'), ('stages','Этапы'), ('teams','Команды'), ('players','Игроки')] %}
+  <a class="archive-tabs__item{% if tab == key %} is-active{% endif %}" href="/archive?tab={{ key }}">{{ label }}</a>
+  {% endfor %}
+</nav>
+
+{% if tab == 'seasons' %}
+<div class="archive-switch" id="archive-switch">
+  <button class="is-active" data-target="msk">Центральный дивизион</button>
+  <button data-target="spb">Северо-Западный</button>
+</div>
+
+{% for matrix, key, title in [(matrix_central, 'msk', 'Центральный'), (matrix_spb, 'spb', 'Северо-Западный')] %}
+<div class="hist" data-matrix="{{ key }}">
+  <table class="hist__table">
+    <thead>
+      <tr class="hist__seasons">
+        <th class="hist__team"></th>
+        {% for season in ['2021/22','2022/23','2023/24','2024/25','2025/26'] %}
+          {% set cols = matrix.stages | selectattr('season', 'equalto', season) | list %}
+          {% if cols %}<th colspan="{{ cols|length }}">{{ season }}</th>{% endif %}
+        {% endfor %}
+      </tr>
+      <tr class="hist__stages">
+        <th class="hist__team"></th>
+        {% for stage in matrix.stages %}
+          <th title="{{ stage.date[:10] }} · {{ stage.title }}">{{ stage.label }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for tid in matrix.teams %}
+      <tr>
+        <td class="hist__team">
+          <a class="hist__name" href="/archive/team/{{ tid }}">{{ teams_by_id[tid].name }}</a>
+          {% if teams_by_id[tid].note %}<span class="hist__note">{{ teams_by_id[tid].note }}</span>{% endif %}
+        </td>
+        {% for stage in matrix.stages %}
+          {% set cell = matrix.cells.get((tid, stage.id)) %}
+          {% set place = cell[0] if cell else None %}
+          {% set division = cell[1] if cell else None %}
+          <td class="hist__cell{% if place == 1 %}{% if division == 'Mid' %} hist__cell--silver{% else %} hist__cell--gold{% endif %}{% elif place in (2,3) %} hist__cell--podium{% endif %}">
+            {% if place %}<a href="/archive/stage/{{ stage.slug }}">{{ place }}</a>{% if division %}<span class="hist__div">{{ division }}</span>{% endif %}{% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+
+{% elif tab == 'stages' %}
+<table class="archive-table">
+  <thead><tr><th>Дата</th><th>Этап</th><th>Дивизион</th><th>Игр</th><th>Победитель</th></tr></thead>
+  <tbody>
+  {% for stage in stages %}
+    <tr>
+      <td class="archive-table__dim">{{ stage.date[8:10] }}.{{ stage.date[5:7] }}.{{ stage.date[:4] }}</td>
+      <td><a href="/archive/stage/{{ stage.slug }}">{{ stage.title }}</a></td>
+      <td class="archive-table__dim">{{ stage.division }}</td>
+      <td>{{ stage.games_count }}</td>
+      <td>{{ winners.get(stage.id, '—') }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% elif tab == 'teams' %}
+<table class="archive-table" id="archive-teams">
+  <thead><tr>
+    <th>#</th><th>Команда</th><th>Этапов</th><th>Золото</th><th>Серебро</th>
+    <th>Игр</th><th>В</th><th>П</th><th>Голы</th><th>Разница</th>
+  </tr></thead>
+  <tbody>
+  {% for team in teams %}
+    <tr>
+      <td class="archive-table__dim">{{ loop.index }}</td>
+      <td>
+        <a href="/archive/team/{{ team.id }}">{{ team.name }}</a>
+        {% if team.note %}<span class="archive-table__note">{{ team.note }}</span>{% endif %}
+      </td>
+      <td>{{ team.stages|length }}</td>
+      <td>{% if team.gold %}<span class="medal medal--gold">{{ team.gold }}</span>{% endif %}</td>
+      <td>{% if team.silver %}<span class="medal medal--silver">{{ team.silver }}</span>{% endif %}</td>
+      <td>{{ team.games }}</td>
+      <td>{{ team.wins }}</td>
+      <td>{{ team.losses }}</td>
+      <td>{{ team.goals_for }}–{{ team.goals_against }}</td>
+      <td>{{ '+' if team.goals_for - team.goals_against > 0 }}{{ team.goals_for - team.goals_against }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% elif tab == 'players' %}
+<table class="archive-table">
+  <thead><tr><th>#</th><th>Игрок</th><th>Этапов</th><th>Голы</th><th>Ассисты</th><th>Очки</th><th>Команды</th></tr></thead>
+  <tbody>
+  {% for player in players %}
+    <tr>
+      <td class="archive-table__dim">{{ loop.index }}</td>
+      <td><a href="/archive/player/{{ player.id }}">{{ player.name }}</a>{% if player.note %}<span class="archive-table__note">{{ player.note }}</span>{% endif %}</td>
+      <td>{{ player.stages }}</td>
+      <td>{{ player.goals }}</td>
+      <td>{{ player.assists }}</td>
+      <td>{{ player.goals + player.assists }}</td>
+      <td class="archive-table__dim">{{ player.team_names|join(', ') }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<script src="/static/js/archive.js" defer></script>
+{% endblock %}

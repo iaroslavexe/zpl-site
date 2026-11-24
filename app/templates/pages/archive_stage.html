@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ stage.title }} — Архив{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/archive">Архив</a> / <a href="/archive?tab=stages">Этапы</a> / {{ stage.season }}</p>
+<h1 class="archive-title">{{ stage.title }}</h1>
+<p class="archive-lead">{{ stage.date[8:10] }}.{{ stage.date[5:7] }}.{{ stage.date[:4] }} · {{ stage.division }} дивизион{% if stage.city %} · {{ stage.city }}{% endif %} · {{ stage.games_count }} игр</p>
+
+<div class="archive-cols">
+  <section>
+    <h2 class="archive-h2">Итоговые места</h2>
+    <table class="archive-table">
+      <thead><tr><th>#</th><th>Команда</th><th>Дивизион</th></tr></thead>
+      <tbody>
+      {% for name, place, division in seats %}
+        <tr>
+          <td class="{% if place == 1 %}medal medal--gold{% endif %}">{{ place }}</td>
+          <td><a href="/archive/team/{{ stage.places[loop.index0][0] }}">{{ name }}</a></td>
+          <td class="archive-table__dim">{{ division or '' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="archive-h2">Дух этапа</h2>
+    <table class="archive-table">
+      <thead><tr><th>#</th><th>Команда</th><th>Балл</th><th>Игр</th></tr></thead>
+      <tbody>
+      {% for name, spirit, games in sotg %}
+        <tr>
+          <td class="archive-table__dim">{{ loop.index }}</td>
+          <td>{{ name }}</td>
+          <td>{{ '%.1f'|format(spirit) }}</td>
+          <td class="archive-table__dim">{{ games }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<h2 class="archive-h2">Игры</h2>
+<table class="archive-table">
+  <thead><tr><th>Игра</th><th>Счёт</th><th></th></tr></thead>
+  <tbody>
+  {% for game in stage.game_list %}
+    <tr>
+      <td><a href="/archive/game/{{ game.id }}">{{ game.home_name }} — {{ game.away_name }}</a></td>
+      <td>{{ game.hs }} : {{ game.vs }}</td>
+      <td class="archive-table__dim">{{ game.timeline|length }} точек</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

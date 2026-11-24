@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ player.name }} — Архив{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/archive">Архив</a> / <a href="/archive?tab=players">Игроки</a></p>
+<h1 class="archive-title">{{ player.name }}</h1>
+{% if player.note %}<p class="archive-lead">{{ player.note }}</p>{% endif %}
+
+<div class="archive-stats archive-stats--small">
+  <div class="archive-stat"><b>{{ player.stages }}</b><span>этапов</span></div>
+  <div class="archive-stat"><b>{{ player.goals }}</b><span>голов</span></div>
+  <div class="archive-stat"><b>{{ player.assists }}</b><span>ассистов</span></div>
+  <div class="archive-stat"><b>{{ player.goals + player.assists }}</b><span>очков</span></div>
+</div>
+
+<h2 class="archive-h2">Сезоны и команды</h2>
+<table class="archive-table">
+  <thead><tr><th>Сезон</th><th>Команды</th><th>Этапов</th></tr></thead>
+  <tbody>
+  {% for season in seasons %}
+    <tr>
+      <td>{{ season.season }}</td>
+      <td>{{ season.team_names|join(', ') }}</td>
+      <td class="archive-table__dim">{{ season.stages }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

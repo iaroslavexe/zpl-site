@@ -143,3 +143,155 @@ def rules() -> tuple[str, dict]:
 
 def not_found() -> tuple[str, dict]:
     return "pages/404.html", _base("")
+
+
+# ---------- Архив ----------
+
+def _archive_matrix(division: str) -> dict:
+    from app.services import archive
+
+    d = archive.data()
+    stages = [s for s in d["stages"]
+              if s["division"] == division or "финал" in s["title"].lower()]
+    stages.sort(key=lambda s: s["date"])
+
+    played, wins, home_div = {}, {}, {}
+    for stage in d["stages"]:
+        for tid, place, _div in stage["places"]:
+            played[tid] = played.get(tid, 0) + 1
+            wins[tid] = wins.get(tid, 0) + (1 if place == 1 else 0)
+            if "финал" not in stage["title"].lower():
+                home_div.setdefault(tid, stage["division"])
+
+    team_ids = [t for t in played if home_div.get(t) == division]
+    team_ids.sort(key=lambda t: (-wins.get(t, 0), -played.get(t, 0), d["team_by_id"][t]["name"]))
+
+    cells = {}
+    for stage in stages:
+        for tid, place, div in stage["places"]:
+            cells[(tid, stage["id"])] = (place, div)
+
+    for stage in stages:
+        label = stage["title"].split(".")[-1].strip()
+        label = label.split("этап")[0].strip() or label
+        stage["label"] = (label.replace("l", "I").replace("L", "I")
+                          .replace("1V", "IV").replace("Il", "II").replace("Ill", "III"))
+    return {"stages": stages, "teams": team_ids, "cells": cells}
+
+
+def archive_landing(tab: str = "seasons") -> tuple[str, dict]:
+    from app.services import archive
+
+    d = archive.data()
+    seasons = []
+    for season in archive.SEASONS:
+        items = [s for s in d["stages"] if s["season"] == season]
+        seasons.append({
+            "season": season,
+            "stages": items,
+            "teams": len({t for s in items for t, _, _ in s["places"]}),
+            "games": sum(s["games_count"] for s in items),
+        })
+
+    winners = {}
+    for stage in d["stages"]:
+        first = [t for t, place, _ in stage["places"] if place == 1]
+        if first:
+            winners[stage["id"]] = d["team_by_id"].get(first[0], {}).get("name", first[0])
+
+    players_view = []
+    for player in d["players"]:
+        names = []
+        for season in player["seasons"]:
+            for tid in season["teams"]:
+                name = d["team_by_id"].get(tid, {}).get("name", tid)
+                if name not in names:
+                    names.append(name)
+        players_view.append({**player, "team_names": names})
+
+    return "pages/archive.html", _base(
+        "archive",
+        canonical="/archive",
+        teams_by_id=d["team_by_id"],
+        winners=winners,
+        tab=tab,
+        summary=archive.summary(),
+        champions=archive.champions(),
+        seasons=seasons,
+        matrix_central=_archive_matrix("Центральный"),
+        matrix_spb=_archive_matrix("Северо-Западный"),
+        stages=sorted(d["stages"], key=lambda s: s["date"], reverse=True),
+        teams=d["teams"],
+        players=players_view,
+    )
+
+
+def archive_stage(slug: str) -> tuple[str, dict] | None:
+    from app.services import archive
+
+    stage = archive.stage(slug)
+    if not stage:
+        return None
+    d = archive.data()
+    seats = [(d["team_by_id"].get(t, {}).get("name", t), p, div) for t, p, div in stage["places"]]
+    seats.sort(key=lambda r: r[1])
+    sotg = sorted([(d["team_by_id"].get(t, {}).get("name", t), spirit, games)
+                   for t, spirit, games in stage["sotg"]], key=lambda r: -r[1])
+    return "pages/archive_stage.html", _base(
+        "archive", canonical=f"/archive/stage/{slug}", stage=stage, seats=seats, sotg=sotg
+    )
+
+
+def archive_team(team_id: str) -> tuple[str, dict] | None:
+    from app.services import archive
+
+    team = archive.team(team_id)
+    if not team:
+        return None
+    d = archive.data()
+    stages = []
+    for sid, place, div in team["stages"]:
+        stage = d["stage_by_id"][sid]
+        stages.append({"stage": stage, "place": place, "division": div})
+    stages.sort(key=lambda item: item["stage"]["date"])
+
+    players = [p for p in d["players"] if any(team_id in s["teams"] for s in p["seasons"])]
+    players.sort(key=lambda p: (-(p["goals"] + p["assists"]), -p["stages"]))
+
+    return "pages/archive_team.html", _base(
+        "archive", canonical=f"/archive/team/{team_id}", team=team, stages=stages, players=players
+    )
+
+
+def archive_player(player_id: str) -> tuple[str, dict] | None:
+    from app.services import archive
+
+    player = archive.player(player_id)
+    if not player:
+        return None
+    d = archive.data()
+    seasons = []
+    for season in player["seasons"]:
+        teams = [d["team_by_id"].get(t, {}).get("name", t) for t in season["teams"]]
+        seasons.append({**season, "team_names": teams})
+    return "pages/archive_player.html", _base(
+        "archive", canonical=f"/archive/player/{player_id}", player=player, seasons=seasons
+    )
+
+
+def archive_game(game_id: int) -> tuple[str, dict] | None:
+    from app.services import archive
+
+    game = archive.game(game_id)
+    if not game:
+        return None
+    d = archive.data()
+    names = {}
+    for row in game["timeline"]:
+        for pid in (row[2], row[3]):
+            if pid and pid not in names:
+                names[pid] = d["player_by_id"].get(pid, {}).get("name", pid)
+    return "pages/archive_game.html", _base(
+        "archive", canonical=f"/archive/game/{game_id}", game=game,
+        stage=d["stage_by_id"].get(game["stage"]), names=names,
+    )
