@@ -100,8 +100,9 @@
 
     var titles = (data.champions || []).filter(function (c) { return c.team === id; });
     var titleBadge = titles.length
-      ? '<span class="team-title">' + (titles.length > 1 ? '×' + titles.length : '') +
-        '<span class="team-title__icon">★</span></span>'
+      ? '<span class="team-title">' +
+        titles.map(function () { return '<span class="team-title__icon">★</span>'; }).join('') +
+        '</span>'
       : '';
 
     var seasonRows = (team.season_stats || []).map(function (s) {
