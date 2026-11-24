@@ -15,6 +15,8 @@ SEASON_TITLE = "Зимняя Песочная Лига"
 FANTASY_URL = "https://fantasy.iaroslavexe.art"
 TELEGRAM_URL = "https://t.me/beachultimate"
 VK_URL = "https://vk.ru/beachultimate"
+# плейлист с записями игр
+VK_PLAYLIST_URL = "https://vkvideo.ru/playlist/-146209840_15"
 
 RULES_URL = "/static/docs/regulations.pdf"
 

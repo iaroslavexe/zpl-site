@@ -10,6 +10,7 @@ from app.config import (
     SEASON_TITLE,
     STATIC_DIR,
     TELEGRAM_URL,
+    VK_PLAYLIST_URL,
     VK_URL,
 )
 from app.services import standings, stages as stages_service, stats as stats_service, streams
@@ -75,6 +76,7 @@ def _base(active: str, canonical: str = "", **extra) -> dict:
         "season_title": SEASON_TITLE,
         "telegram_url": TELEGRAM_URL,
         "vk_url": VK_URL,
+        "vk_games_url": VK_PLAYLIST_URL,
         "fantasy_url": FANTASY_URL,
         **extra,
     }
