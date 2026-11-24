@@ -7,7 +7,7 @@
   border-radius: 999px;
   border: 1px solid transparent;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: .02em;
   white-space: nowrap;
@@ -21,7 +21,7 @@
 .btn--ghost { border-color: var(--line-strong); color: var(--text); background: transparent; }
 .btn--ghost:hover { border-color: var(--yellow); color: var(--yellow); }
 
-.btn--sm { padding: 8px 14px; font-size: 12.5px; }
+.btn--sm { padding: 8px 14px; font-size: 13.5px; }
 
 /* Таблица зачёта */
 .table-wrap {
@@ -44,7 +44,7 @@
 .standings th {
   padding: 12px 6px;
   border-bottom: 1px solid var(--line);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -62,7 +62,7 @@
   z-index: 3;
   background: var(--bg);
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--dim);
 }
 
@@ -73,7 +73,7 @@
   background: var(--bg);
   padding: 9px 10px;
   text-align: left;
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 500;
   white-space: nowrap;
   min-width: 170px;
@@ -97,9 +97,9 @@
   background: var(--tint, transparent);
 }
 
-.cell__pts { display: block; font-size: 15px; font-weight: 700; line-height: 1.1; }
-.cell__place { display: block; margin-top: 2px; font-size: 9.5px; color: rgba(255, 255, 255, .55); }
-.cell--empty { color: var(--dim); font-size: 13px; }
+.cell__pts { display: block; font-size: 16px; font-weight: 700; line-height: 1.1; }
+.cell__place { display: block; margin-top: 2px; font-size: 10.5px; color: rgba(255, 255, 255, .55); }
+.cell--empty { color: var(--dim); font-size: 14px; }
 
 .col-total {
   position: sticky;
@@ -107,14 +107,14 @@
   z-index: 3;
   padding: 9px 10px;
   text-align: center;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   background: var(--bg);
 }
 
 th.col-total { z-index: 4; }
 
-.legend { margin: 12px 0 0; font-size: 11.5px; color: var(--dim); }
+.legend { margin: 12px 0 0; font-size: 12.5px; color: var(--dim); }
 
 /* Заглушки */
 .empty {
@@ -123,5 +123,5 @@ th.col-total { z-index: 4; }
   border-radius: var(--r-md);
   text-align: center;
   color: var(--muted);
-  font-size: 13.5px;
+  font-size: 14.5px;
 }
