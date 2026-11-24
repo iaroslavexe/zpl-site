@@ -868,3 +868,6 @@
   .leaders, .archive-leaders { grid-template-columns: 1fr !important; }
   .archive-hero { font-size: clamp(38px, 11vw, 56px); }
 }
+
+.team-title--inline { margin-left: 8px; vertical-align: 0; }
+.team-title--inline .team-title__icon { font-size: 12px; }

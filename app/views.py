@@ -247,6 +247,15 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         if first:
             winners[stage["id"]] = d["team_by_id"].get(first[0], {}).get("name", first[0])
 
+    title_counts = {}
+    for row in archive.champions():
+        if not row["teams"]:
+            continue
+        name = row["teams"][0][0]
+        team = next((t for t in d["teams"] if t["name"] == name), None)
+        if team:
+            title_counts[team["id"]] = title_counts.get(team["id"], 0) + 1
+
     players_view = []
     for player in d["players"]:
         names = []
@@ -299,6 +308,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         "archive",
         canonical=f"/archive/{tab}",
         teams_by_id=d["team_by_id"],
+        title_counts=title_counts,
         records=records,
         winners=winners,
         tab=tab,
