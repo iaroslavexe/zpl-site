@@ -729,26 +729,22 @@
 /* ---------- Лендинг истории ---------- */
 .page--archive-landing { padding-top: 40px; }
 .archive-hero-wrap { position: relative; margin: 0 0 28px; }
-.archive-hero__years {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: "Unbounded", "Jost", sans-serif;
-  display: flex;
-  flex-direction: column;
-  font-size: clamp(38px, 6.4vw, 92px);
+
+/* Год-обводка как в макете обложки: крупно, контуром, под заголовком */
+.archive-year {
+  margin: 0 0 -18px;
+  font-family: "Oswald", "Jost", sans-serif;
+  font-size: clamp(56px, 10.5vw, 148px);
+  white-space: nowrap;
   font-weight: 600;
-  line-height: .74;
-  letter-spacing: -.03em;
-  text-align: right;
+  line-height: .8;
+  letter-spacing: -.02em;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, .14);
   pointer-events: none;
   user-select: none;
 }
-.archive-hero__years b { font-weight: 600; font-style: normal; }
-.archive-hero__years b:last-child { margin-left: .22em; margin-top: -.18em; }
+@media (max-width: 859px) { .archive-year { font-size: clamp(48px, 15vw, 84px); margin-bottom: -10px; } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
 .archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
