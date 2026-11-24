@@ -127,17 +127,6 @@
 
   body { font-size: 17px; }
 
-  .topbar { height: 58px; flex-wrap: nowrap; padding: 0 var(--pad); }
-  .brand__name { font-size: 25px; }
-
-  .tabs {
-    order: 0;
-    width: auto;
-    margin-left: 24px;
-    overflow: visible;
-    align-self: center;
-  }
-
   .tab { padding: 6px 16px 7px; font-size: 13.5px; }
 
   .tab::before { left: 16px; right: 16px; }
@@ -156,4 +145,22 @@
   .page { padding: 44px var(--pad) 56px; }
 
   .footer { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+
+/* Широкая шапка: табы жёстко по центру, не зависят от ширины логотипа */
+@media (min-width: 1180px) {
+  .topbar { height: 58px; flex-wrap: nowrap; padding: 0 var(--pad); }
+  .brand__name { font-size: 25px; }
+
+  .tabs {
+    order: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    margin-left: 0;
+    overflow: visible;
+    align-self: center;
+  }
 }
