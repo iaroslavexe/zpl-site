@@ -56,44 +56,111 @@
     }).join('') + '</div>';
   }
 
+  function sortableTable(headers, rows) {
+    var html = '<table class="archive-table archive-table--sortable" data-sortable><thead><tr>' +
+      headers.map(function (h, i) {
+        return '<th data-sort="' + i + '">' + h + '</th>';
+      }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (row) {
+        return '<tr>' + row.map(function (cell) { return '<td>' + cell + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody></table>';
+    return html;
+  }
+
+  function enableSorting(scope) {
+    scope.querySelectorAll('table[data-sortable]').forEach(function (table) {
+      table.querySelectorAll('th[data-sort]').forEach(function (header) {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', function () {
+          var index = Number(header.dataset.sort);
+          var body = table.tBodies[0];
+          var rows = Array.prototype.slice.call(body.rows);
+          var dir = header.dataset.dir === 'desc' ? 1 : -1;
+          rows.sort(function (a, b) {
+            var ta = a.cells[index].textContent.trim();
+            var tb = b.cells[index].textContent.trim();
+            var na = parseFloat(ta.replace(',', '.'));
+            var nb = parseFloat(tb.replace(',', '.'));
+            if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+            return ta.localeCompare(tb, 'ru') * dir;
+          });
+          rows.forEach(function (row) { body.appendChild(row); });
+          table.querySelectorAll('th').forEach(function (h) { h.dataset.dir = ''; });
+          header.dataset.dir = dir === -1 ? 'asc' : 'desc';
+        });
+      });
+    });
+  }
+
   function renderTeam(data, id) {
     var team = data.teams.filter(function (t) { return t.id === id; })[0];
     if (!team) return render404();
     var stageById = {};
     data.stages.forEach(function (s) { stageById[s.id] = s; });
 
-    var stages = team.stages.slice().sort(function (a, b) {
-      return stageById[a[0]].date.localeCompare(stageById[b[0]].date);
-    }).map(function (row) {
+    var titles = (data.champions || []).filter(function (c) { return c.team === id; });
+    var titleBadge = titles.length
+      ? '<span class="team-title">' + (titles.length > 1 ? '×' + titles.length : '') +
+        '<span class="team-title__icon">★</span></span>'
+      : '';
+
+    var seasonRows = (team.season_stats || []).map(function (s) {
+      return [
+        s.season,
+        s.best || '',
+        s.stages,
+        s.games,
+        s.wins + '–' + s.losses,
+        s.goals_for + '–' + s.goals_against,
+        s.spirit ? s.spirit.toFixed(1) : '—'
+      ];
+    });
+
+    var stageRows = [];
+    var bySeason = {};
+    team.stages.forEach(function (row) {
       var stage = stageById[row[0]];
-      var place = row[1];
-      var medal = place === 1 ? (row[2] === 'Mid' ? 'medal--silver' : 'medal--gold') : '';
-      return [fmtDate(stage.date), link('/archive/stage/' + stage.slug, stage.title),
-        stage.division, '<span class="medal ' + medal + '">' + place + '</span>' + (row[2] ? ' <span class="archive-table__note">' + row[2] + '</span>' : '')];
+      if (!stage) return;
+      (bySeason[stage.season] || (bySeason[stage.season] = [])).push({ stage: stage, place: row[1] });
+    });
+    Object.keys(bySeason).sort().forEach(function (season) {
+      stageRows.push(['<span class="archive-season__label">' + season + '</span>', '']);
+      bySeason[season].forEach(function (item) {
+        var medal = item.place === 1 ? 'medal--gold' : '';
+        stageRows.push([
+          '<a href="/archive/stage/' + item.stage.slug + '">' + (item.stage.name || item.stage.title) + '</a>',
+          '<span class="medal ' + medal + '">' + item.place + '</span>'
+        ]);
+      });
     });
 
     var players = data.players.filter(function (p) {
       return p.seasons.some(function (s) { return s.teams.indexOf(id) >= 0; });
     }).sort(function (a, b) { return (b.goals + b.assists) - (a.goals + a.assists); })
       .map(function (p) {
-        return [link('/archive/player/' + p.id, p.name), p.stages, p.goals, p.assists];
+        return [link('/archive/player/' + p.id, p.name), p.stages, p.games || 0,
+          p.goals + p.assists, p.goals, p.assists];
       });
-
-    var spirit = (team.sotg_seasons || []).map(function (row) {
-      return [row[0], row[1].toFixed(1)];
-    });
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive/teams', 'Команды'], [null, team.name]]) +
-      '<h1 class="archive-title">' + team.name + '</h1>' +
+      '<div class="archive-player__head">' +
+        '<h1 class="archive-title">' + team.name + titleBadge + '</h1>' +
+        (team.avatar ? '<img class="archive-player__avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '') +
+      '</div>' +
       (team.note ? '<p class="archive-lead">' + team.note + '</p>' : '') +
       stats([[team.stages.length, plural(team.stages.length, 'этап', 'этапа', 'этапов')],
         [team.gold + team.silver, plural(team.gold + team.silver, 'победа', 'победы', 'побед')],
         [team.games, plural(team.games, 'игра', 'игры', 'игр')], [team.wins + '–' + team.losses, 'победы'],
         [team.goals_for + '–' + team.goals_against, 'голы']]) +
-      '<h2 class="archive-h2">Этапы</h2>' + table(['Дата', 'Этап', 'Дивизион', 'Место'], stages) +
-      (spirit.length ? '<h2 class="archive-h2">Дух по сезонам</h2>' + table(['Сезон', 'Средний балл'], spirit) : '') +
-      '<h2 class="archive-h2">Игроки</h2>' + table(['Игрок', 'Этапов', 'Голы', 'Ассисты'], players);
+      '<h2 class="archive-h2">Сезоны</h2>' +
+      table(['Сезон', 'Лучшее место', 'Этапов', 'Игр', 'В–П', 'Голы', 'Дух'], seasonRows) +
+      '<h2 class="archive-h2">Этапы</h2>' +
+      table(['Этап', 'Место'], stageRows) +
+      '<h2 class="archive-h2">Игроки</h2>' +
+      sortableTable(['Игрок', 'Этапов', 'Игр', 'Очки', 'Голы', 'Ассисты'], players);
+
+    enableSorting(root);
   }
 
   function renderPlayer(data, id) {

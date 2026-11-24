@@ -854,3 +854,7 @@
 .archive-player__head { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 8px; }
 .archive-player__head .archive-title { margin: 0; }
 .archive-player__avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
+
+.team-title { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; font-size: 14px; color: var(--yellow); vertical-align: 6px; }
+.team-title__icon { font-size: 18px; }
+.archive-season__label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--yellow); }
