@@ -767,7 +767,7 @@
 .archive-year b { font-weight: 600; }
 .archive-year b:last-child { -webkit-text-stroke-color: rgba(250, 183, 44, .38); }
 .archive-year b:last-child { margin-left: .24em; }
-@media (min-width: 860px) { .archive-year { font-size: 58px; } }
+@media (min-width: 860px) { .archive-year { font-size: 106px; } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
 .archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: 44px; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
