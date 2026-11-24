@@ -33,6 +33,6 @@ NAV = [
     {"key": "standings", "title": "Рейтинг", "url": "/standings"},
     {"key": "stages", "title": "Этапы", "url": "/stages"},
     {"key": "stats", "title": "Статистика", "url": "/stats"},
-    {"key": "archive", "title": "Архив", "url": "/archive"},
     {"key": "rules", "title": "Регламент", "url": "/rules"},
+    {"key": "archive", "title": "Архив", "url": "/archive"},
 ]

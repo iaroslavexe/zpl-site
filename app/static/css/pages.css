@@ -725,3 +725,42 @@
 .archive-record:hover .archive-record__value { color: var(--yellow); }
 .archive-table--sortable th[data-sort] { cursor: pointer; user-select: none; }
 .archive-table--sortable th[data-sort]:hover { color: var(--yellow); }
+
+/* ---------- Лендинг истории ---------- */
+.page--archive-landing { padding-top: 40px; }
+.archive-hero { margin: 0 0 14px; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
+.archive-hero em { font-style: normal; color: var(--yellow); }
+.archive-hero__meta { margin: 0 0 10px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+.archive-hero__lead { margin: 0 0 30px; max-width: 640px; color: var(--muted); font-size: 14px; }
+
+.archive-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border-block: 1px solid var(--line); margin: 0 0 10px; }
+@media (min-width: 720px) { .archive-tiles { grid-template-columns: repeat(4, 1fr); } }
+.archive-tile { display: flex; flex-direction: column; gap: 4px; padding: 20px 18px; background: var(--bg); text-decoration: none; color: inherit; }
+.archive-tile b { font-size: 34px; font-weight: 600; color: var(--pink); }
+.archive-tile span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+.archive-tile:hover b { color: var(--yellow); }
+.archive-note a { color: var(--dim); }
+
+.archive-champs { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); margin: 0 0 8px; }
+.champ { display: grid; grid-template-columns: 76px 34px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; background: var(--bg); text-decoration: none; color: inherit; }
+.champ:hover .champ__name { color: var(--yellow); }
+.champ__season { font-size: 11.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
+.champ__avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+.champ__name { font-size: 15px; font-weight: 600; }
+.champ__rest { font-size: 11.5px; color: var(--dim); }
+
+.archive-leaders { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); margin-bottom: 34px; }
+@media (min-width: 720px) { .archive-leaders { grid-template-columns: repeat(3, 1fr); } }
+.leader { display: grid; gap: 6px; padding: 18px; background: var(--bg); text-decoration: none; color: inherit; }
+.leader:hover .leader__name { color: var(--yellow); }
+.leader__avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.leader__value { font-size: 30px; font-weight: 600; }
+.leader__name { font-size: 14px; }
+.leader__title { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+
+.archive-cta { display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 999px; background: var(--yellow); color: #14100a; font-size: 13.5px; font-weight: 600; text-decoration: none; }
+.archive-cta:hover { background: #ffc847; }
+.archive-cta__arrow { font-size: 15px; }
+
+.team-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; vertical-align: -5px; margin-right: 8px; }
+.hist__team .team-avatar { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; }

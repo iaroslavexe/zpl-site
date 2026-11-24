@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Архив {{ season_title }}{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+
+<p class="crumbs"><a href="/archive">История лиги</a> / Каталог</p>
+
+<nav class="archive-tabs">
+  {% for key, label in [('seasons','Сезоны'), ('stages','Этапы'), ('teams','Команды'), ('players','Игроки')] %}
+  <a class="archive-tabs__item{% if tab == key %} is-active{% endif %}" href="/archive/{{ key }}">{{ label }}</a>
+  {% endfor %}
+</nav>
+
+{% if tab == 'seasons' %}
+<div class="archive-switch" id="archive-switch">
+  <button class="is-active" data-target="msk">Центральный дивизион</button>
+  <button data-target="spb">Северо-Западный</button>
+</div>
+
+{% for matrix, key, title in [(matrix_central, 'msk', 'Центральный'), (matrix_spb, 'spb', 'Северо-Западный')] %}
+<div class="hist" data-matrix="{{ key }}">
+  <table class="hist__table">
+    <thead>
+      <tr class="hist__seasons">
+        <th class="hist__team"></th>
+        {% for season in ['2021/22','2022/23','2023/24','2024/25','2025/26'] %}
+          {% set cols = matrix.stages | selectattr('season', 'equalto', season) | list %}
+          {% if cols %}<th colspan="{{ cols|length }}">{{ season }}</th>{% endif %}
+        {% endfor %}
+      </tr>
+      <tr class="hist__stages">
+        <th class="hist__team"></th>
+        {% for stage in matrix.stages %}
+          <th title="{{ stage.date[:10] }} · {{ stage.title }}">{{ stage.label }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for tid in matrix.teams %}
+      <tr>
+        <td class="hist__team">
+          {% if teams_by_id[tid].avatar %}<img class="team-avatar" src="{{ teams_by_id[tid].avatar }}" alt="" loading="lazy">{% endif %}
+          <a class="hist__name" href="/archive/team/{{ tid }}">{{ teams_by_id[tid].name }}</a>
+          {% if teams_by_id[tid].note %}<span class="hist__note">{{ teams_by_id[tid].note }}</span>{% endif %}
+        </td>
+        {% for stage in matrix.stages %}
+          {% set cell = matrix.cells.get((tid, stage.id)) %}
+          {% set place = cell[0] if cell else None %}
+          {% set division = cell[1] if cell else None %}
+          <td class="hist__cell{% if place == 1 %}{% if division == 'Mid' %} hist__cell--silver{% else %} hist__cell--gold{% endif %}{% elif place in (2,3) %} hist__cell--podium{% endif %}">
+            {% if place %}<a href="/archive/stage/{{ stage.slug }}">{{ place }}</a>{% if division %}<span class="hist__div">{{ division }}</span>{% endif %}{% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+
+{% elif tab == 'stages' %}
+<table class="archive-table">
+  <thead><tr><th>Дата</th><th>Этап</th><th>Дивизион</th><th>Игр</th><th>Победитель</th></tr></thead>
+  <tbody>
+  {% for stage in stages %}
+    <tr>
+      <td class="archive-table__dim">{{ stage.date[8:10] }}.{{ stage.date[5:7] }}.{{ stage.date[:4] }}</td>
+      <td><a href="/archive/stage/{{ stage.slug }}">{{ stage.title }}</a></td>
+      <td class="archive-table__dim">{{ stage.division }}</td>
+      <td>{{ stage.games_count }}</td>
+      <td>{{ winners.get(stage.id, '—') }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% elif tab == 'teams' %}
+<input class="archive-search" type="search" placeholder="Поиск команды" data-filter="teams">
+<table class="archive-table archive-table--sortable" data-sortable>
+  <thead><tr>
+    <th>#</th><th>Команда</th><th data-sort="2">Этапов</th><th data-sort="3">Золото</th><th data-sort="4">Серебро</th>
+    <th data-sort="5">Игр</th><th data-sort="6">В</th><th data-sort="7">П</th><th data-sort="8">Голы</th><th data-sort="9">Разница</th>
+  </tr></thead>
+  <tbody>
+  {% for team in teams %}
+    <tr>
+      <td class="archive-table__dim">{{ loop.index }}</td>
+      <td>
+        {% if team.avatar %}<img class="team-avatar" src="{{ team.avatar }}" alt="" loading="lazy">{% endif %}
+        <a href="/archive/team/{{ team.id }}">{{ team.name }}</a>
+        {% if team.note %}<span class="archive-table__note">{{ team.note }}</span>{% endif %}
+      </td>
+      <td data-v="{{ team.stages|length }}">{{ team.stages|length }}</td>
+      <td data-v="{{ team.gold }}" class="medal medal--gold">{% if team.gold %}{{ team.gold }}{% endif %}</td>
+      <td data-v="{{ team.silver }}" class="medal medal--silver">{% if team.silver %}{{ team.silver }}{% endif %}</td>
+      <td data-v="{{ team.games }}">{{ team.games }}</td>
+      <td data-v="{{ team.wins }}">{{ team.wins }}</td>
+      <td data-v="{{ team.losses }}">{{ team.losses }}</td>
+      <td data-v="{{ team.goals_for }}">{{ team.goals_for }}–{{ team.goals_against }}</td>
+      <td data-v="{{ team.goals_for - team.goals_against }}">{{ '+' if team.goals_for - team.goals_against > 0 }}{{ team.goals_for - team.goals_against }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% elif tab == 'players' %}
+<input class="archive-search" type="search" placeholder="Поиск игрока" data-filter="players">
+<table class="archive-table archive-table--sortable" data-sortable>
+  <thead><tr><th>#</th><th>Игрок</th><th data-sort="2">Этапов</th><th data-sort="3">Голы</th><th data-sort="4">Ассисты</th><th data-sort="5">Очки</th><th>Команды</th></tr></thead>
+  <tbody>
+  {% for player in players %}
+    <tr>
+      <td class="archive-table__dim">{{ loop.index }}</td>
+      <td><a href="/archive/player/{{ player.id }}">{{ player.name }}</a>{% if player.note %}<span class="archive-table__note">{{ player.note }}</span>{% endif %}</td>
+      <td data-v="{{ player.stages }}">{{ player.stages }}</td>
+      <td data-v="{{ player.goals }}">{{ player.goals }}</td>
+      <td data-v="{{ player.assists }}">{{ player.assists }}</td>
+      <td data-v="{{ player.goals + player.assists }}">{{ player.goals + player.assists }}</td>
+      <td class="archive-table__dim">{{ player.team_names|join(', ') }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<script src="/static/js/archive.js" defer></script>
+{% endblock %}

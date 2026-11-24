@@ -14,10 +14,11 @@ from app.config import SITE_URL, STATIC_DIR, TEMPLATES_DIR
 DIST = Path(__file__).resolve().parent.parent / "dist"
 
 ARCHIVE_PAGES = {
-    "archive/index.html": lambda: views.archive_landing("seasons"),
-    "archive/teams/index.html": lambda: views.archive_landing("teams"),
-    "archive/players/index.html": lambda: views.archive_landing("players"),
-    "archive/stages/index.html": lambda: views.archive_landing("stages"),
+    "archive/index.html": views.archive_landing,
+    "archive/teams/index.html": lambda: views.archive_catalog("teams"),
+    "archive/players/index.html": lambda: views.archive_catalog("players"),
+    "archive/stages/index.html": lambda: views.archive_catalog("stages"),
+    "archive/seasons/index.html": lambda: views.archive_catalog("seasons"),
     "archive/entity/index.html": views.archive_entity,
 }
 

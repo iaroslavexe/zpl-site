@@ -179,7 +179,43 @@ def _archive_matrix(division: str) -> dict:
     return {"stages": stages, "teams": team_ids, "cells": cells}
 
 
-def archive_landing(tab: str = "seasons") -> tuple[str, dict]:
+def archive_landing() -> tuple[str, dict]:
+    from app.services import archive
+
+    d = archive.data()
+    summary = archive.summary()
+
+    top_stages = max(d["players"], key=lambda p: p["stages"])
+    top_goals = max(d["players"], key=lambda p: p["goals"])
+    top_assists = max(d["players"], key=lambda p: p["assists"])
+
+    teams_by_id = d["team_by_id"]
+    champs = []
+    for row in archive.champions():
+        winner = row["teams"][0] if row["teams"] else None
+        team = next((t for t in d["teams"] if winner and t["name"] == winner[0]), None)
+        champs.append({
+            "season": row["season"],
+            "winner": winner[0] if winner else "—",
+            "avatar": team["avatar"] if team else None,
+            "runners": [t[0] for t in row["teams"][1:]],
+            "team_id": team["id"] if team else None,
+        })
+
+    return "pages/archive.html", _base(
+        "archive",
+        canonical="/archive",
+        summary=summary,
+        champions=champs,
+        leaders={
+            "stages": {"player": top_stages, "value": top_stages["stages"]},
+            "goals": {"player": top_goals, "value": top_goals["goals"]},
+            "assists": {"player": top_assists, "value": top_assists["assists"]},
+        },
+    )
+
+
+def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
     from app.services import archive
 
     d = archive.data()
@@ -227,9 +263,9 @@ def archive_landing(tab: str = "seasons") -> tuple[str, dict]:
         best = max(d["teams"], key=lambda t: (t["gold"], t["silver"]))
         records.append(("Больше всех золота", f'{best["name"]} — {best["gold"]}', f'/archive/team/{best["id"]}'))
 
-    return "pages/archive.html", _base(
+    return "pages/archive_catalog.html", _base(
         "archive",
-        canonical="/archive",
+        canonical=f"/archive/{tab}",
         teams_by_id=d["team_by_id"],
         records=records,
         winners=winners,

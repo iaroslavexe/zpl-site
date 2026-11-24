@@ -41,15 +41,15 @@ def rules_page(request: Request):
 
 
 @router.get("/archive", response_class=HTMLResponse)
-def archive_page(request: Request, tab: str = "seasons"):
-    return _render(request, views.archive_landing(tab))
+def archive_page(request: Request):
+    return _render(request, views.archive_landing())
 
 
 @router.get("/archive/{tab}", response_class=HTMLResponse)
 def archive_tab_page(request: Request, tab: str):
     if tab not in ("seasons", "stages", "teams", "players"):
         return _render(request, views.archive_entity())
-    return _render(request, views.archive_landing(tab))
+    return _render(request, views.archive_catalog(tab))
 
 
 
