@@ -735,14 +735,20 @@
   top: 50%;
   transform: translateY(-50%);
   font-family: "Unbounded", "Jost", sans-serif;
-  font-size: clamp(24px, 3.6vw, 54px);
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(38px, 6.4vw, 92px);
   font-weight: 600;
+  line-height: .74;
   letter-spacing: -.03em;
+  text-align: right;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, .14);
   pointer-events: none;
   user-select: none;
 }
+.archive-hero__years b { font-weight: 600; font-style: normal; }
+.archive-hero__years b:last-child { margin-left: .22em; margin-top: -.18em; }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
 .archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(40px, 7vw, 76px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
