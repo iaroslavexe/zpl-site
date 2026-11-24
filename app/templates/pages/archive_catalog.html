@@ -59,7 +59,7 @@
 {% endfor %}
 
 {% elif tab == 'stages' %}
-<table class="archive-table archive-table--stages">
+<div class="archive-scroll archive-scroll--wide"><table class="archive-table archive-table--stages">
   <thead><tr><th>Дата</th><th>Этап</th><th>Дивизион</th><th>Игр</th><th>Победитель</th></tr></thead>
   {% for group in stage_groups %}
   <tbody class="archive-season">
@@ -75,11 +75,11 @@
     {% endfor %}
   </tbody>
   {% endfor %}
-</table>
+</table></div>
 
 {% elif tab == 'teams' %}
 <input class="archive-search" type="search" placeholder="Поиск команды" data-filter="teams">
-<table class="archive-table archive-table--sortable" data-sortable>
+<div class="archive-scroll archive-scroll--wide"><table class="archive-table archive-table--sortable" data-sortable>
   <thead><tr>
     <th>#</th><th>Команда</th><th data-sort="2">Этапов</th><th data-sort="3">Побед</th><th data-sort="4">Дух</th>
     <th data-sort="5">Игр</th><th data-sort="6">В</th><th data-sort="7">П</th><th data-sort="8">Голы</th><th data-sort="9">Разница</th>
@@ -103,11 +103,11 @@
     </tr>
   {% endfor %}
   </tbody>
-</table>
+</table></div>
 
 {% elif tab == 'players' %}
 <input class="archive-search" type="search" placeholder="Поиск игрока" data-filter="players">
-<table class="archive-table archive-table--sortable" data-sortable>
+<div class="archive-scroll archive-scroll--wide"><table class="archive-table archive-table--sortable" data-sortable>
   <thead><tr><th>#</th><th>Игрок</th><th data-sort="2">Этапов</th><th data-sort="3">Игр</th><th data-sort="4">Очки</th><th data-sort="5">Голы</th><th data-sort="6">Ассисты</th><th>Команды</th></tr></thead>
   <tbody>
   {% for player in players %}
@@ -123,7 +123,7 @@
     </tr>
   {% endfor %}
   </tbody>
-</table>
+</table></div>
 {% endif %}
 
 <script src="/static/js/archive.js" defer></script>

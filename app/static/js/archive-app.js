@@ -35,7 +35,7 @@
       rows.map(function (row) {
         return '<tr>' + row.map(function (cell) { return '<td>' + cell + '</td>'; }).join('') + '</tr>';
       }).join('') + '</tbody></table>';
-    return html;
+    return '<div class="archive-scroll">' + html + '</div>';
   }
 
   function crumbs(parts) {
@@ -64,7 +64,7 @@
       rows.map(function (row) {
         return '<tr>' + row.map(function (cell) { return '<td>' + cell + '</td>'; }).join('') + '</tr>';
       }).join('') + '</tbody></table>';
-    return html;
+    return '<div class="archive-scroll">' + html + '</div>';
   }
 
   function enableSorting(scope) {
