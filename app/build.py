@@ -19,7 +19,7 @@ ARCHIVE_PAGES = {
     "archive/players/index.html": lambda: views.archive_catalog("players"),
     "archive/stages/index.html": lambda: views.archive_catalog("stages"),
     "archive/seasons/index.html": lambda: views.archive_catalog("seasons"),
-    "archive/entity/index.html": views.archive_entity,
+    "archive/entity.html": views.archive_entity,
 }
 
 PAGES = {
@@ -76,10 +76,10 @@ def main() -> None:
                 DIST / "archive" / "data.json")
     (DIST / "_headers").write_text(HEADERS, encoding="utf-8")
     (DIST / "_redirects").write_text(
-        "/archive/team/* /archive/entity 200\n"
-        "/archive/player/* /archive/entity 200\n"
-        "/archive/stage/* /archive/entity 200\n"
-        "/archive/game/* /archive/entity 200\n",
+        "/archive/team/* /archive/entity.html 200\n"
+        "/archive/player/* /archive/entity.html 200\n"
+        "/archive/stage/* /archive/entity.html 200\n"
+        "/archive/game/* /archive/entity.html 200\n",
         encoding="utf-8",
     )
     (DIST / "robots.txt").write_text(ROBOTS.format(site=SITE_URL), encoding="utf-8")
