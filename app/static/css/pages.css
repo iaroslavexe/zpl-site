@@ -834,3 +834,9 @@
 .group-standings { max-width: 480px; margin-bottom: 6px; }
 .group-standings .archive-table { font-size: 12.5px; }
 .group-standings .archive-table th { font-size: 9px; }
+
+.archive-game-row { display: block; }
+.archive .game-row, .page--archive .game-row { text-decoration: none; color: inherit; }
+.archive-group + .group-standings { margin-top: 4px; }
+.group-standings + .games { margin-top: 12px; }
+.page--archive .games { margin-bottom: 18px; max-width: 720px; }

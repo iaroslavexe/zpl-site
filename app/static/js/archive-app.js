@@ -188,17 +188,32 @@
       });
     }
 
+    function gameRow(g) {
+      var home = teamById[g.home] || {};
+      var away = teamById[g.away] || {};
+      var homeWin = g.hs > g.vs ? ' is-win' : '';
+      var awayWin = g.vs > g.hs ? ' is-win' : '';
+      return '<a class="game-row" href="/archive/game/' + g.id + '">' +
+        '<span class="game-row__time"></span>' +
+        '<span class="game-row__team game-row__team--home' + homeWin + '">' +
+          (home.avatar ? '<img src="' + home.avatar + '" alt="" loading="lazy">' : '') +
+          '<span class="game-row__name">' + (home.name || g.home_name) + '</span></span>' +
+        '<span class="game-row__score">' + g.hs + ' : ' + g.vs + '</span>' +
+        '<span class="game-row__team game-row__team--away' + awayWin + '">' +
+          '<span class="game-row__name">' + (away.name || g.away_name) + '</span>' +
+          (away.avatar ? '<img src="' + away.avatar + '" alt="" loading="lazy">' : '') + '</span>' +
+      '</a>';
+    }
+
     var gamesHtml = Object.keys(groups).map(function (label) {
       var items = groups[label];
-      var rows = items.map(function (g) {
-        return [link('/archive/game/' + g.id, g.home_name + ' — ' + g.away_name), g.hs + ' : ' + g.vs];
-      });
       var block = '<h3 class="archive-group">' + label + '</h3>';
-      if (label.indexOf('Группа') === 0) {
+      if (label.indexOf('Группа') === 0 || label.indexOf('За ') === 0) {
         block += '<div class="group-standings">' +
           table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
       }
-      return block + table(['Игра', 'Счёт'], rows);
+      block += '<div class="games">' + items.map(gameRow).join('') + '</div>';
+      return block;
     }).join('');
 
     root.innerHTML =
