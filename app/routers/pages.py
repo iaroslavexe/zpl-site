@@ -45,33 +45,18 @@ def archive_page(request: Request, tab: str = "seasons"):
     return _render(request, views.archive_landing(tab))
 
 
-@router.get("/archive/stage/{slug}", response_class=HTMLResponse)
-def archive_stage_page(request: Request, slug: str):
-    page = views.archive_stage(slug)
-    if not page:
-        return _render(request, views.not_found())
-    return _render(request, page)
+@router.get("/archive/{tab}", response_class=HTMLResponse)
+def archive_tab_page(request: Request, tab: str):
+    if tab not in ("seasons", "stages", "teams", "players"):
+        return _render(request, views.archive_entity())
+    return _render(request, views.archive_landing(tab))
+
+
 
 
 @router.get("/archive/team/{team_id}", response_class=HTMLResponse)
-def archive_team_page(request: Request, team_id: str):
-    page = views.archive_team(team_id)
-    if not page:
-        return _render(request, views.not_found())
-    return _render(request, page)
-
-
 @router.get("/archive/player/{player_id}", response_class=HTMLResponse)
-def archive_player_page(request: Request, player_id: str):
-    page = views.archive_player(player_id)
-    if not page:
-        return _render(request, views.not_found())
-    return _render(request, page)
-
-
+@router.get("/archive/stage/{slug}", response_class=HTMLResponse)
 @router.get("/archive/game/{game_id}", response_class=HTMLResponse)
-def archive_game_page(request: Request, game_id: int):
-    page = views.archive_game(game_id)
-    if not page:
-        return _render(request, views.not_found())
-    return _render(request, page)
+def archive_entity_page(request: Request):
+    return _render(request, views.archive_entity())

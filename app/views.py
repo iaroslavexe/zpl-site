@@ -209,10 +209,29 @@ def archive_landing(tab: str = "seasons") -> tuple[str, dict]:
                     names.append(name)
         players_view.append({**player, "team_names": names})
 
+    records = []
+    d_games = [g for g in d["games"] if g["hs"] is not None and g["vs"] is not None]
+    if d_games:
+        big = max(d_games, key=lambda g: abs((g["hs"] or 0) - (g["vs"] or 0)))
+        records.append(("Крупнейшая победа",
+                        f'{big["home_name"]} — {big["away_name"]} {big["hs"]}:{big["vs"]}',
+                        f'/archive/game/{big["id"]}'))
+        high = max(d_games, key=lambda g: (g["hs"] or 0) + (g["vs"] or 0))
+        records.append(("Самая результативная игра",
+                        f'{high["home_name"]} — {high["away_name"]} {high["hs"]}:{high["vs"]}',
+                        f'/archive/game/{high["id"]}'))
+    if d["players"]:
+        top = max(d["players"], key=lambda p: p["goals"])
+        records.append(("Больше всех голов", f'{top["name"]} — {top["goals"]}', f'/archive/player/{top["id"]}'))
+    if d["teams"]:
+        best = max(d["teams"], key=lambda t: (t["gold"], t["silver"]))
+        records.append(("Больше всех золота", f'{best["name"]} — {best["gold"]}', f'/archive/team/{best["id"]}'))
+
     return "pages/archive.html", _base(
         "archive",
         canonical="/archive",
         teams_by_id=d["team_by_id"],
+        records=records,
         winners=winners,
         tab=tab,
         summary=archive.summary(),
@@ -226,72 +245,7 @@ def archive_landing(tab: str = "seasons") -> tuple[str, dict]:
     )
 
 
-def archive_stage(slug: str) -> tuple[str, dict] | None:
-    from app.services import archive
-
-    stage = archive.stage(slug)
-    if not stage:
-        return None
-    d = archive.data()
-    seats = [(d["team_by_id"].get(t, {}).get("name", t), p, div) for t, p, div in stage["places"]]
-    seats.sort(key=lambda r: r[1])
-    sotg = sorted([(d["team_by_id"].get(t, {}).get("name", t), spirit, games)
-                   for t, spirit, games in stage["sotg"]], key=lambda r: -r[1])
-    return "pages/archive_stage.html", _base(
-        "archive", canonical=f"/archive/stage/{slug}", stage=stage, seats=seats, sotg=sotg
-    )
+def archive_entity() -> tuple[str, dict]:
+    return "pages/archive_entity.html", _base("archive", canonical="/archive")
 
 
-def archive_team(team_id: str) -> tuple[str, dict] | None:
-    from app.services import archive
-
-    team = archive.team(team_id)
-    if not team:
-        return None
-    d = archive.data()
-    stages = []
-    for sid, place, div in team["stages"]:
-        stage = d["stage_by_id"][sid]
-        stages.append({"stage": stage, "place": place, "division": div})
-    stages.sort(key=lambda item: item["stage"]["date"])
-
-    players = [p for p in d["players"] if any(team_id in s["teams"] for s in p["seasons"])]
-    players.sort(key=lambda p: (-(p["goals"] + p["assists"]), -p["stages"]))
-
-    return "pages/archive_team.html", _base(
-        "archive", canonical=f"/archive/team/{team_id}", team=team, stages=stages, players=players
-    )
-
-
-def archive_player(player_id: str) -> tuple[str, dict] | None:
-    from app.services import archive
-
-    player = archive.player(player_id)
-    if not player:
-        return None
-    d = archive.data()
-    seasons = []
-    for season in player["seasons"]:
-        teams = [d["team_by_id"].get(t, {}).get("name", t) for t in season["teams"]]
-        seasons.append({**season, "team_names": teams})
-    return "pages/archive_player.html", _base(
-        "archive", canonical=f"/archive/player/{player_id}", player=player, seasons=seasons
-    )
-
-
-def archive_game(game_id: int) -> tuple[str, dict] | None:
-    from app.services import archive
-
-    game = archive.game(game_id)
-    if not game:
-        return None
-    d = archive.data()
-    names = {}
-    for row in game["timeline"]:
-        for pid in (row[2], row[3]):
-            if pid and pid not in names:
-                names[pid] = d["player_by_id"].get(pid, {}).get("name", pid)
-    return "pages/archive_game.html", _base(
-        "archive", canonical=f"/archive/game/{game_id}", game=game,
-        stage=d["stage_by_id"].get(game["stage"]), names=names,
-    )

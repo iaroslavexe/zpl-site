@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Архив {{ season_title }}{% endblock %}
+{% block page_class %} page--archive{% endblock %}
+{% block content %}
+<div id="archive-app">
+  <p class="crumbs"><a href="/archive">Архив</a></p>
+  <p class="archive-lead">Загружаем данные архива…</p>
+</div>
+<script src="/static/js/archive-app.js" defer></script>
+{% endblock %}

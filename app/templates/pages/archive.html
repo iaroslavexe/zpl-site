@@ -27,9 +27,20 @@
   {% endfor %}
 </div>
 
+{% if records %}
+<div class="archive-records">
+  {% for title, value, href in records %}
+  <a class="archive-record" href="{{ href }}">
+    <span class="archive-record__title">{{ title }}</span>
+    <span class="archive-record__value">{{ value }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
 <nav class="archive-tabs">
   {% for key, label in [('seasons','Сезоны'), ('stages','Этапы'), ('teams','Команды'), ('players','Игроки')] %}
-  <a class="archive-tabs__item{% if tab == key %} is-active{% endif %}" href="/archive?tab={{ key }}">{{ label }}</a>
+  <a class="archive-tabs__item{% if tab == key %} is-active{% endif %}" href="/archive{% if key != 'seasons' %}/{{ key }}{% endif %}">{{ label }}</a>
   {% endfor %}
 </nav>
 
@@ -96,10 +107,11 @@
 </table>
 
 {% elif tab == 'teams' %}
-<table class="archive-table" id="archive-teams">
+<input class="archive-search" type="search" placeholder="Поиск команды" data-filter="teams">
+<table class="archive-table archive-table--sortable" data-sortable>
   <thead><tr>
-    <th>#</th><th>Команда</th><th>Этапов</th><th>Золото</th><th>Серебро</th>
-    <th>Игр</th><th>В</th><th>П</th><th>Голы</th><th>Разница</th>
+    <th>#</th><th>Команда</th><th data-sort="2">Этапов</th><th data-sort="3">Золото</th><th data-sort="4">Серебро</th>
+    <th data-sort="5">Игр</th><th data-sort="6">В</th><th data-sort="7">П</th><th data-sort="8">Голы</th><th data-sort="9">Разница</th>
   </tr></thead>
   <tbody>
   {% for team in teams %}
@@ -109,31 +121,32 @@
         <a href="/archive/team/{{ team.id }}">{{ team.name }}</a>
         {% if team.note %}<span class="archive-table__note">{{ team.note }}</span>{% endif %}
       </td>
-      <td>{{ team.stages|length }}</td>
-      <td>{% if team.gold %}<span class="medal medal--gold">{{ team.gold }}</span>{% endif %}</td>
-      <td>{% if team.silver %}<span class="medal medal--silver">{{ team.silver }}</span>{% endif %}</td>
-      <td>{{ team.games }}</td>
-      <td>{{ team.wins }}</td>
-      <td>{{ team.losses }}</td>
-      <td>{{ team.goals_for }}–{{ team.goals_against }}</td>
-      <td>{{ '+' if team.goals_for - team.goals_against > 0 }}{{ team.goals_for - team.goals_against }}</td>
+      <td data-v="{{ team.stages|length }}">{{ team.stages|length }}</td>
+      <td data-v="{{ team.gold }}" class="medal medal--gold">{% if team.gold %}{{ team.gold }}{% endif %}</td>
+      <td data-v="{{ team.silver }}" class="medal medal--silver">{% if team.silver %}{{ team.silver }}{% endif %}</td>
+      <td data-v="{{ team.games }}">{{ team.games }}</td>
+      <td data-v="{{ team.wins }}">{{ team.wins }}</td>
+      <td data-v="{{ team.losses }}">{{ team.losses }}</td>
+      <td data-v="{{ team.goals_for }}">{{ team.goals_for }}–{{ team.goals_against }}</td>
+      <td data-v="{{ team.goals_for - team.goals_against }}">{{ '+' if team.goals_for - team.goals_against > 0 }}{{ team.goals_for - team.goals_against }}</td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
 
 {% elif tab == 'players' %}
-<table class="archive-table">
-  <thead><tr><th>#</th><th>Игрок</th><th>Этапов</th><th>Голы</th><th>Ассисты</th><th>Очки</th><th>Команды</th></tr></thead>
+<input class="archive-search" type="search" placeholder="Поиск игрока" data-filter="players">
+<table class="archive-table archive-table--sortable" data-sortable>
+  <thead><tr><th>#</th><th>Игрок</th><th data-sort="2">Этапов</th><th data-sort="3">Голы</th><th data-sort="4">Ассисты</th><th data-sort="5">Очки</th><th>Команды</th></tr></thead>
   <tbody>
   {% for player in players %}
     <tr>
       <td class="archive-table__dim">{{ loop.index }}</td>
       <td><a href="/archive/player/{{ player.id }}">{{ player.name }}</a>{% if player.note %}<span class="archive-table__note">{{ player.note }}</span>{% endif %}</td>
-      <td>{{ player.stages }}</td>
-      <td>{{ player.goals }}</td>
-      <td>{{ player.assists }}</td>
-      <td>{{ player.goals + player.assists }}</td>
+      <td data-v="{{ player.stages }}">{{ player.stages }}</td>
+      <td data-v="{{ player.goals }}">{{ player.goals }}</td>
+      <td data-v="{{ player.assists }}">{{ player.assists }}</td>
+      <td data-v="{{ player.goals + player.assists }}">{{ player.goals + player.assists }}</td>
       <td class="archive-table__dim">{{ player.team_names|join(', ') }}</td>
     </tr>
   {% endfor %}

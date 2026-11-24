@@ -13,6 +13,14 @@ from app.config import SITE_URL, STATIC_DIR, TEMPLATES_DIR
 
 DIST = Path(__file__).resolve().parent.parent / "dist"
 
+ARCHIVE_PAGES = {
+    "archive/index.html": lambda: views.archive_landing("seasons"),
+    "archive/teams/index.html": lambda: views.archive_landing("teams"),
+    "archive/players/index.html": lambda: views.archive_landing("players"),
+    "archive/stages/index.html": lambda: views.archive_landing("stages"),
+    "archive/entity/index.html": views.archive_entity,
+}
+
 PAGES = {
     "index.html": views.league,
     "standings.html": views.standings_page,
@@ -51,14 +59,26 @@ def main() -> None:
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
 
-    for filename, page in PAGES.items():
+    all_pages = dict(PAGES)
+    all_pages.update(ARCHIVE_PAGES)
+
+    for filename, page in all_pages.items():
         name, context = page()
         html = env.get_template(name).render(**context)
-        (DIST / filename).write_text(html, encoding="utf-8")
-        print(f"  {filename:18} {len(html) / 1024:6.0f} КБ")
+        target = DIST / filename
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(html, encoding="utf-8")
+        print(f"  {filename:28} {len(html) / 1024:6.0f} КБ")
 
     shutil.copytree(STATIC_DIR, DIST / "static")
     (DIST / "_headers").write_text(HEADERS, encoding="utf-8")
+    (DIST / "_redirects").write_text(
+        "/archive/team/* /archive/entity 200\n"
+        "/archive/player/* /archive/entity 200\n"
+        "/archive/stage/* /archive/entity 200\n"
+        "/archive/game/* /archive/entity 200\n",
+        encoding="utf-8",
+    )
     (DIST / "robots.txt").write_text(ROBOTS.format(site=SITE_URL), encoding="utf-8")
 
     urls = "".join(f"  <url><loc>{SITE_URL}{path}</loc></url>\n" for path in SITEMAP_PAGES)

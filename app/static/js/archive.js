@@ -21,3 +21,43 @@
 
   show('msk');
 })();
+
+// Сортировка таблиц архива по клику и фильтр по строкам
+(function () {
+  document.querySelectorAll('table[data-sortable]').forEach(function (table) {
+    var headers = table.querySelectorAll('th[data-sort]');
+    headers.forEach(function (header) {
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', function () {
+        var index = Number(header.dataset.sort);
+        var body = table.tBodies[0];
+        var rows = Array.prototype.slice.call(body.rows);
+        var dir = header.dataset.dir === 'desc' ? 1 : -1;
+        rows.sort(function (a, b) {
+          var va = Number(a.cells[index].dataset.v || 0);
+          var vb = Number(b.cells[index].dataset.v || 0);
+          return (va - vb) * dir;
+        });
+        rows.forEach(function (row) { body.appendChild(row); });
+        headers.forEach(function (h) { h.dataset.dir = ''; });
+        header.dataset.dir = dir === -1 ? 'asc' : 'desc';
+      });
+    });
+  });
+})();
+
+
+// Фильтр по строкам таблиц архива
+(function () {
+  document.querySelectorAll('input[data-filter]').forEach(function (input) {
+    var table = input.nextElementSibling;
+    if (!table) return;
+    input.addEventListener('input', function () {
+      var query = input.value.trim().toLowerCase();
+      Array.prototype.forEach.call(table.tBodies[0].rows, function (row) {
+        var text = row.textContent.toLowerCase();
+        row.hidden = query.length > 0 && text.indexOf(query) === -1;
+      });
+    });
+  });
+})();
