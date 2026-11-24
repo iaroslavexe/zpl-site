@@ -42,16 +42,17 @@
 .brand__name {
   display: flex;
   align-items: baseline;
-  font-family: "Oswald", "Jost", sans-serif;
-  font-size: 21px;
-  font-weight: 600;
+  font-family: "Russo One", "Oswald", "Jost", sans-serif;
+  font-size: 19px;
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: .01em;
+  letter-spacing: .02em;
   text-transform: uppercase;
 }
 
 .brand__letters { color: var(--yellow); }
-.brand__season { color: var(--pink); }
+.brand__logo { display: block; width: 40px; height: 40px; object-fit: contain; }
+.brand__season { color: var(--pink); margin-left: 5px; }
 
 /* Вкладки — как в фэнтези: капс, разделители и жёлтая черта у открытого */
 .tabs {

@@ -22,9 +22,13 @@
 
 <header class="topbar">
   <a class="brand" href="/">
+    {% if active == 'archive' %}
+    <img class="brand__logo" src="/static/img/favicon.png" alt="Зимняя песочная лига" width="30" height="30">
+    {% else %}
     <span class="brand__name">
       <span class="brand__letters">ЗПЛ</span><span class="brand__season">{{ season[2:] }}</span>
     </span>
+    {% endif %}
   </a>
 
   <nav class="tabs" aria-label="Разделы">
