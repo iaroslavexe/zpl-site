@@ -127,28 +127,50 @@
     var teamById = {};
     data.teams.forEach(function (t) { teamById[t.id] = t; });
 
-    var seats = stage.places.slice().sort(function (a, b) { return a[1] - b[1]; }).map(function (row) {
-      var medal = row[1] === 1 ? (row[2] === 'Mid' ? 'medal--silver' : 'medal--gold') : '';
-      return ['<span class="medal ' + medal + '">' + row[1] + '</span>',
-        link('/archive/team/' + row[0], (teamById[row[0]] || {}).name || row[0]), row[2] || ''];
+    var stageGames = data.games.filter(function (g) { return g.stage === stage.id; });
+    var record = {};
+    stageGames.forEach(function (g) {
+      [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
+        var item = record[row[0]] || (record[row[0]] = { games: 0, wins: 0, losses: 0 });
+        item.games += 1;
+        if (row[1] > row[2]) item.wins += 1;
+        if (row[1] < row[2]) item.losses += 1;
+      });
     });
 
-    var sotg = stage.sotg.slice().sort(function (a, b) { return b[1] - a[1]; }).map(function (row, i) {
-      return [i + 1, (teamById[row[0]] || {}).name || row[0], row[1].toFixed(1), row[2]];
+    var spirit = {};
+    stage.sotg.forEach(function (row) { spirit[row[0]] = row[1]; });
+
+    var seats = stage.places.slice().sort(function (a, b) {
+      var da = a[2] === 'Mid' ? 1 : 0;
+      var db = b[2] === 'Mid' ? 1 : 0;
+      return da - db || a[1] - b[1];
+    }).map(function (row) {
+      var team = teamById[row[0]] || {};
+      var medal = row[1] === 1 ? 'medal--gold' : '';
+      var stats = record[row[0]] || { games: 0, wins: 0, losses: 0 };
+      var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
+      var name = avatar + link('/archive/team/' + row[0], team.name || row[0]) +
+        (row[2] ? ' <span class="archive-table__note archive-table__note--inline">' + row[2] + '</span>' : '');
+      return [
+        '<span class="medal ' + medal + '">' + row[1] + '</span>',
+        name,
+        stats.games,
+        stats.wins + '–' + stats.losses,
+        spirit[row[0]] ? spirit[row[0]].toFixed(1) : '—'
+      ];
     });
 
-    var games = data.games.filter(function (g) { return g.stage === stage.id; }).map(function (g) {
-      return [link('/archive/game/' + g.id, g.home_name + ' — ' + g.away_name), g.hs + ' : ' + g.vs,
-        g.timeline.length + ' точек'];
+    var games = stageGames.map(function (g) {
+      return [link('/archive/game/' + g.id, g.home_name + ' — ' + g.away_name), g.hs + ' : ' + g.vs];
     });
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive?tab=stages', 'Этапы'], [null, stage.season]]) +
       '<h1 class="archive-title">' + stage.title + '</h1>' +
       '<p class="archive-lead">' + fmtDate(stage.date) + ' · ' + stage.division + ' дивизион · ' + stage.games_count + ' игр</p>' +
-      '<h2 class="archive-h2">Итоговые места</h2>' + table(['Место', 'Команда', 'Дивизион'], seats) +
-      '<h2 class="archive-h2">Дух этапа</h2>' + table(['#', 'Команда', 'Балл', 'Игр'], sotg) +
-      '<h2 class="archive-h2">Игры</h2>' + table(['Игра', 'Счёт', 'Точки'], games);
+      '<h2 class="archive-h2">Итоги этапа</h2>' + table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], seats) +
+      '<h2 class="archive-h2">Игры</h2>' + table(['Игра', 'Счёт'], games);
   }
 
   function renderGame(data, id) {
