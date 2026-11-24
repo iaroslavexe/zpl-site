@@ -96,29 +96,69 @@
     var stageById = {};
     data.stages.forEach(function (s) { stageById[s.id] = s; });
 
-    var seasons = player.seasons.map(function (s) {
-      return [s.season, s.teams.map(function (t) { return link('/archive/team/' + t, (teamById[t] || {}).name || t); }).join(', '), s.stages];
-    });
+    var totals = { stages: 0, games: 0, goals: 0, assists: 0 };
+    var seasonStats = {};
+    var rows = [];
 
-    var stages = (player.by_stage || []).map(function (row) {
+    (player.by_stage || []).forEach(function (row) {
       var stage = stageById[row[0]];
-      if (!stage) return null;
-      var teamIds = player.seasons.filter(function (s) { return s.season === stage.season; })
-        .map(function (s) { return s.teams; }).reduce(function (a, b) { return a.concat(b); }, []);
+      if (!stage) return;
+      var games = row[4] || 0;
+      totals.stages += 1;
+      totals.games += games;
+      totals.goals += row[1];
+      totals.assists += row[2];
+
+      var season = seasonStats[stage.season] || (seasonStats[stage.season] = {
+        season: stage.season, teams: {}, stages: 0, games: 0, goals: 0, assists: 0
+      });
+      season.stages += 1;
+      season.games += games;
+      season.goals += row[1];
+      season.assists += row[2];
+      if (row[3]) season.teams[row[3]] = 1;
+
       var place = '';
       stage.places.forEach(function (p) {
-        if (teamIds.indexOf(p[0]) >= 0) place = p[1];
+        if (row[3] && p[0] === row[3]) place = p[1];
       });
-      return [fmtDate(stage.date), link('/archive/stage/' + stage.slug, stage.title), place, row[1], row[2]];
-    }).filter(Boolean);
+
+      rows.push([
+        '<a href="/archive/stage/' + stage.slug + '">' + stage.season + ' · ' + (stage.name || stage.title) + '</a>',
+        place,
+        games,
+        row[1] + row[2],
+        row[1],
+        row[2]
+      ]);
+    });
+
+    var seasonsRows = Object.keys(seasonStats).sort().map(function (key) {
+      var item = seasonStats[key];
+      var teams = Object.keys(item.teams).map(function (tid) {
+        return link('/archive/team/' + tid, (teamById[tid] || {}).name || tid);
+      }).join(', ');
+      return [item.season, teams, item.stages, item.games, item.goals + item.assists, item.goals, item.assists];
+    });
+
+    var avatar = player.avatar
+      ? '<img class="archive-player__avatar" src="' + player.avatar + '" alt="" loading="lazy">'
+      : '';
 
     root.innerHTML =
-      crumbs([['/archive', 'Архив'], ['/archive?tab=players', 'Игроки'], [null, player.name]]) +
-      '<h1 class="archive-title">' + player.name + '</h1>' +
-      (player.note ? '<p class="archive-lead">' + player.note + '</p>' : '') +
-      stats([[player.stages, 'этапов'], [player.goals, 'голов'], [player.assists, 'ассистов'], [player.goals + player.assists, 'очков']]) +
-      '<h2 class="archive-h2">Сезоны и команды</h2>' + table(['Сезон', 'Команды', 'Этапов'], seasons) +
-      '<h2 class="archive-h2">По этапам</h2>' + table(['Дата', 'Этап', 'Место', 'Голы', 'Ассисты'], stages);
+      crumbs([['/archive', 'Архив'], ['/archive/players', 'Игроки'], [null, player.name]]) +
+      '<div class="archive-player">' +
+        '<div class="archive-player__head">' +
+          '<h1 class="archive-title">' + player.name + '</h1>' + avatar +
+        '</div>' +
+        (player.note ? '<p class="archive-lead">' + player.note + '</p>' : '') +
+        stats([[totals.stages, 'этапов'], [totals.games, 'игр'],
+               [totals.goals + totals.assists, 'очков'], [totals.goals, 'голов'], [totals.assists, 'ассистов']]) +
+        '<h2 class="archive-h2">Сезоны и команды</h2>' +
+        table(['Сезон', 'Команды', 'Этапов', 'Игр', 'Очки', 'Голы', 'Ассисты'], seasonsRows) +
+        '<h2 class="archive-h2">По этапам</h2>' +
+        table(['Этап', 'Место', 'Игр', 'Очки', 'Голы', 'Ассисты'], rows) +
+      '</div>';
   }
 
   function renderStage(data, slug) {

@@ -850,3 +850,7 @@
   color: var(--muted);
 }
 .archive-block--solo .games { margin-top: 0; }
+
+.archive-player__head { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 8px; }
+.archive-player__head .archive-title { margin: 0; }
+.archive-player__avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
