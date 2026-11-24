@@ -245,7 +245,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
     for stage in d["stages"]:
         first = [t for t, place, _ in stage["places"] if place == 1]
         if first:
-            winners[stage["id"]] = d["team_by_id"].get(first[0], {}).get("name", first[0])
+            winners[stage["id"]] = first[0]
 
     title_counts = {}
     for row in archive.champions():

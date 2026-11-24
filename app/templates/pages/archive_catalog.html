@@ -70,7 +70,13 @@
       <td><a href="/archive/stage/{{ stage.slug }}">{{ stage.name }}</a> <span class="archive-table__note">{{ stage.city }}</span></td>
       <td class="archive-table__dim">{% if 'финал' in stage.title.lower() %}общий{% else %}{{ stage.division }}{% endif %}</td>
       <td>{{ stage.games_count }}</td>
-      <td>{{ winners.get(stage.id, '—') }}</td>
+      <td>
+        {% set winner = winners.get(stage.id) %}
+        {% if winner %}
+          {% if teams_by_id[winner].avatar %}<img class="team-avatar" src="{{ teams_by_id[winner].avatar }}" alt="" loading="lazy">{% endif %}
+          <a href="/archive/team/{{ winner }}">{{ teams_by_id[winner].name }}</a>
+        {% else %}—{% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
