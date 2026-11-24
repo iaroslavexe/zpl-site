@@ -777,7 +777,7 @@
 
 .archive-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border-block: 1px solid var(--line); margin: 0 0 10px; }
 @media (min-width: 720px) { .archive-tiles { grid-template-columns: repeat(4, 1fr); } }
-.archive-tile { display: flex; flex-direction: column; gap: 4px; padding: 20px 18px; background: var(--bg); text-decoration: none; color: inherit; }
+.archive-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 22px 18px; background: var(--bg); text-decoration: none; color: inherit; text-align: center; }
 .archive-tile b { font-size: 34px; font-weight: 600; color: var(--pink); }
 .archive-tile span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
 .archive-tile:hover b { color: var(--yellow); }

@@ -179,11 +179,23 @@ def _archive_matrix(division: str) -> dict:
     return {"stages": stages, "teams": team_ids, "cells": cells}
 
 
+def _plural(number: int, one: str, few: str, many: str) -> str:
+    if number % 10 == 1 and number % 100 != 11:
+        return one
+    if 2 <= number % 10 <= 4 and not 12 <= number % 100 <= 14:
+        return few
+    return many
+
+
 def archive_landing() -> tuple[str, dict]:
     from app.services import archive
 
     d = archive.data()
     summary = archive.summary()
+    summary["seasons_word"] = _plural(summary["seasons"], "сезон", "сезона", "сезонов")
+    summary["stages_word"] = _plural(summary["stages"], "этап", "этапа", "этапов")
+    summary["teams_word"] = _plural(summary["teams"], "команда", "команды", "команд")
+    summary["players_word"] = _plural(summary["players"], "игрок", "игрока", "игроков")
 
     top_stages = max(d["players"], key=lambda p: p["stages"])
     top_goals = max(d["players"], key=lambda p: p["goals"])
