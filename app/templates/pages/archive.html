@@ -32,15 +32,16 @@
 <div class="archive-duo__col">
 <h2 class="archive-h2 archive-h2--yellow">Лидеры за всё время</h2>
 <div class="archive-leaders">
-  {% for key, title in [('games','Больше всех игр'), ('goals','Больше всех голов'), ('assists','Больше всех ассистов')] %}
-  {% set item = leaders[key] %}
+  {% for item in leaders %}
   <a class="leader" href="/archive/player/{{ item.player.id }}">
-    <span class="leader__top">
-      {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
-      <span class="leader__value">{{ item.value }}</span>
+    <span class="leader__left">
+      <span class="leader__top">
+        <span class="leader__value">{{ item.value }}</span>
+        <span class="leader__unit">{{ item.unit }}</span>
+      </span>
+      <span class="leader__name">{{ item.player.name }}</span>
     </span>
-    <span class="leader__name">{{ item.player.name }}</span>
-    <span class="leader__title">{{ title }}</span>
+    {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
   </a>
   {% endfor %}
 </div>

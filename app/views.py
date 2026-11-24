@@ -219,11 +219,11 @@ def archive_landing() -> tuple[str, dict]:
         canonical="/archive",
         summary=summary,
         champions=champs,
-        leaders={
-            "games": {"player": top_games, "value": top_games["games"]},
-            "goals": {"player": top_goals, "value": top_goals["goals"]},
-            "assists": {"player": top_assists, "value": top_assists["assists"]},
-        },
+        leaders=[
+            {"player": top_games, "value": top_games["games"], "unit": "игр"},
+            {"player": top_goals, "value": top_goals["goals"], "unit": "голов"},
+            {"player": top_assists, "value": top_assists["assists"], "unit": "ассистов"},
+        ],
     )
 
 
