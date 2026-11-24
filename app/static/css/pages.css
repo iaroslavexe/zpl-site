@@ -815,3 +815,15 @@
 .hist__team .team-avatar { width: 18px; height: 18px; vertical-align: -4px; margin-right: 6px; }
 
 .archive-h2--yellow { color: var(--yellow); }
+
+.archive-season__row td {
+  padding: 22px 0 8px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  border-bottom: 1px solid var(--line);
+}
+.archive-season:first-child .archive-season__row td { padding-top: 6px; }
+
+.archive-table__note--inline { display: inline; }

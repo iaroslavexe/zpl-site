@@ -275,6 +275,26 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         best = max(d["teams"], key=lambda t: (t["gold"], t["silver"]))
         records.append(("Больше всех золота", f'{best["name"]} — {best["gold"]}', f'/archive/team/{best["id"]}'))
 
+    def stage_name(stage: dict) -> str:
+        title = stage["title"].lower()
+        if "финал" in title:
+            return "Финал"
+        label = stage["title"].split(".")[-1].split("этап")[0].strip()
+        label = (label.replace("l", "I").replace("L", "I")
+                 .replace("1V", "IV").replace("Il", "II").replace("Ill", "III").upper())
+        return f"{label} этап" if label else "Этап"
+
+    stages_view = []
+    for stage in sorted(d["stages"], key=lambda s: s["date"], reverse=True):
+        stage["name"] = stage_name(stage)
+        stages_view.append(stage)
+
+    grouped = []
+    for season in reversed(archive.SEASONS):
+        items = [s for s in stages_view if s["season"] == season]
+        if items:
+            grouped.append({"season": season, "stages": items})
+
     return "pages/archive_catalog.html", _base(
         "archive",
         canonical=f"/archive/{tab}",
@@ -287,7 +307,8 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         seasons=seasons,
         matrix_central=_archive_matrix("Центральный"),
         matrix_spb=_archive_matrix("Северо-Западный"),
-        stages=sorted(d["stages"], key=lambda s: s["date"], reverse=True),
+        stages=stages_view,
+        stage_groups=grouped,
         teams=d["teams"],
         players=players_view,
     )
