@@ -752,7 +752,7 @@
   flex-direction: column;
   align-items: flex-end;
   font-family: "Oswald", "Jost", sans-serif;
-  font-size: clamp(36px, 6.4vw, 88px);
+  font-size: 32px;
   font-weight: 600;
   line-height: .64;
   letter-spacing: .05em;
@@ -767,10 +767,11 @@
 .archive-year b { font-weight: 600; }
 .archive-year b:last-child { -webkit-text-stroke-color: rgba(250, 183, 44, .38); }
 .archive-year b:last-child { margin-left: .24em; }
-@media (max-width: 859px) { .archive-year { font-size: clamp(38px, 12vw, 64px); } }
+@media (min-width: 860px) { .archive-year { font-size: 58px; } }
 @media (max-width: 859px) { .archive-hero__years { display: none; } }
-.archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: clamp(42px, 8.2vw, 108px); line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
+.archive-hero { margin: 0; font-family: "Unbounded", "Jost", sans-serif; font-size: 44px; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; color: var(--yellow); }
 .archive-hero em { font-style: normal; color: var(--yellow); }
+@media (min-width: 860px) { .archive-hero { font-size: 74px; } }
 .archive-hero__meta { margin: 0 0 10px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
 .archive-hero__lead { margin: 0 0 30px; max-width: 640px; color: var(--muted); font-size: 14px; }
 
