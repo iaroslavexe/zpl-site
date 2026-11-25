@@ -6,6 +6,13 @@ from pathlib import Path
 from app.config import STATIC_DIR
 
 _CACHE: dict = {}
+_MANIFEST: dict = {}
+
+
+def set_manifest(mapping: dict) -> None:
+    """Сборка кладёт сюда карту «исходный путь → файл с хешем в имени»."""
+    _MANIFEST.clear()
+    _MANIFEST.update(mapping)
 
 
 def version(rel_path: str) -> str:
@@ -22,6 +29,9 @@ def version(rel_path: str) -> str:
 
 
 def url(path: str) -> str:
-    """/static/js/app.js → /static/js/app.js?v=ab12cd34"""
+    """/static/js/app.js → /static/js/app.1a2b3c4d.js (или ?v= в dev-режиме)."""
     rel = path[len("/static/"):] if path.startswith("/static/") else path
+    key = f"static/{rel}"
+    if key in _MANIFEST:
+        return "/" + _MANIFEST[key]
     return f"/static/{rel}?v={version(rel)}"

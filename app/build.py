@@ -3,6 +3,7 @@
 Запуск: python -m app.build
 Cloudflare Pages раздаёт только готовые файлы, поэтому рендерим страницы заранее.
 """
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -61,9 +62,28 @@ def main() -> None:
     )
     env.globals["static_url"] = assets.url
 
+    # простая проверка целостности клиентского рендерера архива
+    js = (STATIC_DIR / "js" / "archive-app.js").read_text(encoding="utf-8")
+    for required in ("function renderTeam", "function renderPlayer", "function renderStage",
+                     "function renderGame", "function render404"):
+        if required not in js:
+            raise SystemExit(f"archive-app.js: пропала {required}")
+
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
+
+    # статика: копируем и переименовываем css/js с хешем содержимого в имени,
+    # чтобы CDN и браузеры не отдавали старые версии из вечного кэша
+    shutil.copytree(STATIC_DIR, DIST / "static")
+    manifest = {}
+    for suffix in (".css", ".js"):
+        for path in sorted((DIST / "static").rglob(f"*{suffix}")):
+            digest = hashlib.sha1(path.read_bytes()).hexdigest()[:8]
+            hashed = path.with_name(f"{path.stem}.{digest}{path.suffix}")
+            path.rename(hashed)
+            manifest[str(path.relative_to(DIST))] = str(hashed.relative_to(DIST))
+    assets.set_manifest(manifest)
 
     all_pages = dict(PAGES)
     all_pages.update(ARCHIVE_PAGES)
@@ -76,7 +96,6 @@ def main() -> None:
         target.write_text(html, encoding="utf-8")
         print(f"  {filename:28} {len(html) / 1024:6.0f} КБ")
 
-    shutil.copytree(STATIC_DIR, DIST / "static")
     shutil.copy(Path(__file__).resolve().parent / "data" / "archive" / "archive.json",
                 DIST / "archive" / "data.json")
 

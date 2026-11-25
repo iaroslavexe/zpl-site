@@ -396,6 +396,176 @@
       '</div>';
   }
 
+  function renderStage(data, slug) {
+    var stage = data.stages.filter(function (s) { return s.slug === slug; })[0];
+    if (!stage) return render404();
+    var teamById = {};
+    data.teams.forEach(function (t) { teamById[t.id] = t; });
+
+    var allGames = data.games.filter(function (g) { return g.stage === stage.id; });
+    var divisions = [];
+    stage.places.forEach(function (row) {
+      if (row[2] && divisions.indexOf(row[2]) < 0) divisions.push(row[2]);
+    });
+    divisions.sort(function (a, b) { return (a === 'Mid' ? 1 : 0) - (b === 'Mid' ? 1 : 0); });
+    var multi = divisions.length > 1;
+
+    var spirit = {};
+    stage.sotg.forEach(function (row) { spirit[row[0]] = row[1]; });
+
+    function recordFor(games) {
+      var record = {};
+      games.forEach(function (g) {
+        [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
+          var item = record[row[0]] || (record[row[0]] = { games: 0, wins: 0, losses: 0 });
+          item.games += 1;
+          if (row[1] > row[2]) item.wins += 1;
+          if (row[1] < row[2]) item.losses += 1;
+        });
+      });
+      return record;
+    }
+
+    function standings(games) {
+      var stats = {};
+      games.forEach(function (g) {
+        [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
+          var item = stats[row[0]] || (stats[row[0]] = { wins: 0, losses: 0, diff: 0 });
+          item.diff += row[1] - row[2];
+          if (row[1] > row[2]) item.wins += 1;
+          if (row[1] < row[2]) item.losses += 1;
+        });
+      });
+      return Object.keys(stats).sort(function (a, b) {
+        return stats[b].wins - stats[a].wins || stats[b].diff - stats[a].diff;
+      }).map(function (id, index) {
+        var team = teamById[id] || {};
+        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
+        return [index + 1, avatar + link('/archive/team/' + id, team.name || id), stats[id].wins,
+          stats[id].losses, (stats[id].diff > 0 ? '+' : '') + stats[id].diff];
+      });
+    }
+
+    function gameRow(g) {
+      var home = teamById[g.home] || {};
+      var away = teamById[g.away] || {};
+      var homeWin = g.hs > g.vs ? ' is-win' : '';
+      var awayWin = g.vs > g.hs ? ' is-win' : '';
+      return '<a class="game-row" href="/archive/game/' + g.id + '">' +
+        '<span class="game-row__time"></span>' +
+        '<span class="game-row__team game-row__team--home' + homeWin + '">' +
+          (home.avatar ? '<img src="' + home.avatar + '" alt="" loading="lazy">' : '') +
+          '<span class="game-row__name">' + (home.name || g.home_name) + '</span></span>' +
+        '<span class="game-row__score">' + g.hs + ' : ' + g.vs + '</span>' +
+        '<span class="game-row__team game-row__team--away' + awayWin + '">' +
+          '<span class="game-row__name">' + (away.name || g.away_name) + '</span>' +
+          (away.avatar ? '<img src="' + away.avatar + '" alt="" loading="lazy">' : '') + '</span>' +
+      '</a>';
+    }
+
+    function seatsTable(games, division) {
+      var record = recordFor(games);
+      var rows = stage.places.filter(function (row) {
+        return !division || row[2] === division;
+      }).sort(function (a, b) { return a[1] - b[1]; }).map(function (row) {
+        var team = teamById[row[0]] || {};
+        var medal = row[1] === 1 ? 'medal--gold' : '';
+        var stats = record[row[0]] || { games: 0, wins: 0, losses: 0 };
+        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
+        return [
+          '<span class="medal ' + medal + '">' + row[1] + '</span>',
+          avatar + link('/archive/team/' + row[0], team.name || row[0]),
+          stats.games,
+          stats.wins + '–' + stats.losses,
+          spirit[row[0]] ? spirit[row[0]].toFixed(1) : '—'
+        ];
+      });
+      return table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], rows);
+    }
+
+    function blocks(games) {
+      var groups = {};
+      var order = [];
+      games.slice().sort(function (a, b) {
+        return (a.group_order || 99) - (b.group_order || 99) || a.id - b.id;
+      }).forEach(function (g) {
+        var key = g.group_key || g.group || 'Игры';
+        if (!groups[key]) {
+          groups[key] = { label: g.group || 'Игры', items: [] };
+          order.push(key);
+        }
+        groups[key].items.push(g);
+      });
+
+      return order.map(function (key) {
+        var blockData = groups[key];
+        var items = blockData.items;
+        var label = blockData.label;
+        var solo = items.length === 1 && label.indexOf('Группа') !== 0;
+        var isFinal = label.indexOf('Финал') === 0 || label.indexOf('финал') >= 0;
+        var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
+        block += '<h3 class="archive-group' + (isFinal ? ' archive-group--final' : '') + '">' + label + '</h3>';
+        var teams = {};
+        items.forEach(function (g) { teams[g.home] = 1; teams[g.away] = 1; });
+        var teamCount = Object.keys(teams).length;
+        var fullRound = teamCount * (teamCount - 1) / 2;
+        var isRoundRobin = teamCount > 2 && (items.length === fullRound || items.length === fullRound * 2);
+        if (isRoundRobin) {
+          block += '<div class="group-standings">' +
+            table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
+        }
+        block += '<div class="games">' + items.map(gameRow).join('') + '</div></section>';
+        return block;
+      }).join('');
+    }
+
+    function divisionGames(division) {
+      if (!division) return allGames;
+      var filtered = allGames.filter(function (g) { return g.division === division; });
+      return filtered.length ? filtered : allGames;
+    }
+
+    function draw(division) {
+      var games = divisionGames(division);
+      var stageName = stage.name || stage.title;
+      var isFinalStage = stageName.indexOf('Финал') >= 0;
+      if (isFinalStage) stageName = '<span class="accent-yellow">' + stageName + '</span>';
+      var html = crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
+        '<h1 class="archive-title">' + stage.season + ' · ' + stageName + '</h1>' +
+        '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
+        (multi ? '' : ' · ' + stage.division + ' дивизион') +
+        ' · ' + games.length + ' ' + plural(games.length, 'игра', 'игры', 'игр') + '</p>';
+
+      if (multi) {
+        html += '<div class="archive-switch" role="tablist">' + divisions.map(function (div) {
+          return '<button class="archive-switch__btn' + (div === division ? ' is-active' : '') +
+            '" data-division="' + div + '">' + div + '</button>';
+        }).join('') + '</div>';
+      }
+
+      html += '<h2 class="archive-h2">Итоги этапа</h2>' + seatsTable(games, division) +
+        '<h2 class="archive-h2">Игры</h2>' + blocks(games);
+
+      root.innerHTML = html;
+      root.querySelectorAll('[data-division]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var next = btn.getAttribute('data-division');
+          if (history.replaceState) history.replaceState(null, '', '#' + next.toLowerCase());
+          draw(next);
+        });
+      });
+    }
+
+    var hashDivision = (location.hash || '').slice(1).toLowerCase();
+    var initial = null;
+    if (multi) {
+      initial = divisions.filter(function (d) {
+        return d.toLowerCase() === hashDivision;
+      })[0] || divisions[0];
+    }
+    draw(initial);
+  }
+
   function renderGame(data, id) {
     var game = data.games.filter(function (g) { return String(g.id) === String(id); })[0];
     if (!game) return render404();
