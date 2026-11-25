@@ -267,6 +267,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
                 spirit_by_team.setdefault(team["id"], []).append(award["season"])
 
     title_counts = {}
+    title_seasons = {}
     for row in archive.champions():
         if not row["teams"]:
             continue
@@ -274,6 +275,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         team = next((t for t in d["teams"] if t["name"] == name), None)
         if team:
             title_counts[team["id"]] = title_counts.get(team["id"], 0) + 1
+            title_seasons.setdefault(team["id"], []).append(row["season"])
 
     players_view = []
     for player in d["players"]:
@@ -352,6 +354,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         canonical=f"/archive/{tab}",
         teams_by_id=d["team_by_id"],
         title_counts=title_counts,
+        title_seasons=title_seasons,
         spirit_by_team=spirit_by_team,
         records=records,
         winners=winners,
