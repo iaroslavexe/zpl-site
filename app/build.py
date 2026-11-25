@@ -9,7 +9,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from app import views
+from app import assets, views
 from app.config import SITE_URL, STATIC_DIR, TEMPLATES_DIR
 
 DIST = Path(__file__).resolve().parent.parent / "dist"
@@ -37,7 +37,7 @@ HEADERS = """# Cloudflare Pages: заголовки
 /static/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 /static/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -59,6 +59,7 @@ def main() -> None:
         loader=FileSystemLoader(TEMPLATES_DIR),
         autoescape=select_autoescape(["html"]),
     )
+    env.globals["static_url"] = assets.url
 
     if DIST.exists():
         shutil.rmtree(DIST)

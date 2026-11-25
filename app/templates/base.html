@@ -11,12 +11,12 @@
   <link rel="preload" href="/static/fonts/unbounded-600-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/static/fonts/russo-one-400-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/static/fonts/oswald-600-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/static/css/fonts.css">
-  <link rel="stylesheet" href="/static/css/tokens.css">
-  <link rel="stylesheet" href="/static/css/base.css">
-  <link rel="stylesheet" href="/static/css/layout.css">
-  <link rel="stylesheet" href="/static/css/components.css">
-  <link rel="stylesheet" href="/static/css/pages.css">
+  <link rel="stylesheet" href="{{ static_url("/static/css/fonts.css") }}">
+  <link rel="stylesheet" href="{{ static_url("/static/css/tokens.css") }}">
+  <link rel="stylesheet" href="{{ static_url("/static/css/base.css") }}">
+  <link rel="stylesheet" href="{{ static_url("/static/css/layout.css") }}">
+  <link rel="stylesheet" href="{{ static_url("/static/css/components.css") }}">
+  <link rel="stylesheet" href="{{ static_url("/static/css/pages.css") }}">
 </head>
 <body>
 
@@ -54,6 +54,6 @@
   </div>
 </footer>
 
-<script src="/static/js/app.js" defer></script>
+<script src="{{ static_url("/static/js/app.js") }}" defer></script>
 </body>
 </html>

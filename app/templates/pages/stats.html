@@ -79,6 +79,6 @@
 </div>
 
 <script type="application/json" id="stats-data">{{ stats | tojson }}</script>
-<script src="/static/js/stats.js" defer></script>
+<script src="{{ static_url("/static/js/stats.js") }}" defer></script>
 
 {% endblock %}
