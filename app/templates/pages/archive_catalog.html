@@ -141,7 +141,15 @@
     {% for award in group.teams %}
     <div class="awards-row">
       <span class="awards-row__mark">
-        {% if award.type == 'spirit_team' %}
+        {% if award.type == 'champion' %}
+        <span class="awards-star" data-tip="Чемпионство {{ award.season }}">★</span>
+        {% elif award.type == 'regular_winner_central' %}
+        <span class="awards-star awards-star--regular" data-tip="Регулярный сезон · Центральный {{ award.season }}">★</span>
+        {% elif award.type == 'regular_winner_spb' %}
+        <span class="awards-star awards-star--regular" data-tip="Регулярный сезон · Северо-западный {{ award.season }}">★</span>
+        {% elif award.type == 'mid_winner' %}
+        <span class="awards-star awards-star--mid" data-tip="Mid дивизион {{ award.season }}">☆</span>
+        {% elif award.type == 'spirit_team' %}
         <span class="spirit-flame" data-tip="Дух {{ award.season }}">
           <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg>
         </span>

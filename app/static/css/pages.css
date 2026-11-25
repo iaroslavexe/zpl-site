@@ -1030,3 +1030,7 @@
 .team-title__flame svg { display: block; }
 .spirit-flame { display: inline-flex; color: var(--pink); vertical-align: -1px; }
 .spirit-flame svg { display: block; }
+
+.awards-star { font-size: 17px; line-height: 1; color: var(--yellow); }
+.awards-star--regular { color: #9aa6ba; }
+.awards-star--mid { color: #6c7890; font-size: 17px; }
