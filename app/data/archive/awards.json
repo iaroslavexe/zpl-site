@@ -1,26 +1,159 @@
 [
-  {"season": "2021/22", "type": "season_mvp", "players": ["p421", "p410"]},
-
-  {"season": "2022/23", "type": "season_mvp", "players": ["p421", "p591"]},
-  {"season": "2022/23", "type": "season_defense", "players": ["p1220", "p667"]},
-
-  {"season": "2023/24", "type": "season_mvp", "players": ["p1222", "p545"]},
-  {"season": "2023/24", "type": "season_defense", "players": ["p421", "p1315", "p1220"]},
-
-  {"season": "2024/25", "type": "regular_mvp_central", "players": ["p421", "p591"]},
-  {"season": "2024/25", "type": "regular_defense_central", "players": ["p421", "p520"]},
-  {"season": "2024/25", "type": "regular_mvp_spb", "players": ["p617", "p1456"]},
-  {"season": "2024/25", "type": "regular_defense_spb", "players": ["p651", "p1456"]},
-  {"season": "2024/25", "type": "final_mvp", "players": ["p591"]},
-  {"season": "2024/25", "type": "final_defense", "players": ["p421"]},
-  {"season": "2024/25", "type": "final_mid_mvp", "players": ["p1254"]},
-  {"season": "2024/25", "type": "final_mid_defense", "players": ["p577"]},
-
-  {"season": "2025/26", "type": "season_mvp", "players": ["p320", "p420"]},
-  {"season": "2025/26", "type": "regular_mvp_central", "players": ["p1538", "p591"]},
-  {"season": "2025/26", "type": "regular_defense_central", "players": ["p413", "p1222"]},
-  {"season": "2025/26", "type": "regular_mvp_spb", "players": ["p1534", "p617"]},
-  {"season": "2025/26", "type": "regular_defense_spb", "players": ["p7147", "p2511"]},
-  {"season": "2025/26", "type": "final_mvp", "players": ["p1769", "p421"]},
-  {"season": "2025/26", "type": "final_mid_mvp", "players": ["p1010", "p569"]}
+  {
+    "season": "2021/22",
+    "type": "season_mvp",
+    "players": [
+      "p421",
+      "p410"
+    ]
+  },
+  {
+    "season": "2022/23",
+    "type": "season_mvp",
+    "players": [
+      "p421",
+      "p591"
+    ]
+  },
+  {
+    "season": "2022/23",
+    "type": "season_defense",
+    "players": [
+      "p1220",
+      "p667"
+    ]
+  },
+  {
+    "season": "2023/24",
+    "type": "season_mvp",
+    "players": [
+      "p1222",
+      "p545"
+    ]
+  },
+  {
+    "season": "2023/24",
+    "type": "season_defense",
+    "players": [
+      "p421",
+      "p1315",
+      "p1220"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_mvp_central",
+    "players": [
+      "p421",
+      "p591"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_defense_central",
+    "players": [
+      "p421",
+      "p520"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_mvp_spb",
+    "players": [
+      "p976",
+      "p1456"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_defense_spb",
+    "players": [
+      "p651",
+      "p1456"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "final_mvp",
+    "players": [
+      "p591"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "final_defense",
+    "players": [
+      "p421"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "final_mid_mvp",
+    "players": [
+      "p1254"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "final_mid_defense",
+    "players": [
+      "p577"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "season_mvp",
+    "players": [
+      "p320",
+      "p420"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_mvp_central",
+    "players": [
+      "p1538",
+      "p591"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_defense_central",
+    "players": [
+      "p413",
+      "p1222"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_mvp_spb",
+    "players": [
+      "p1534",
+      "p976"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_defense_spb",
+    "players": [
+      "p7147",
+      "p2511"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "final_mvp",
+    "players": [
+      "p1769",
+      "p421"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "final_mid_mvp",
+    "players": [
+      "p1010",
+      "p569"
+    ]
+  }
 ]
