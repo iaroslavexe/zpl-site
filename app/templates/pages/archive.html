@@ -17,6 +17,10 @@
 
 <div class="archive-h2-row">
   <h2 class="archive-h2 archive-h2--yellow">Чемпионы</h2>
+  <div class="champ-mvp-head champ-mvp-head--spirit">
+    <span class="spirit-flame"><svg viewBox="0 0 48 48" width="14" height="14" aria-hidden="true"><path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg></span>
+    <span class="champ-mvp-head__label">Дух</span>
+  </div>
   <div class="champ-mvp-head">
     <span class="mvp-badge">MVP</span>
     <span class="champ-mvp-head__label">Сезона</span>
@@ -32,6 +36,14 @@
       {% if row.avatar %}<img class="champ__avatar" src="{{ row.avatar }}" alt="" loading="lazy">{% endif %}
       <span class="champ__name">{{ row.winner }}</span>
     </a>
+    <div class="champ__spirit">
+      {% for team in row.spirit %}
+      <a class="champ__spirit-team" href="/archive/team/{{ team.id }}">
+        {% if team.avatar %}<img class="champ__mvp-avatar" src="{{ team.avatar }}" alt="" loading="lazy">{% endif %}
+        <span>{{ team.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
     <div class="champ__mvp" title="{{ row.mvp_title }}">
       {% for person in row.mvp %}
       {% if not loop.first %}<span class="champ__mvp-sep">/</span>{% endif %}

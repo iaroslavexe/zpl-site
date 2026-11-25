@@ -201,6 +201,11 @@ def archive_landing() -> tuple[str, dict]:
     top_goals = max(d["players"], key=lambda p: p["goals"])
     top_assists = max(d["players"], key=lambda p: p["assists"])
 
+    spirit_by_season = {}
+    for award in archive.awards():
+        if award["type"] == "spirit_team":
+            spirit_by_season[award["season"]] = award["teams"]
+
     teams_by_id = d["team_by_id"]
     champs = []
     for row in archive.champions():
@@ -212,6 +217,7 @@ def archive_landing() -> tuple[str, dict]:
             "avatar": team["avatar"] if team else None,
             "runners": [t[0] for t in row["teams"][1:]],
             "team_id": team["id"] if team else None,
+            "spirit": spirit_by_season.get(row["season"], []),
             "mvp": archive.season_heads(row["season"]),
             "mvp_title": (archive.season_head_award(row["season"]) or {}).get("title", "MVP"),
         })
@@ -253,6 +259,12 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         d["teams"],
         key=lambda t: (-len(t["stages"]), -(t["gold"] + t["silver"]), t["name"]),
     )
+
+    spirit_by_team = {}
+    for award in archive.awards():
+        if award["type"] == "spirit_team":
+            for team in award["teams"]:
+                spirit_by_team.setdefault(team["id"], []).append(award["season"])
 
     title_counts = {}
     for row in archive.champions():
@@ -340,6 +352,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         canonical=f"/archive/{tab}",
         teams_by_id=d["team_by_id"],
         title_counts=title_counts,
+        spirit_by_team=spirit_by_team,
         records=records,
         winners=winners,
         tab=tab,

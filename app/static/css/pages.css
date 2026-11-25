@@ -912,8 +912,9 @@
 /* Лендинг: чемпионы + MVP регулярки в одной строке */
 .archive-h2-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.2fr);
   align-items: baseline;
+  gap: 16px;
   margin: 32px 0 10px;
 }
 .archive-h2-row .archive-h2 { margin: 0; }
@@ -924,7 +925,8 @@
 
 .champ-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.2fr);
+  gap: 16px;
   align-items: center;
   background: var(--bg);
 }
@@ -1034,3 +1036,16 @@
 .awards-star { font-size: 17px; line-height: 1; color: var(--yellow); }
 .awards-star--regular { color: #9aa6ba; }
 .awards-star--mid { color: #6c7890; font-size: 17px; }
+
+.champ__spirit { display: flex; align-items: center; gap: 10px; padding: 12px 0; min-width: 0; flex-wrap: wrap; }
+.champ__spirit-team { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); text-decoration: none; min-width: 0; }
+.champ__spirit-team span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.champ__spirit-team:hover { color: var(--pink); }
+.champ-mvp-head--spirit { color: var(--pink); }
+@media (max-width: 720px) {
+  .archive-h2-row { grid-template-columns: 1fr; gap: 8px; }
+  .champ-row { grid-template-columns: 1fr; gap: 2px; padding-bottom: 6px; }
+  .champ__spirit { padding: 0 0 8px; }
+}
+
+.archive-table .team-title__flame { margin-left: 6px; vertical-align: -1px; }

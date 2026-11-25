@@ -96,7 +96,7 @@
       <td class="archive-table__dim">{{ loop.index }}</td>
       <td>
         {% if team.avatar %}<img class="team-avatar" src="{{ team.avatar }}" alt="" loading="lazy">{% endif %}
-        <a href="/archive/team/{{ team.id }}">{{ team.name }}</a>{% if title_counts.get(team.id) %}<span class="team-title team-title--inline">{% for _ in range(title_counts[team.id]) %}<span class="team-title__icon">★</span>{% endfor %}</span>{% endif %}{% if team.note %}<span class="archive-table__note archive-table__note--inline"> · {{ team.note }}</span>{% endif %}
+        <a href="/archive/team/{{ team.id }}">{{ team.name }}</a>{% if title_counts.get(team.id) %}<span class="team-title team-title--inline">{% for _ in range(title_counts[team.id]) %}<span class="team-title__icon">★</span>{% endfor %}</span>{% endif %}{% for season in spirit_by_team.get(team.id, []) %}<span class="team-title__flame" data-tip="Дух {{ season }}"><svg viewBox="0 0 48 48" width="14" height="14" aria-hidden="true"><path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg></span>{% endfor %}{% if team.note %}<span class="archive-table__note archive-table__note--inline"> · {{ team.note }}</span>{% endif %}
       </td>
       <td data-v="{{ team.stages|length }}">{{ team.stages|length }}</td>
       <td data-v="{{ team.gold + team.silver }}" class="medal medal--gold">{% if team.gold + team.silver %}{{ team.gold + team.silver }}{% endif %}</td>
