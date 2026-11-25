@@ -318,6 +318,10 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
             awards_by_season.append({"season": season, "awards": items})
 
     award_counts = {pid: len(items) for pid, items in archive.awards_by_player().items()}
+    award_quiet = {
+        pid: all(a["quiet"] for a in items)
+        for pid, items in archive.awards_by_player().items()
+    }
     award_tips = {
         pid: "\n".join(f'{a["title"]} {a["season"]}' for a in items)
         for pid, items in archive.awards_by_player().items()
@@ -342,6 +346,7 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         players=players_view,
         awards_by_season=awards_by_season,
         award_counts=award_counts,
+        award_quiet=award_quiet,
         award_tips=award_tips,
     )
 
