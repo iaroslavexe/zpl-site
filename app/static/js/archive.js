@@ -50,8 +50,9 @@
 // Фильтр по строкам таблиц архива
 (function () {
   document.querySelectorAll('input[data-filter]').forEach(function (input) {
-    var table = input.nextElementSibling;
-    if (!table) return;
+    var next = input.nextElementSibling;
+    var table = next && (next.matches('table') ? next : next.querySelector('table'));
+    if (!table || !table.tBodies.length) return;
     input.addEventListener('input', function () {
       var query = input.value.trim().toLowerCase();
       Array.prototype.forEach.call(table.tBodies[0].rows, function (row) {
