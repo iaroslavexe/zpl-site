@@ -353,7 +353,7 @@
         return '<a class="stage-team" href="/archive/team/' + tid + '">' +
           (team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '') +
           '<span>' + (team.name || tid) + '</span></a>';
-      }).join('');
+      }).join('<span class="team-sep">/</span>');
       return [item.season, teams, item.stages, item.games, item.goals + item.assists, item.goals, item.assists];
     });
 

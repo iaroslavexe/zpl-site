@@ -1074,3 +1074,5 @@
 @media (max-width: 720px) {
   .awards-row .archive-table__note { grid-column: 2; }
 }
+
+.team-sep { color: var(--dim); margin: 0 7px; }
