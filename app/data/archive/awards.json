@@ -155,5 +155,42 @@
       "p1010",
       "p569"
     ]
+  },
+  {
+    "season": "2021/22",
+    "type": "spirit_team",
+    "teams": [
+      "frya-crew"
+    ]
+  },
+  {
+    "season": "2022/23",
+    "type": "spirit_team",
+    "teams": [
+      "vyshka"
+    ]
+  },
+  {
+    "season": "2023/24",
+    "type": "spirit_team",
+    "teams": [
+      "golden-ring-club"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "spirit_team",
+    "teams": [
+      "frendzona-bianco",
+      "itmo"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "spirit_team",
+    "teams": [
+      "oo-long-team",
+      "masters-mix"
+    ]
   }
 ]

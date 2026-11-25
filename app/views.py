@@ -314,8 +314,13 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
     awards_by_season = []
     for season in reversed(archive.SEASONS):
         items = [a for a in archive.awards() if a["season"] == season]
-        if items:
-            awards_by_season.append({"season": season, "awards": items})
+        if not items:
+            continue
+        awards_by_season.append({
+            "season": season,
+            "personal": [a for a in items if a["players"]],
+            "teams": [a for a in items if a["teams"]],
+        })
 
     award_counts = {pid: len(items) for pid, items in archive.awards_by_player().items()}
     award_quiet = {

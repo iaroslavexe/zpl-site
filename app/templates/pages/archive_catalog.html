@@ -135,7 +135,7 @@
   {% for group in awards_by_season %}
   <section class="awards-season">
     <h2 class="awards-season__title">{{ group.season }}</h2>
-    {% for award in group.awards %}
+    {% for award in group.personal %}
     <div class="awards-row">
       <span class="mvp-badge{% if award.quiet %} mvp-badge--quiet{% endif %}">MVP</span>
       <span class="awards-row__title">{{ award.title }}</span>
@@ -146,6 +146,16 @@
           <span class="awards-person__name">{{ person.name }}</span>
         </a>
         {% endfor %}
+      </span>
+    </div>
+    {% endfor %}
+    {% if group.teams %}
+    <p class="awards-sub">Командные награды</p>
+    {% for award in group.teams %}
+    <div class="awards-row">
+      <span class="mvp-badge mvp-badge--spirit">ДУХ</span>
+      <span class="awards-row__title">{{ award.title }}</span>
+      <span class="awards-row__who">
         {% for team in award.teams %}
         <a class="awards-person" href="/archive/team/{{ team.id }}">
           {% if team.avatar %}<img class="awards-person__avatar" src="{{ team.avatar }}" alt="" loading="lazy">{% endif %}
@@ -155,6 +165,7 @@
       </span>
     </div>
     {% endfor %}
+    {% endif %}
   </section>
   {% endfor %}
 </div>

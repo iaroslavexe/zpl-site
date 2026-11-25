@@ -16,7 +16,7 @@
     offense: { title: 'Лучший в атаке' },
     defense: { title: 'Лучший в защите' },
     spirit_player: { title: 'Дух игры' },
-    spirit_team: { title: 'Дух сезона' }
+    spirit_team: { title: 'Дух игры' }
   };
 
   var root = document.getElementById('archive-app');

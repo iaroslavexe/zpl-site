@@ -30,7 +30,7 @@ AWARD_TYPES = {
     "offense": {"title": "Лучший в атаке"},
     "defense": {"title": "Лучший в защите"},
     "spirit_player": {"title": "Дух игры"},
-    "spirit_team": {"title": "Дух сезона", "team": True},
+    "spirit_team": {"title": "Дух игры", "team": True},
 }
 
 
