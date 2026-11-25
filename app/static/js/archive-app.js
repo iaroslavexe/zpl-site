@@ -243,47 +243,29 @@
     var teamById = {};
     data.teams.forEach(function (t) { teamById[t.id] = t; });
 
-    var stageGames = data.games.filter(function (g) { return g.stage === stage.id; });
-    var record = {};
-    stageGames.forEach(function (g) {
-      [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
-        var item = record[row[0]] || (record[row[0]] = { games: 0, wins: 0, losses: 0 });
-        item.games += 1;
-        if (row[1] > row[2]) item.wins += 1;
-        if (row[1] < row[2]) item.losses += 1;
-      });
+    var allGames = data.games.filter(function (g) { return g.stage === stage.id; });
+    var divisions = [];
+    stage.places.forEach(function (row) {
+      if (row[2] && divisions.indexOf(row[2]) < 0) divisions.push(row[2]);
     });
+    divisions.sort(function (a, b) { return (a === 'Mid' ? 1 : 0) - (b === 'Mid' ? 1 : 0); });
+    var multi = divisions.length > 1;
 
     var spirit = {};
     stage.sotg.forEach(function (row) { spirit[row[0]] = row[1]; });
 
-    var seats = stage.places.slice().sort(function (a, b) {
-      var da = a[2] === 'Mid' ? 1 : 0;
-      var db = b[2] === 'Mid' ? 1 : 0;
-      return da - db || a[1] - b[1];
-    }).map(function (row) {
-      var team = teamById[row[0]] || {};
-      var medal = row[1] === 1 ? 'medal--gold' : '';
-      var stats = record[row[0]] || { games: 0, wins: 0, losses: 0 };
-      var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
-      var name = avatar + link('/archive/team/' + row[0], team.name || row[0]) +
-        (row[2] ? ' <span class="archive-table__note archive-table__note--inline">' + row[2] + '</span>' : '');
-      return [
-        '<span class="medal ' + medal + '">' + row[1] + '</span>',
-        name,
-        stats.games,
-        stats.wins + '–' + stats.losses,
-        spirit[row[0]] ? spirit[row[0]].toFixed(1) : '—'
-      ];
-    });
-
-    var groups = {};
-    stageGames.slice().sort(function (a, b) {
-      return (a.group_order || 99) - (b.group_order || 99) || a.id - b.id;
-    }).forEach(function (g) {
-      var label = g.group || 'Игры';
-      (groups[label] || (groups[label] = [])).push(g);
-    });
+    function recordFor(games) {
+      var record = {};
+      games.forEach(function (g) {
+        [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
+          var item = record[row[0]] || (record[row[0]] = { games: 0, wins: 0, losses: 0 });
+          item.games += 1;
+          if (row[1] > row[2]) item.wins += 1;
+          if (row[1] < row[2]) item.losses += 1;
+        });
+      });
+      return record;
+    }
 
     function standings(games) {
       var stats = {};
@@ -322,31 +304,103 @@
       '</a>';
     }
 
-    var gamesHtml = Object.keys(groups).map(function (label) {
-      var items = groups[label];
-      var solo = items.length === 1 && label.indexOf('Группа') !== 0;
-      var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
-      block += '<h3 class="archive-group">' + label + '</h3>';
-      var teamsInBlock = {};
-      items.forEach(function (g) { teamsInBlock[g.home] = 1; teamsInBlock[g.away] = 1; });
-      var teamCount = Object.keys(teamsInBlock).length;
-      var fullRound = teamCount * (teamCount - 1) / 2;
-      var isRoundRobin = teamCount > 2 && (items.length === fullRound || items.length === fullRound * 2);
-      if (isRoundRobin) {
-        block += '<div class="group-standings">' +
-          table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
-      }
-      block += '<div class="games">' + items.map(gameRow).join('') + '</div></section>';
-      return block;
-    }).join('');
+    function seatsTable(games, division) {
+      var record = recordFor(games);
+      var rows = stage.places.filter(function (row) {
+        return !division || row[2] === division;
+      }).sort(function (a, b) { return a[1] - b[1]; }).map(function (row) {
+        var team = teamById[row[0]] || {};
+        var medal = row[1] === 1 ? 'medal--gold' : '';
+        var stats = record[row[0]] || { games: 0, wins: 0, losses: 0 };
+        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
+        return [
+          '<span class="medal ' + medal + '">' + row[1] + '</span>',
+          avatar + link('/archive/team/' + row[0], team.name || row[0]),
+          stats.games,
+          stats.wins + '–' + stats.losses,
+          spirit[row[0]] ? spirit[row[0]].toFixed(1) : '—'
+        ];
+      });
+      return table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], rows);
+    }
 
-    root.innerHTML =
-      crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
-      '<h1 class="archive-title">' + stage.season + ' · ' + (stage.name || stage.title) + '</h1>' +
-      '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
-      ' · ' + stage.division + ' дивизион · ' + stage.games_count + ' игр</p>' +
-      '<h2 class="archive-h2">Итоги этапа</h2>' + table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], seats) +
-      '<h2 class="archive-h2">Игры</h2>' + gamesHtml;
+    function blocks(games) {
+      var groups = {};
+      var order = [];
+      games.slice().sort(function (a, b) {
+        return (a.group_order || 99) - (b.group_order || 99) || a.id - b.id;
+      }).forEach(function (g) {
+        var key = g.group_key || g.group || 'Игры';
+        if (!groups[key]) {
+          groups[key] = { label: g.group || 'Игры', items: [] };
+          order.push(key);
+        }
+        groups[key].items.push(g);
+      });
+
+      return order.map(function (key) {
+        var blockData = groups[key];
+        var items = blockData.items;
+        var label = blockData.label;
+        var solo = items.length === 1 && label.indexOf('Группа') !== 0;
+        var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
+        block += '<h3 class="archive-group">' + label + '</h3>';
+        var teams = {};
+        items.forEach(function (g) { teams[g.home] = 1; teams[g.away] = 1; });
+        var teamCount = Object.keys(teams).length;
+        var fullRound = teamCount * (teamCount - 1) / 2;
+        var isRoundRobin = teamCount > 2 && (items.length === fullRound || items.length === fullRound * 2);
+        if (isRoundRobin) {
+          block += '<div class="group-standings">' +
+            table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
+        }
+        block += '<div class="games">' + items.map(gameRow).join('') + '</div></section>';
+        return block;
+      }).join('');
+    }
+
+    function divisionGames(division) {
+      if (!division) return allGames;
+      var filtered = allGames.filter(function (g) { return g.division === division; });
+      return filtered.length ? filtered : allGames;
+    }
+
+    function draw(division) {
+      var games = divisionGames(division);
+      var html = crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
+        '<h1 class="archive-title">' + stage.season + ' · ' + (stage.name || stage.title) + '</h1>' +
+        '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
+        (multi ? '' : ' · ' + stage.division + ' дивизион') +
+        ' · ' + games.length + ' ' + plural(games.length, 'игра', 'игры', 'игр') + '</p>';
+
+      if (multi) {
+        html += '<div class="archive-switch" role="tablist">' + divisions.map(function (div) {
+          return '<button class="archive-switch__btn' + (div === division ? ' is-active' : '') +
+            '" data-division="' + div + '">' + div + '</button>';
+        }).join('') + '</div>';
+      }
+
+      html += '<h2 class="archive-h2">Итоги этапа</h2>' + seatsTable(games, division) +
+        '<h2 class="archive-h2">Игры</h2>' + blocks(games);
+
+      root.innerHTML = html;
+      root.querySelectorAll('[data-division]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var next = btn.getAttribute('data-division');
+          if (history.replaceState) history.replaceState(null, '', '#' + next.toLowerCase());
+          draw(next);
+        });
+      });
+    }
+
+    var hashDivision = (location.hash || '').slice(1).toLowerCase();
+    var initial = null;
+    if (multi) {
+      initial = divisions.filter(function (d) {
+        return d.toLowerCase() === hashDivision;
+      })[0] || divisions[0];
+    }
+    draw(initial);
   }
 
   function renderGame(data, id) {
