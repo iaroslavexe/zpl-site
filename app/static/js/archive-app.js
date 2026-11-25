@@ -343,8 +343,9 @@
         var items = blockData.items;
         var label = blockData.label;
         var solo = items.length === 1 && label.indexOf('Группа') !== 0;
+        var isFinal = label.indexOf('Финал') === 0 || label.indexOf('финал') >= 0;
         var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
-        block += '<h3 class="archive-group">' + label + '</h3>';
+        block += '<h3 class="archive-group' + (isFinal ? ' archive-group--final' : '') + '">' + label + '</h3>';
         var teams = {};
         items.forEach(function (g) { teams[g.home] = 1; teams[g.away] = 1; });
         var teamCount = Object.keys(teams).length;
@@ -367,8 +368,11 @@
 
     function draw(division) {
       var games = divisionGames(division);
+      var stageName = stage.name || stage.title;
+      var isFinalStage = stageName.indexOf('Финал') >= 0;
+      if (isFinalStage) stageName = '<span class="accent-yellow">' + stageName + '</span>';
       var html = crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
-        '<h1 class="archive-title">' + stage.season + ' · ' + (stage.name || stage.title) + '</h1>' +
+        '<h1 class="archive-title">' + stage.season + ' · ' + stageName + '</h1>' +
         '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
         (multi ? '' : ' · ' + stage.division + ' дивизион') +
         ' · ' + games.length + ' ' + plural(games.length, 'игра', 'игры', 'игр') + '</p>';

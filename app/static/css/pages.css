@@ -881,3 +881,6 @@
 }
 .archive-switch__btn:hover { color: var(--text); border-color: var(--muted); }
 .archive-switch__btn.is-active { background: var(--yellow); border-color: var(--yellow); color: #0b0f18; }
+
+.archive-group--final, .archive-block--solo .archive-group--final { color: var(--yellow); }
+.accent-yellow, .archive-table a.accent-yellow { color: var(--yellow); }

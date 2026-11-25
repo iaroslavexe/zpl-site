@@ -67,7 +67,7 @@
     {% for stage in group.stages %}
     <tr>
       <td class="archive-table__dim">{{ stage.date[8:10] }}.{{ stage.date[5:7] }}.{{ stage.date[:4] }}</td>
-      <td><a href="/archive/stage/{{ stage.slug }}">{{ stage.name }}</a> <span class="archive-table__note">{{ stage.city }}</span></td>
+      <td><a href="/archive/stage/{{ stage.slug }}"{% if stage.name == 'Финал' %} class="accent-yellow"{% endif %}>{{ stage.name }}</a> <span class="archive-table__note">{{ stage.city }}</span></td>
       <td class="archive-table__dim">{% if 'финал' in stage.title.lower() %}общий{% else %}{{ stage.division }}{% endif %}</td>
       <td>{{ stage.games_count }}</td>
       <td>
