@@ -988,3 +988,18 @@
 @media (max-width: 859px) {
   .archive-cta--hero { position: static; margin: 16px 0 0; }
 }
+
+/* Тихая кнопка: контур, по наведению — жёлтое свечение */
+.archive-cta--quiet {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  font-weight: 500;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, box-shadow .25s ease;
+}
+.archive-cta--quiet:hover {
+  background: rgba(250, 183, 44, .06);
+  border-color: rgba(250, 183, 44, .55);
+  color: var(--yellow);
+  box-shadow: 0 0 0 1px rgba(250, 183, 44, .18), 0 0 22px rgba(250, 183, 44, .22);
+}
