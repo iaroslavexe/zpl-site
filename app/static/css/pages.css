@@ -984,9 +984,18 @@
 .leader__avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .leader__top { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-align: right; }
 
-.archive-cta--hero { position: absolute; right: 0; top: 0; margin: 0; }
+.archive-cta--inline {
+  display: inline-flex;
+  margin: 0 0 0 20px;
+  padding: 9px 18px;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: middle;
+  transform: translateY(-6px);
+}
 @media (max-width: 859px) {
-  .archive-cta--hero { position: static; margin: 16px 0 0; }
+  .archive-cta--inline { margin: 0 0 0 14px; padding: 7px 14px; font-size: 12.5px; transform: translateY(-2px); }
 }
 
 /* Тихая кнопка: контур, по наведению — жёлтое свечение */
