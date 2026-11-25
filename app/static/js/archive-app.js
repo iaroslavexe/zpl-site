@@ -1,14 +1,18 @@
 // Страницы архива (команда, игрок, этап, игра) — рисуем на клиенте из одного JSON.
 (function () {
-  var AWARD_TITLES = {
-    season_mvp: 'MVP сезона',
-    regular_mvp: 'MVP регулярного сезона',
-    final_mvp: 'MVP финала',
-    offense: 'Лучший в атаке',
-    defense: 'Лучший в защите',
-    spirit_player: 'Дух игры',
-    spirit_team: 'Дух сезона',
-    team_award: 'Командная награда'
+  var AWARDS = {
+    season_mvp: { title: 'MVP сезона' },
+    season_defense: { title: 'MVP сезона · защита' },
+    regular_mvp: { title: 'MVP регулярного сезона' },
+    regular_defense: { title: 'MVP регулярного сезона · защита' },
+    final_mvp: { title: 'MVP финала' },
+    final_defense: { title: 'MVP финала · защита' },
+    final_mid_mvp: { title: 'MVP финала Mid', quiet: true },
+    final_mid_defense: { title: 'MVP финала Mid · защита', quiet: true },
+    offense: { title: 'Лучший в атаке' },
+    defense: { title: 'Лучший в защите' },
+    spirit_player: { title: 'Дух игры' },
+    spirit_team: { title: 'Дух сезона' }
   };
 
   var root = document.getElementById('archive-app');
@@ -181,8 +185,9 @@
     });
     if (!list.length) return '';
     var rows = list.map(function (a) {
-      return '<div class="awards-row"><span class="mvp-badge">MVP</span>' +
-        '<span class="awards-row__title">' + (AWARD_TITLES[a.type] || a.type) + '</span>' +
+      var meta = AWARDS[a.type] || { title: a.type };
+      return '<div class="awards-row"><span class="mvp-badge' + (meta.quiet ? ' mvp-badge--quiet' : '') + '">MVP</span>' +
+        '<span class="awards-row__title">' + meta.title + '</span>' +
         '<span class="archive-table__note">' + a.season + '</span></div>';
     }).join('');
     return '<h2 class="archive-h2">Награды</h2><div class="awards awards--compact">' + rows + '</div>';

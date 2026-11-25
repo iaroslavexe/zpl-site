@@ -137,7 +137,7 @@
     <h2 class="awards-season__title">{{ group.season }}</h2>
     {% for award in group.awards %}
     <div class="awards-row">
-      <span class="mvp-badge">MVP</span>
+      <span class="mvp-badge{% if award.quiet %} mvp-badge--quiet{% endif %}">MVP</span>
       <span class="awards-row__title">{{ award.title }}</span>
       <span class="awards-row__who">
         {% for person in award.players %}

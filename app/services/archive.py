@@ -15,14 +15,18 @@ def _load(name: str) -> list:
 
 
 AWARD_TYPES = {
-    "season_mvp": {"title": "MVP сезона", "team": False},
-    "regular_mvp": {"title": "MVP регулярного сезона", "team": False},
-    "final_mvp": {"title": "MVP финала", "team": False},
-    "offense": {"title": "Лучший в атаке", "team": False},
-    "defense": {"title": "Лучший в защите", "team": False},
-    "spirit_player": {"title": "Дух игры", "team": False},
+    "season_mvp": {"title": "MVP сезона"},
+    "season_defense": {"title": "MVP сезона · защита"},
+    "regular_mvp": {"title": "MVP регулярного сезона"},
+    "regular_defense": {"title": "MVP регулярного сезона · защита"},
+    "final_mvp": {"title": "MVP финала"},
+    "final_defense": {"title": "MVP финала · защита"},
+    "final_mid_mvp": {"title": "MVP финала Mid", "quiet": True},
+    "final_mid_defense": {"title": "MVP финала Mid · защита", "quiet": True},
+    "offense": {"title": "Лучший в атаке"},
+    "defense": {"title": "Лучший в защите"},
+    "spirit_player": {"title": "Дух игры"},
     "spirit_team": {"title": "Дух сезона", "team": True},
-    "team_award": {"title": "Командная награда", "team": True},
 }
 
 
@@ -34,12 +38,13 @@ def awards() -> list:
     teams = {t["id"]: t for t in _load("teams")}
     result = []
     for item in raw:
-        meta = AWARD_TYPES.get(item["type"], {"title": item["type"], "team": False})
+        meta = AWARD_TYPES.get(item["type"], {"title": item["type"]})
         result.append({
             "season": item["season"],
             "type": item["type"],
             "title": meta["title"],
-            "team": meta["team"],
+            "team": meta.get("team", False),
+            "quiet": meta.get("quiet", False),
             "players": [players[p] for p in item.get("players", []) if p in players],
             "teams": [teams[t] for t in item.get("teams", []) if t in teams],
         })
@@ -60,6 +65,21 @@ def regular_mvp(season: str) -> list:
         if award["season"] == season and award["type"] == "regular_mvp":
             return award["players"]
     return []
+
+
+def season_head_award(season: str):
+    """Главная награда сезона: «MVP сезона» или, с 24/25, «MVP регулярного сезона»."""
+    items = [a for a in awards() if a["season"] == season]
+    for wanted in ("season_mvp", "regular_mvp"):
+        for award in items:
+            if award["type"] == wanted:
+                return award
+    return None
+
+
+def season_heads(season: str) -> list:
+    award = season_head_award(season)
+    return award["players"] if award else []
 
 
 @lru_cache(maxsize=1)

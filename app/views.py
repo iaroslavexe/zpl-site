@@ -212,7 +212,8 @@ def archive_landing() -> tuple[str, dict]:
             "avatar": team["avatar"] if team else None,
             "runners": [t[0] for t in row["teams"][1:]],
             "team_id": team["id"] if team else None,
-            "mvp": archive.regular_mvp(row["season"]),
+            "mvp": archive.season_heads(row["season"]),
+            "mvp_title": (archive.season_head_award(row["season"]) or {}).get("title", "MVP"),
         })
 
     return "pages/archive.html", _base(

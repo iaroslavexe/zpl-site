@@ -1,25 +1,21 @@
 [
-  {"season": "2021/22", "type": "regular_mvp", "players": ["p591"]},
-  {"season": "2022/23", "type": "regular_mvp", "players": ["p421"]},
-  {"season": "2023/24", "type": "regular_mvp", "players": ["p591"]},
-  {"season": "2024/25", "type": "regular_mvp", "players": ["p420"]},
-  {"season": "2025/26", "type": "regular_mvp", "players": ["p421"]},
+  {"season": "2021/22", "type": "season_mvp", "players": ["p421", "p410"]},
 
-  {"season": "2021/22", "type": "season_mvp", "players": ["p591", "p421"]},
-  {"season": "2022/23", "type": "season_mvp", "players": ["p420", "p421"]},
-  {"season": "2023/24", "type": "season_mvp", "players": ["p591", "p1220"]},
-  {"season": "2024/25", "type": "season_mvp", "players": ["p420", "p1118"]},
-  {"season": "2025/26", "type": "season_mvp", "players": ["p591", "p421"]},
+  {"season": "2022/23", "type": "season_mvp", "players": ["p421", "p591"]},
+  {"season": "2022/23", "type": "season_defense", "players": ["p1220", "p667"]},
 
+  {"season": "2023/24", "type": "season_mvp", "players": ["p1222", "p545"]},
+  {"season": "2023/24", "type": "season_defense", "players": ["p421", "p1315", "p1220"]},
+
+  {"season": "2024/25", "type": "regular_mvp", "players": ["p421", "p591"]},
+  {"season": "2024/25", "type": "regular_defense", "players": ["p421", "p520"]},
   {"season": "2024/25", "type": "final_mvp", "players": ["p591"]},
-  {"season": "2025/26", "type": "final_mvp", "players": ["p421"]},
+  {"season": "2024/25", "type": "final_defense", "players": ["p421"]},
+  {"season": "2024/25", "type": "final_mid_mvp", "players": ["p1254"]},
+  {"season": "2024/25", "type": "final_mid_defense", "players": ["p577"]},
 
-  {"season": "2023/24", "type": "offense", "players": ["p421"]},
-  {"season": "2024/25", "type": "offense", "players": ["p591"]},
-  {"season": "2023/24", "type": "defense", "players": ["p420"]},
-  {"season": "2025/26", "type": "defense", "players": ["p1118"]},
-
-  {"season": "2022/23", "type": "spirit_team", "teams": ["frendzona-bianco"]},
-  {"season": "2024/25", "type": "spirit_team", "teams": ["kobry"]},
-  {"season": "2025/26", "type": "spirit_player", "players": ["p1254"]}
+  {"season": "2025/26", "type": "regular_mvp", "players": ["p320", "p420"]},
+  {"season": "2025/26", "type": "regular_defense", "players": ["p1222", "p413"]},
+  {"season": "2025/26", "type": "final_mvp", "players": ["p1769", "p421"]},
+  {"season": "2025/26", "type": "final_mid_mvp", "players": ["p1010", "p569"]}
 ]
