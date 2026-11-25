@@ -873,6 +873,7 @@
 .team-title--inline .team-title__icon { font-size: 13px; }
 
 .archive-switch { display: inline-flex; gap: 6px; margin: 18px 0 2px; }
+#archive-switch { margin: 4px 0 20px; }
 .archive-switch__btn {
   padding: 7px 18px; border-radius: 999px; border: 1px solid var(--line-2);
   background: transparent; color: var(--muted); font: inherit; font-size: 12.5px;
