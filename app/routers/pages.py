@@ -57,7 +57,7 @@ def archive_page(request: Request):
 
 @router.get("/archive/{tab}", response_class=HTMLResponse)
 def archive_tab_page(request: Request, tab: str):
-    if tab not in ("seasons", "stages", "teams", "players"):
+    if tab not in ("seasons", "stages", "teams", "players", "awards"):
         return _render(request, views.archive_entity())
     return _render(request, views.archive_catalog(tab))
 

@@ -61,3 +61,34 @@
     });
   });
 })();
+
+
+// Подсказка для бейджей наград
+(function () {
+  var tip = null;
+  function ensureTip() {
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.className = 'award-tip';
+      document.body.appendChild(tip);
+    }
+    return tip;
+  }
+  document.addEventListener('mouseover', function (event) {
+    var el = event.target.closest('[data-tip]');
+    if (!el) return;
+    var box = ensureTip();
+    box.innerHTML = el.getAttribute('data-tip').split('\n')
+      .map(function (line) { return '<div>' + line + '</div>'; }).join('');
+    box.classList.add('is-on');
+    var rect = el.getBoundingClientRect();
+    var left = Math.min(rect.left, window.innerWidth - box.offsetWidth - 12);
+    var top = rect.bottom + 8;
+    if (top + box.offsetHeight > window.innerHeight - 8) top = rect.top - box.offsetHeight - 8;
+    box.style.left = Math.max(8, left) + 'px';
+    box.style.top = Math.max(8, top) + 'px';
+  });
+  document.addEventListener('mouseout', function (event) {
+    if (event.target.closest('[data-tip]') && tip) tip.classList.remove('is-on');
+  });
+})();

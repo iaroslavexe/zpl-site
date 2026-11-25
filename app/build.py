@@ -18,6 +18,7 @@ ARCHIVE_PAGES = {
     "archive/index.html": views.archive_landing,
     "archive/teams/index.html": lambda: views.archive_catalog("teams"),
     "archive/players/index.html": lambda: views.archive_catalog("players"),
+    "archive/awards/index.html": lambda: views.archive_catalog("awards"),
     "archive/stages/index.html": lambda: views.archive_catalog("stages"),
     "archive/seasons/index.html": lambda: views.archive_catalog("seasons"),
     "archive/entity.html": views.archive_entity,
@@ -50,7 +51,7 @@ Sitemap: {site}/sitemap.xml
 
 SITEMAP_PAGES = ["/", "/standings", "/stages", "/stats", "/rules",
                  "/archive/", "/archive/seasons/", "/archive/stages/",
-                 "/archive/teams/", "/archive/players/"]
+                 "/archive/teams/", "/archive/players/", "/archive/awards/"]
 
 
 def main() -> None:

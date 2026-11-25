@@ -1,5 +1,16 @@
 // Страницы архива (команда, игрок, этап, игра) — рисуем на клиенте из одного JSON.
 (function () {
+  var AWARD_TITLES = {
+    season_mvp: 'MVP сезона',
+    regular_mvp: 'MVP регулярного сезона',
+    final_mvp: 'MVP финала',
+    offense: 'Лучший в атаке',
+    defense: 'Лучший в защите',
+    spirit_player: 'Дух игры',
+    spirit_team: 'Дух сезона',
+    team_award: 'Командная награда'
+  };
+
   var root = document.getElementById('archive-app');
   if (!root) return;
 
@@ -164,6 +175,19 @@
     enableSorting(root);
   }
 
+  function awardsBlock(data, player) {
+    var list = (data.awards || []).filter(function (a) {
+      return (a.players || []).indexOf(player.id) >= 0;
+    });
+    if (!list.length) return '';
+    var rows = list.map(function (a) {
+      return '<div class="awards-row"><span class="mvp-badge">MVP</span>' +
+        '<span class="awards-row__title">' + (AWARD_TITLES[a.type] || a.type) + '</span>' +
+        '<span class="archive-table__note">' + a.season + '</span></div>';
+    }).join('');
+    return '<h2 class="archive-h2">Награды</h2><div class="awards awards--compact">' + rows + '</div>';
+  }
+
   function renderPlayer(data, id) {
     var player = data.players.filter(function (p) { return p.id === id; })[0];
     if (!player) return render404();
@@ -230,6 +254,7 @@
         (player.note ? '<p class="archive-lead">' + player.note + '</p>' : '') +
         stats([[totals.stages, 'этапов'], [totals.games, 'игр'],
                [totals.goals + totals.assists, 'очков'], [totals.goals, 'голов'], [totals.assists, 'ассистов']]) +
+        awardsBlock(data, player) +
         '<h2 class="archive-h2">Сезоны и команды</h2>' +
         table(['Сезон', 'Команды', 'Этапов', 'Игр', 'Очки', 'Голы', 'Ассисты'], seasonsRows) +
         '<h2 class="archive-h2">По этапам</h2>' +

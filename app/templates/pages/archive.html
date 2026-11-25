@@ -15,21 +15,35 @@
   <a class="archive-tile" href="/archive/players"><b>{{ summary.players }}</b><span>{{ summary.players_word }}</span></a>
 </div>
 
-<div class="archive-duo">
-<div class="archive-duo__col">
-<h2 class="archive-h2 archive-h2--yellow">Чемпионы</h2>
+<div class="archive-h2-row">
+  <h2 class="archive-h2 archive-h2--yellow">Чемпионы</h2>
+  <div class="champ-mvp-head">
+    <span class="mvp-badge">MVP</span>
+    <span class="champ-mvp-head__label">Регулярного сезона</span>
+    <a class="champ-mvp-head__all" href="/archive/awards">Все награды</a>
+  </div>
+</div>
+
 <div class="archive-champs">
   {% for row in champions %}
-  <a class="champ" href="{{ '/archive/team/' + row.team_id if row.team_id else '/archive/seasons' }}">
-    <span class="champ__season">{{ row.season }}</span>
-    {% if row.avatar %}<img class="champ__avatar" src="{{ row.avatar }}" alt="" loading="lazy">{% endif %}
-    <span class="champ__name">{{ row.winner }}</span>
-  </a>
+  <div class="champ-row">
+    <a class="champ" href="{{ '/archive/team/' + row.team_id if row.team_id else '/archive/seasons' }}">
+      <span class="champ__season">{{ row.season }}</span>
+      {% if row.avatar %}<img class="champ__avatar" src="{{ row.avatar }}" alt="" loading="lazy">{% endif %}
+      <span class="champ__name">{{ row.winner }}</span>
+    </a>
+    <div class="champ__mvp">
+      {% for person in row.mvp %}
+      <a class="champ__mvp-person" href="/archive/player/{{ person.id }}">
+        {% if person.avatar %}<img class="champ__mvp-avatar" src="{{ person.avatar }}" alt="" loading="lazy">{% endif %}
+        <span>{{ person.name }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
   {% endfor %}
 </div>
 
-</div>
-<div class="archive-duo__col">
 <h2 class="archive-h2 archive-h2--yellow">Лидеры за всё время</h2>
 <div class="archive-leaders">
   {% for item in leaders %}
@@ -47,7 +61,5 @@
 </div>
 
 <a class="archive-cta" href="/archive/seasons">Смотреть архив</a>
-</div>
-</div>
 
 {% endblock %}

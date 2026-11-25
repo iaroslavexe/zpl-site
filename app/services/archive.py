@@ -14,6 +14,54 @@ def _load(name: str) -> list:
     return load(f"archive/{name}.json") if path.exists() else []
 
 
+AWARD_TYPES = {
+    "season_mvp": {"title": "MVP сезона", "team": False},
+    "regular_mvp": {"title": "MVP регулярного сезона", "team": False},
+    "final_mvp": {"title": "MVP финала", "team": False},
+    "offense": {"title": "Лучший в атаке", "team": False},
+    "defense": {"title": "Лучший в защите", "team": False},
+    "spirit_player": {"title": "Дух игры", "team": False},
+    "spirit_team": {"title": "Дух сезона", "team": True},
+    "team_award": {"title": "Командная награда", "team": True},
+}
+
+
+@lru_cache(maxsize=1)
+def awards() -> list:
+    """Личные и командные награды: сезон, тип, победители."""
+    raw = _load("awards")
+    players = {p["id"]: p for p in _load("players")}
+    teams = {t["id"]: t for t in _load("teams")}
+    result = []
+    for item in raw:
+        meta = AWARD_TYPES.get(item["type"], {"title": item["type"], "team": False})
+        result.append({
+            "season": item["season"],
+            "type": item["type"],
+            "title": meta["title"],
+            "team": meta["team"],
+            "players": [players[p] for p in item.get("players", []) if p in players],
+            "teams": [teams[t] for t in item.get("teams", []) if t in teams],
+        })
+    return result
+
+
+@lru_cache(maxsize=1)
+def awards_by_player() -> dict:
+    grouped: dict = {}
+    for award in awards():
+        for player in award["players"]:
+            grouped.setdefault(player["id"], []).append(award)
+    return grouped
+
+
+def regular_mvp(season: str) -> list:
+    for award in awards():
+        if award["season"] == season and award["type"] == "regular_mvp":
+            return award["players"]
+    return []
+
+
 @lru_cache(maxsize=1)
 def data() -> dict:
     stages = _load("stages")

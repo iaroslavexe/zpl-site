@@ -212,6 +212,7 @@ def archive_landing() -> tuple[str, dict]:
             "avatar": team["avatar"] if team else None,
             "runners": [t[0] for t in row["teams"][1:]],
             "team_id": team["id"] if team else None,
+            "mvp": archive.regular_mvp(row["season"]),
         })
 
     return "pages/archive.html", _base(
@@ -309,6 +310,18 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         if items:
             grouped.append({"season": season, "stages": items})
 
+    awards_by_season = []
+    for season in reversed(archive.SEASONS):
+        items = [a for a in archive.awards() if a["season"] == season]
+        if items:
+            awards_by_season.append({"season": season, "awards": items})
+
+    award_counts = {pid: len(items) for pid, items in archive.awards_by_player().items()}
+    award_tips = {
+        pid: "\n".join(f'{a["title"]} {a["season"]}' for a in items)
+        for pid, items in archive.awards_by_player().items()
+    }
+
     return "pages/archive_catalog.html", _base(
         "archive",
         canonical=f"/archive/{tab}",
@@ -326,6 +339,9 @@ def archive_catalog(tab: str = "seasons") -> tuple[str, dict]:
         stage_groups=grouped,
         teams=teams_view,
         players=players_view,
+        awards_by_season=awards_by_season,
+        award_counts=award_counts,
+        award_tips=award_tips,
     )
 
 
