@@ -1043,9 +1043,21 @@
 .champ__spirit-team:hover { color: var(--pink); }
 .champ-mvp-head--spirit { color: var(--pink); }
 @media (max-width: 720px) {
-  .archive-h2-row { grid-template-columns: 1fr; gap: 8px; }
-  .champ-row { grid-template-columns: 1fr; gap: 2px; padding-bottom: 6px; }
-  .champ__spirit { padding: 0 0 8px; }
+  .archive-h2-row { grid-template-columns: 1fr; gap: 0; margin: 26px 0 4px; }
+  .archive-h2-row .champ-mvp-head { display: none; }
+  .champ-row { display: block; padding: 14px 0; }
+  .champ-row .champ { padding: 0 0 10px; }
+  .champ__spirit, .champ__mvp { padding: 0 0 8px; gap: 8px 12px; flex-wrap: wrap; }
+  .champ__mvp:last-child { padding-bottom: 0; }
+}
+.champ__mini-label { display: none; }
+@media (max-width: 720px) {
+  .champ__mini-label {
+    display: inline-block; font-size: 9px; letter-spacing: .16em;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .champ__spirit .champ__mini-label { color: var(--pink); }
+  .champ__mvp .champ__mini-label { color: var(--yellow); }
 }
 
 .archive-table .team-title__flame { margin-left: 6px; vertical-align: -1px; }

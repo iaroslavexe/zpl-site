@@ -37,6 +37,7 @@
       <span class="champ__name">{{ row.winner }}</span>
     </a>
     <div class="champ__spirit">
+      <span class="champ__mini-label">Дух</span>
       {% for team in row.spirit %}
       <a class="champ__spirit-team" href="/archive/team/{{ team.id }}">
         {% if team.avatar %}<img class="champ__mvp-avatar" src="{{ team.avatar }}" alt="" loading="lazy">{% endif %}
@@ -45,6 +46,7 @@
       {% endfor %}
     </div>
     <div class="champ__mvp" title="{{ row.mvp_title }}">
+      <span class="champ__mini-label">MVP</span>
       {% for person in row.mvp %}
       {% if not loop.first %}<span class="champ__mvp-sep">/</span>{% endif %}
       <a class="champ__mvp-person" href="/archive/player/{{ person.id }}">
