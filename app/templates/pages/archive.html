@@ -48,14 +48,14 @@
 <div class="archive-leaders">
   {% for item in leaders %}
   <a class="leader" href="/archive/player/{{ item.player.id }}">
-    <span class="leader__left">
-      <span class="leader__top">
-        <span class="leader__value">{{ item.value }}</span>
-        <span class="leader__unit">{{ item.unit }}</span>
-      </span>
+    <span class="leader__person">
+      {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
       <span class="leader__name">{{ item.player.name }}</span>
     </span>
-    {% if item.player.avatar %}<img class="leader__avatar" src="{{ item.player.avatar }}" alt="" loading="lazy">{% endif %}
+    <span class="leader__top">
+      <span class="leader__value">{{ item.value }}</span>
+      <span class="leader__unit">{{ item.unit }}</span>
+    </span>
   </a>
   {% endfor %}
 </div>

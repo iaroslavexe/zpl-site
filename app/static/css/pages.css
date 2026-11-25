@@ -980,3 +980,7 @@
   .awards-row { grid-template-columns: 52px minmax(0, 1fr); row-gap: 6px; }
   .awards-row__who { grid-column: 2; justify-content: flex-start; gap: 12px; }
 }
+
+.leader__person { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+.leader__avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.leader__top { display: flex; align-items: baseline; gap: 6px; }
