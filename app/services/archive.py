@@ -8,6 +8,8 @@ from app.services.storage import load
 ARCHIVE_DIR = Path(DATA_DIR) / "archive"
 SEASONS = ("2021/22", "2022/23", "2023/24", "2024/25", "2025/26")
 
+TEAM_AWARD_ORDER = ("champion", "regular_winner_central", "regular_winner_spb", "mid_winner", "spirit_team")
+
 
 def _load(name: str) -> list:
     path = ARCHIVE_DIR / f"{name}.json"
@@ -31,6 +33,10 @@ AWARD_TYPES = {
     "defense": {"title": "Лучший в защите"},
     "spirit_player": {"title": "Дух игры"},
     "spirit_team": {"title": "Дух игры", "team": True},
+    "champion": {"title": "Чемпион сезона", "team": True},
+    "regular_winner_central": {"title": "Победитель регулярного сезона · Центральный", "team": True},
+    "regular_winner_spb": {"title": "Победитель регулярного сезона · Северо-западный", "team": True},
+    "mid_winner": {"title": "Победитель Mid дивизиона", "team": True},
 }
 
 

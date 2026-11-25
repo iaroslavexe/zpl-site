@@ -192,5 +192,82 @@
       "oo-long-team",
       "masters-mix"
     ]
+  },
+  {
+    "season": "2021/22",
+    "type": "champion",
+    "teams": [
+      "kobry"
+    ]
+  },
+  {
+    "season": "2022/23",
+    "type": "champion",
+    "teams": [
+      "kobry"
+    ]
+  },
+  {
+    "season": "2023/24",
+    "type": "champion",
+    "teams": [
+      "kobry"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "champion",
+    "teams": [
+      "pu-er-tea-m"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "champion",
+    "teams": [
+      "gadyuki"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_winner_central",
+    "teams": [
+      "kobry"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "regular_winner_spb",
+    "teams": [
+      "blyu-traktor"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_winner_central",
+    "teams": [
+      "kobry"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "regular_winner_spb",
+    "teams": [
+      "blyu-traktor"
+    ]
+  },
+  {
+    "season": "2024/25",
+    "type": "mid_winner",
+    "teams": [
+      "pravyy-biven"
+    ]
+  },
+  {
+    "season": "2025/26",
+    "type": "mid_winner",
+    "teams": [
+      "frendzona-bianco"
+    ]
   }
 ]
