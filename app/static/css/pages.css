@@ -984,4 +984,7 @@
 .leader__avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .leader__top { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-align: right; }
 
-.archive-cta--top { margin: 0 0 24px; }
+.archive-cta--hero { position: absolute; right: 0; top: 0; margin: 0; }
+@media (max-width: 859px) {
+  .archive-cta--hero { position: static; margin: 16px 0 0; }
+}
