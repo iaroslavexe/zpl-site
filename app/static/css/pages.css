@@ -804,7 +804,6 @@
 .leader__value { font-size: 30px; font-weight: 600; letter-spacing: -.01em; color: var(--yellow); }
 .leader__unit { font-size: 13px; color: var(--dim); }
 .leader__name { font-size: 16px; line-height: 1.2; margin-top: 2px; }
-.leader:first-child { padding-left: 0; }
 .leader:hover .leader__name { color: var(--yellow); }
 
 .archive-cta { display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; margin-top: 26px; padding: 12px 24px; border-radius: 999px; background: var(--yellow); color: #14100a; font-size: 14.5px; font-weight: 600; text-decoration: none; }
