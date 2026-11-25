@@ -885,3 +885,26 @@
 
 .archive-group--final, .archive-block--solo .archive-group--final { color: var(--yellow); }
 .accent-yellow, .archive-table a.accent-yellow { color: var(--yellow); }
+
+/* Бейдж награды MVP — контурный, один стиль для всех наград */
+.mvp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--yellow);
+  box-shadow: inset 0 0 0 1px rgba(250, 183, 44, .72);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-transform: uppercase;
+  vertical-align: 1px;
+  white-space: nowrap;
+  cursor: default;
+}
+.mvp-badge:hover { background: rgba(250, 183, 44, .1); }
+.mvp-badge__count { margin-left: 4px; font-size: 10px; color: var(--muted); }
