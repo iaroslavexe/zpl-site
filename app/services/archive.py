@@ -19,6 +19,10 @@ AWARD_TYPES = {
     "season_defense": {"title": "MVP сезона · защита"},
     "regular_mvp": {"title": "MVP регулярного сезона"},
     "regular_defense": {"title": "MVP регулярного сезона · защита"},
+    "regular_mvp_central": {"title": "MVP регулярного сезона · Центральный"},
+    "regular_defense_central": {"title": "MVP регулярного сезона · защита · Центральный"},
+    "regular_mvp_spb": {"title": "MVP регулярного сезона · Северо-западный"},
+    "regular_defense_spb": {"title": "MVP регулярного сезона · защита · Северо-западный"},
     "final_mvp": {"title": "MVP финала"},
     "final_defense": {"title": "MVP финала · защита"},
     "final_mid_mvp": {"title": "MVP финала Mid", "quiet": True},
@@ -70,7 +74,7 @@ def regular_mvp(season: str) -> list:
 def season_head_award(season: str):
     """Главная награда сезона: «MVP сезона» или, с 24/25, «MVP регулярного сезона»."""
     items = [a for a in awards() if a["season"] == season]
-    for wanted in ("season_mvp", "regular_mvp"):
+    for wanted in ("season_mvp", "regular_mvp_central", "regular_mvp"):
         for award in items:
             if award["type"] == wanted:
                 return award
