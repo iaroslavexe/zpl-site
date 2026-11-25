@@ -237,25 +237,36 @@
       }
     });
 
-    // командные заслуги: ≥2 этапа за команду в сезоне, либо финал в 24/25 и 25/26
+    // командные заслуги: сезонные — ≥2 этапа за команду;
+    // в 24/25–25/26 регулярка и финал считаются отдельно
     var perSeasonTeam = {};
     (player.by_stage || []).forEach(function (row) {
       var stage = stageById[row[0]];
       if (!stage || !row[3]) return;
       var season = perSeasonTeam[stage.season] || (perSeasonTeam[stage.season] = {});
-      var stat = season[row[3]] || (season[row[3]] = { stages: 0, final: false });
+      var stat = season[row[3]] || (season[row[3]] = { stages: 0, regular: 0, final: false });
       stat.stages += 1;
-      if ((stage.name || '').indexOf('Финал') >= 0) stat.final = true;
+      if ((stage.name || '').indexOf('Финал') >= 0) {
+        stat.final = true;
+      } else {
+        stat.regular += 1;
+      }
     });
+
+    function teamAwardFits(award, stat) {
+      if (!stat) return false;
+      var splitSeason = award.season === '2024/25' || award.season === '2025/26';
+      if (!splitSeason) return stat.stages >= 2;
+      if (award.type === 'champion' || award.type === 'mid_winner') return stat.final;
+      if (award.type === 'regular_winner_central' || award.type === 'regular_winner_spb') return stat.regular >= 2;
+      return stat.stages >= 2;
+    }
 
     (data.awards || []).forEach(function (award) {
       if (!(award.teams || []).length) return;
       var seasonTeams = perSeasonTeam[award.season] || {};
-      var finalSeason = award.season === '2024/25' || award.season === '2025/26';
       award.teams.forEach(function (tid) {
-        var stat = seasonTeams[tid];
-        if (!stat) return;
-        if (stat.stages >= 2 || (stat.final && finalSeason)) {
+        if (teamAwardFits(award, seasonTeams[tid])) {
           items.push({ award: award, teamId: tid });
         }
       });
