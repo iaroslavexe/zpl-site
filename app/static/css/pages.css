@@ -1049,3 +1049,7 @@
 }
 
 .archive-table .team-title__flame { margin-left: 6px; vertical-align: -1px; }
+
+.h2-star { margin-left: 8px; color: var(--yellow); font-size: .9em; }
+.champ-mvp-head__label--spirit { color: var(--pink); }
+.champ-mvp-head__label--season { color: var(--yellow); }
