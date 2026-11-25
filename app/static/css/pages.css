@@ -1065,3 +1065,12 @@
 .h2-star { margin-left: 8px; color: var(--yellow); font-size: .9em; }
 .champ-mvp-head__label--spirit { color: var(--pink); }
 .champ-mvp-head__label--season { color: var(--yellow); }
+
+.stage-team { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); text-decoration: none; font-size: 12.5px; white-space: nowrap; }
+.stage-team:hover { color: var(--yellow); }
+.stage-team .team-avatar { margin-right: 0; }
+.awards-row__team { color: var(--dim); }
+
+@media (max-width: 720px) {
+  .awards-row .archive-table__note { grid-column: 2; }
+}

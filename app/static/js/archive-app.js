@@ -16,7 +16,11 @@
     offense: { title: 'Лучший в атаке' },
     defense: { title: 'Лучший в защите' },
     spirit_player: { title: 'Дух игры' },
-    spirit_team: { title: 'Дух игры' }
+    spirit_team: { title: 'Дух игры' },
+    champion: { title: 'Чемпион сезона' },
+    regular_winner_central: { title: 'Победитель регулярного сезона · Центральный' },
+    regular_winner_spb: { title: 'Победитель регулярного сезона · Северо-западный' },
+    mid_winner: { title: 'Победитель Mid дивизиона' }
   };
 
   var root = document.getElementById('archive-app');
@@ -164,13 +168,26 @@
       });
     });
 
-    var players = data.players.filter(function (p) {
-      return p.seasons.some(function (s) { return s.teams.indexOf(id) >= 0; });
-    }).sort(function (a, b) { return (b.goals + b.assists) - (a.goals + a.assists); })
-      .map(function (p) {
-        return [link('/archive/player/' + p.id, p.name), p.stages, p.games || 0,
-          p.goals + p.assists, p.goals, p.assists];
+    var players = data.players.map(function (p) {
+      var own = { stages: 0, games: 0, goals: 0, assists: 0 };
+      (p.by_stage || []).forEach(function (row) {
+        if (row[3] !== id) return;
+        own.stages += 1;
+        own.games += row[4] || 0;
+        own.goals += row[1];
+        own.assists += row[2];
       });
+      return { player: p, own: own };
+    }).filter(function (item) {
+      return item.own.stages > 0;
+    }).sort(function (a, b) {
+      var pa = a.own.goals + a.own.assists, pb = b.own.goals + b.own.assists;
+      return pb - pa || b.own.stages - a.own.stages;
+    }).map(function (item) {
+      var p = item.player, own = item.own;
+      return [link('/archive/player/' + p.id, p.name), own.stages, own.games,
+        own.goals + own.assists, own.goals, own.assists];
+    });
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive/teams', 'Команды'], [null, team.name]]) +
@@ -193,17 +210,75 @@
     enableSorting(root);
   }
 
+  var SPIRIT_FLAME_SMALL = '<svg viewBox="0 0 48 48" width="17" height="17" aria-hidden="true">' +
+    '<path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg>';
+
+  function awardMark(award) {
+    if (award.type === 'champion') return '<span class="awards-star">★</span>';
+    if (award.type === 'regular_winner_central' || award.type === 'regular_winner_spb') {
+      return '<span class="awards-star awards-star--regular">★</span>';
+    }
+    if (award.type === 'mid_winner') return '<span class="awards-star awards-star--mid">☆</span>';
+    if (award.type === 'spirit_team') return '<span class="spirit-flame">' + SPIRIT_FLAME_SMALL + '</span>';
+    return '<span class="mvp-badge' + (award.quiet ? ' mvp-badge--quiet' : '') + '">MVP</span>';
+  }
+
   function awardsBlock(data, player) {
-    var list = (data.awards || []).filter(function (a) {
-      return (a.players || []).indexOf(player.id) >= 0;
+    var stageById = {};
+    data.stages.forEach(function (s) { stageById[s.id] = s; });
+    var teamById = {};
+    data.teams.forEach(function (t) { teamById[t.id] = t; });
+
+    var items = [];
+
+    (data.awards || []).forEach(function (award) {
+      if ((award.players || []).indexOf(player.id) >= 0) {
+        items.push({ award: award, teamId: null });
+      }
     });
-    if (!list.length) return '';
-    var rows = list.map(function (a) {
-      var meta = AWARDS[a.type] || { title: a.type };
-      return '<div class="awards-row"><span class="mvp-badge' + (meta.quiet ? ' mvp-badge--quiet' : '') + '">MVP</span>' +
-        '<span class="awards-row__title">' + meta.title + '</span>' +
-        '<span class="archive-table__note">' + a.season + '</span></div>';
+
+    // командные заслуги: ≥2 этапа за команду в сезоне, либо финал в 24/25 и 25/26
+    var perSeasonTeam = {};
+    (player.by_stage || []).forEach(function (row) {
+      var stage = stageById[row[0]];
+      if (!stage || !row[3]) return;
+      var season = perSeasonTeam[stage.season] || (perSeasonTeam[stage.season] = {});
+      var stat = season[row[3]] || (season[row[3]] = { stages: 0, final: false });
+      stat.stages += 1;
+      if ((stage.name || '').indexOf('Финал') >= 0) stat.final = true;
+    });
+
+    (data.awards || []).forEach(function (award) {
+      if (!(award.teams || []).length) return;
+      var seasonTeams = perSeasonTeam[award.season] || {};
+      var finalSeason = award.season === '2024/25' || award.season === '2025/26';
+      award.teams.forEach(function (tid) {
+        var stat = seasonTeams[tid];
+        if (!stat) return;
+        if (stat.stages >= 2 || (stat.final && finalSeason)) {
+          items.push({ award: award, teamId: tid });
+        }
+      });
+    });
+
+    if (!items.length) return '';
+
+    items.sort(function (a, b) {
+      if (a.award.season !== b.award.season) return a.award.season < b.award.season ? 1 : -1;
+      return 0;
+    });
+
+    var rows = items.map(function (item) {
+      var award = item.award;
+      var meta = AWARDS[award.type] || { title: award.type };
+      var team = item.teamId ? teamById[item.teamId] : null;
+      return '<div class="awards-row">' +
+        '<span class="awards-row__mark">' + awardMark(award) + '</span>' +
+        '<span class="awards-row__title">' + meta.title +
+          (team ? '<span class="awards-row__team"> · ' + team.name + '</span>' : '') + '</span>' +
+        '<span class="archive-table__note">' + award.season + '</span></div>';
     }).join('');
+
     return '<h2 class="archive-h2">Награды</h2><div class="awards awards--compact">' + rows + '</div>';
   }
 
@@ -217,7 +292,7 @@
 
     var totals = { stages: 0, games: 0, goals: 0, assists: 0 };
     var seasonStats = {};
-    var rows = [];
+    var bySeason = {};
 
     (player.by_stage || []).forEach(function (row) {
       var stage = stageById[row[0]];
@@ -242,8 +317,16 @@
         if (row[3] && p[0] === row[3]) place = p[1];
       });
 
-      rows.push([
-        '<a href="/archive/stage/' + stage.slug + '">' + stage.season + ' · ' + (stage.name || stage.title) + '</a>',
+      var team = row[3] ? teamById[row[3]] : null;
+      var teamCell = team
+        ? '<a class="stage-team" href="/archive/team/' + team.id + '">' +
+          (team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '') +
+          '<span>' + team.name + '</span></a>'
+        : '';
+
+      (bySeason[stage.season] || (bySeason[stage.season] = [])).push([
+        '<a href="/archive/stage/' + stage.slug + '">' + (stage.name || stage.title) + '</a>',
+        teamCell,
         place,
         games,
         row[1] + row[2],
@@ -255,14 +338,30 @@
     var seasonsRows = Object.keys(seasonStats).sort().map(function (key) {
       var item = seasonStats[key];
       var teams = Object.keys(item.teams).map(function (tid) {
-        return link('/archive/team/' + tid, (teamById[tid] || {}).name || tid);
-      }).join(', ');
+        var team = teamById[tid] || {};
+        return '<a class="stage-team" href="/archive/team/' + tid + '">' +
+          (team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '') +
+          '<span>' + (team.name || tid) + '</span></a>';
+      }).join('');
       return [item.season, teams, item.stages, item.games, item.goals + item.assists, item.goals, item.assists];
     });
+
+    function stageTable() {
+      var head = '<thead><tr><th>Этап</th><th>Команда</th><th>Место</th><th>Игр</th><th>Очки</th><th>Голы</th><th>Ассисты</th></tr></thead>';
+      var body = Object.keys(bySeason).sort().map(function (season) {
+        var rows = bySeason[season].map(function (cells) {
+          return '<tr>' + cells.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>';
+        }).join('');
+        return '<tbody class="archive-season"><tr class="archive-season__row"><td colspan="7">' + season + '</td></tr>' + rows + '</tbody>';
+      }).join('');
+      return '<div class="archive-scroll"><table class="archive-table archive-table--stages">' + head + body + '</table></div>';
+    }
 
     var avatar = player.avatar
       ? '<img class="archive-player__avatar" src="' + player.avatar + '" alt="" loading="lazy">'
       : '';
+
+    var points = totals.goals + totals.assists;
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive/players', 'Игроки'], [null, player.name]]) +
@@ -271,184 +370,19 @@
           '<h1 class="archive-title">' + player.name + '</h1>' + avatar +
         '</div>' +
         (player.note ? '<p class="archive-lead">' + player.note + '</p>' : '') +
-        stats([[totals.stages, 'этапов'], [totals.games, 'игр'],
-               [totals.goals + totals.assists, 'очков'], [totals.goals, 'голов'], [totals.assists, 'ассистов']]) +
+        stats([
+          [totals.stages, plural(totals.stages, 'этап', 'этапа', 'этапов')],
+          [totals.games, plural(totals.games, 'игра', 'игры', 'игр')],
+          [points, plural(points, 'очко', 'очка', 'очков')],
+          [totals.goals, plural(totals.goals, 'гол', 'гола', 'голов')],
+          [totals.assists, plural(totals.assists, 'ассист', 'ассиста', 'ассистов')]
+        ]) +
         awardsBlock(data, player) +
         '<h2 class="archive-h2">Сезоны и команды</h2>' +
         table(['Сезон', 'Команды', 'Этапов', 'Игр', 'Очки', 'Голы', 'Ассисты'], seasonsRows) +
         '<h2 class="archive-h2">По этапам</h2>' +
-        table(['Этап', 'Место', 'Игр', 'Очки', 'Голы', 'Ассисты'], rows) +
+        stageTable() +
       '</div>';
-  }
-
-  function renderStage(data, slug) {
-    var stage = data.stages.filter(function (s) { return s.slug === slug; })[0];
-    if (!stage) return render404();
-    var teamById = {};
-    data.teams.forEach(function (t) { teamById[t.id] = t; });
-
-    var allGames = data.games.filter(function (g) { return g.stage === stage.id; });
-    var divisions = [];
-    stage.places.forEach(function (row) {
-      if (row[2] && divisions.indexOf(row[2]) < 0) divisions.push(row[2]);
-    });
-    divisions.sort(function (a, b) { return (a === 'Mid' ? 1 : 0) - (b === 'Mid' ? 1 : 0); });
-    var multi = divisions.length > 1;
-
-    var spirit = {};
-    stage.sotg.forEach(function (row) { spirit[row[0]] = row[1]; });
-
-    function recordFor(games) {
-      var record = {};
-      games.forEach(function (g) {
-        [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
-          var item = record[row[0]] || (record[row[0]] = { games: 0, wins: 0, losses: 0 });
-          item.games += 1;
-          if (row[1] > row[2]) item.wins += 1;
-          if (row[1] < row[2]) item.losses += 1;
-        });
-      });
-      return record;
-    }
-
-    function standings(games) {
-      var stats = {};
-      games.forEach(function (g) {
-        [[g.home, g.hs, g.vs], [g.away, g.vs, g.hs]].forEach(function (row) {
-          var item = stats[row[0]] || (stats[row[0]] = { wins: 0, losses: 0, diff: 0 });
-          item.diff += row[1] - row[2];
-          if (row[1] > row[2]) item.wins += 1;
-          if (row[1] < row[2]) item.losses += 1;
-        });
-      });
-      return Object.keys(stats).sort(function (a, b) {
-        return stats[b].wins - stats[a].wins || stats[b].diff - stats[a].diff;
-      }).map(function (id, index) {
-        var team = teamById[id] || {};
-        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
-        return [index + 1, avatar + link('/archive/team/' + id, team.name || id), stats[id].wins,
-          stats[id].losses, (stats[id].diff > 0 ? '+' : '') + stats[id].diff];
-      });
-    }
-
-    function gameRow(g) {
-      var home = teamById[g.home] || {};
-      var away = teamById[g.away] || {};
-      var homeWin = g.hs > g.vs ? ' is-win' : '';
-      var awayWin = g.vs > g.hs ? ' is-win' : '';
-      return '<a class="game-row" href="/archive/game/' + g.id + '">' +
-        '<span class="game-row__time"></span>' +
-        '<span class="game-row__team game-row__team--home' + homeWin + '">' +
-          (home.avatar ? '<img src="' + home.avatar + '" alt="" loading="lazy">' : '') +
-          '<span class="game-row__name">' + (home.name || g.home_name) + '</span></span>' +
-        '<span class="game-row__score">' + g.hs + ' : ' + g.vs + '</span>' +
-        '<span class="game-row__team game-row__team--away' + awayWin + '">' +
-          '<span class="game-row__name">' + (away.name || g.away_name) + '</span>' +
-          (away.avatar ? '<img src="' + away.avatar + '" alt="" loading="lazy">' : '') + '</span>' +
-      '</a>';
-    }
-
-    function seatsTable(games, division) {
-      var record = recordFor(games);
-      var rows = stage.places.filter(function (row) {
-        return !division || row[2] === division;
-      }).sort(function (a, b) { return a[1] - b[1]; }).map(function (row) {
-        var team = teamById[row[0]] || {};
-        var medal = row[1] === 1 ? 'medal--gold' : '';
-        var stats = record[row[0]] || { games: 0, wins: 0, losses: 0 };
-        var avatar = team.avatar ? '<img class="team-avatar" src="' + team.avatar + '" alt="" loading="lazy">' : '';
-        return [
-          '<span class="medal ' + medal + '">' + row[1] + '</span>',
-          avatar + link('/archive/team/' + row[0], team.name || row[0]),
-          stats.games,
-          stats.wins + '–' + stats.losses,
-          spirit[row[0]] ? spirit[row[0]].toFixed(1) : '—'
-        ];
-      });
-      return table(['Место', 'Команда', 'Игр', 'В–П', 'Дух'], rows);
-    }
-
-    function blocks(games) {
-      var groups = {};
-      var order = [];
-      games.slice().sort(function (a, b) {
-        return (a.group_order || 99) - (b.group_order || 99) || a.id - b.id;
-      }).forEach(function (g) {
-        var key = g.group_key || g.group || 'Игры';
-        if (!groups[key]) {
-          groups[key] = { label: g.group || 'Игры', items: [] };
-          order.push(key);
-        }
-        groups[key].items.push(g);
-      });
-
-      return order.map(function (key) {
-        var blockData = groups[key];
-        var items = blockData.items;
-        var label = blockData.label;
-        var solo = items.length === 1 && label.indexOf('Группа') !== 0;
-        var isFinal = label.indexOf('Финал') === 0 || label.indexOf('финал') >= 0;
-        var block = '<section class="archive-block' + (solo ? ' archive-block--solo' : '') + '">';
-        block += '<h3 class="archive-group' + (isFinal ? ' archive-group--final' : '') + '">' + label + '</h3>';
-        var teams = {};
-        items.forEach(function (g) { teams[g.home] = 1; teams[g.away] = 1; });
-        var teamCount = Object.keys(teams).length;
-        var fullRound = teamCount * (teamCount - 1) / 2;
-        var isRoundRobin = teamCount > 2 && (items.length === fullRound || items.length === fullRound * 2);
-        if (isRoundRobin) {
-          block += '<div class="group-standings">' +
-            table(['#', 'Команда', 'В', 'П', '+/–'], standings(items)) + '</div>';
-        }
-        block += '<div class="games">' + items.map(gameRow).join('') + '</div></section>';
-        return block;
-      }).join('');
-    }
-
-    function divisionGames(division) {
-      if (!division) return allGames;
-      var filtered = allGames.filter(function (g) { return g.division === division; });
-      return filtered.length ? filtered : allGames;
-    }
-
-    function draw(division) {
-      var games = divisionGames(division);
-      var stageName = stage.name || stage.title;
-      var isFinalStage = stageName.indexOf('Финал') >= 0;
-      if (isFinalStage) stageName = '<span class="accent-yellow">' + stageName + '</span>';
-      var html = crumbs([['/archive', 'Архив'], ['/archive/stages', 'Этапы'], [null, stage.season]]) +
-        '<h1 class="archive-title">' + stage.season + ' · ' + stageName + '</h1>' +
-        '<p class="archive-lead">' + (stage.city || '') + ' · ' + fmtDate(stage.date) +
-        (multi ? '' : ' · ' + stage.division + ' дивизион') +
-        ' · ' + games.length + ' ' + plural(games.length, 'игра', 'игры', 'игр') + '</p>';
-
-      if (multi) {
-        html += '<div class="archive-switch" role="tablist">' + divisions.map(function (div) {
-          return '<button class="archive-switch__btn' + (div === division ? ' is-active' : '') +
-            '" data-division="' + div + '">' + div + '</button>';
-        }).join('') + '</div>';
-      }
-
-      html += '<h2 class="archive-h2">Итоги этапа</h2>' + seatsTable(games, division) +
-        '<h2 class="archive-h2">Игры</h2>' + blocks(games);
-
-      root.innerHTML = html;
-      root.querySelectorAll('[data-division]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var next = btn.getAttribute('data-division');
-          if (history.replaceState) history.replaceState(null, '', '#' + next.toLowerCase());
-          draw(next);
-        });
-      });
-    }
-
-    var hashDivision = (location.hash || '').slice(1).toLowerCase();
-    var initial = null;
-    if (multi) {
-      initial = divisions.filter(function (d) {
-        return d.toLowerCase() === hashDivision;
-      })[0] || divisions[0];
-    }
-    draw(initial);
   }
 
   function renderGame(data, id) {
