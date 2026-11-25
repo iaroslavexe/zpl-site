@@ -111,6 +111,9 @@
     });
   }
 
+  var SPIRIT_FLAME = '<svg viewBox="0 0 48 48" width="15" height="15" aria-hidden="true">' +
+    '<path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg>';
+
   function renderTeam(data, id) {
     var team = data.teams.filter(function (t) { return t.id === id; })[0];
     if (!team) return render404();
@@ -118,11 +121,18 @@
     data.stages.forEach(function (s) { stageById[s.id] = s; });
 
     var titles = (data.champions || []).filter(function (c) { return c.team === id; });
-    var titleBadge = titles.length
-      ? '<span class="team-title">' +
-        titles.map(function () { return '<span class="team-title__icon">★</span>'; }).join('') +
-        '</span>'
-      : '';
+    var spiritSeasons = (data.awards || []).filter(function (a) {
+      return a.type === 'spirit_team' && (a.teams || []).indexOf(id) >= 0;
+    }).map(function (a) { return a.season; });
+
+    var badges = [];
+    titles.forEach(function (c) {
+      badges.push('<span class="team-title__icon" data-tip="Чемпионство ' + c.season + '">★</span>');
+    });
+    spiritSeasons.forEach(function (season) {
+      badges.push('<span class="team-title__flame" data-tip="Дух ' + season + '">' + SPIRIT_FLAME + '</span>');
+    });
+    var titleBadge = badges.length ? '<span class="team-title">' + badges.join('') + '</span>' : '';
 
     var seasonRows = (team.season_stats || []).map(function (s) {
       return [
@@ -464,6 +474,35 @@
       '<p class="archive-lead">' + fmtDate(game.date) + '</p>' +
       '<h2 class="archive-h2">Хронология очков</h2><ul class="timeline">' + timeline + '</ul>';
   }
+
+  // Подсказки к бейджам наград
+  (function () {
+    var tip = null;
+    function box() {
+      if (!tip) {
+        tip = document.createElement('div');
+        tip.className = 'award-tip';
+        document.body.appendChild(tip);
+      }
+      return tip;
+    }
+    document.addEventListener('mouseover', function (event) {
+      var el = event.target.closest('[data-tip]');
+      if (!el) return;
+      var node = box();
+      node.textContent = el.getAttribute('data-tip');
+      node.classList.add('is-on');
+      var rect = el.getBoundingClientRect();
+      var left = Math.min(rect.left, window.innerWidth - node.offsetWidth - 12);
+      var top = rect.bottom + 8;
+      if (top + node.offsetHeight > window.innerHeight - 8) top = rect.top - node.offsetHeight - 8;
+      node.style.left = Math.max(8, left) + 'px';
+      node.style.top = Math.max(8, top) + 'px';
+    });
+    document.addEventListener('mouseout', function (event) {
+      if (event.target.closest('[data-tip]') && tip) tip.classList.remove('is-on');
+    });
+  })();
 
   function render404() {
     root.innerHTML = '<p class="crumbs">' + link('/archive', 'Архив') + '</p>' +

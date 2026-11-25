@@ -153,7 +153,9 @@
     <p class="awards-sub">Командные награды</p>
     {% for award in group.teams %}
     <div class="awards-row">
-      <span class="mvp-badge mvp-badge--spirit">ДУХ</span>
+      <span class="spirit-flame" data-tip="Дух {{ award.season }}">
+        <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path d="M24 2c2.5 7 6 9 8.5 13S37 24 37 28c0 8-5.8 15-13 15S11 36 11 28c0-4 2-7 4-9.5-.5 3 .5 5 2 6C16 17 18 9 24 2z" fill="currentColor"/></svg>
+      </span>
       <span class="awards-row__title">{{ award.title }}</span>
       <span class="awards-row__who">
         {% for team in award.teams %}

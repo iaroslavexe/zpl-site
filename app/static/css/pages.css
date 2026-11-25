@@ -1024,3 +1024,8 @@
   text-transform: uppercase; color: var(--dim); font-weight: 500;
 }
 .awards-sub + .awards-row { border-top: 0; }
+
+.team-title__flame { display: inline-flex; align-items: center; color: var(--pink); transform: translateY(1px); }
+.team-title__flame svg { display: block; }
+.spirit-flame { display: inline-flex; color: var(--pink); vertical-align: -1px; }
+.spirit-flame svg { display: block; }
