@@ -76,4 +76,26 @@
 </div>
 
 
+<h2 class="archive-h2 archive-h2--yellow archive-h2--rule">Команда организаторов</h2>
+<div class="orgs">
+  {% for group in orgs %}
+  <div class="orgs__group">
+    <p class="orgs__city">{{ group.city }}</p>
+    <div class="orgs__row">
+      {% for person in group.people %}
+      <div class="org">
+        {% if person.photo %}
+        <img class="org__avatar org__avatar--photo" src="{{ person.photo }}" alt="" loading="lazy">
+        {% else %}
+        <span class="org__avatar" aria-hidden="true"></span>
+        {% endif %}
+        <span class="org__name">{{ person.name }}</span>
+        <span class="org__role">{{ person.role }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}

@@ -222,9 +222,25 @@ def archive_landing() -> tuple[str, dict]:
             "mvp_title": (archive.season_head_award(row["season"]) or {}).get("title", "MVP"),
         })
 
+    orgs = [
+        {"city": "Москва", "people": [
+            {"name": "Миша Терехов", "role": "координатор", "photo": "/static/img/orgs/misha-terehov.jpg"},
+            {"name": "Саша Пустовая", "role": "орг вопросы", "photo": "/static/img/orgs/sasha-pustovaya.jpg"},
+            {"name": "Аня Пустовая", "role": "фин вопросы", "photo": "/static/img/orgs/anya-pustovaya.jpg"},
+            {"name": "Арина Букреева", "role": "SMM", "photo": "/static/img/orgs/arina-bukreeva.jpg"},
+            {"name": "Женя Лебедев", "role": "внутренние регламенты", "photo": "/static/img/orgs/zhenya-lebedev.jpg"},
+            {"name": "Ярик Филатов", "role": "изображение", "photo": "/static/img/orgs/yarik-filatov.jpg"},
+        ]},
+        {"city": "Санкт-Петербург", "people": [
+            {"name": "Инга Ивакина", "role": "орг вопросы", "photo": "/static/img/orgs/inga-ivakina.jpg"},
+            {"name": "Степа Москалев", "role": "фин вопросы", "photo": "/static/img/orgs/stepa-moskalev.jpg"},
+        ]},
+    ]
+
     return "pages/archive.html", _base(
         "archive",
         canonical="/archive",
+        orgs=orgs,
         summary=summary,
         champions=champs,
         leaders=[
