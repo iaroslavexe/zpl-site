@@ -241,6 +241,10 @@ def archive_landing() -> tuple[str, dict]:
         "archive",
         canonical="/archive",
         orgs=orgs,
+        leader_tiles=[
+            dict(tile, label=_plural(tile["value"], *tile["forms"]))
+            for tile in archive.leader_tiles()
+        ],
         summary=summary,
         champions=champs,
         leaders=[

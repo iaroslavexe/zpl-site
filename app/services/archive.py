@@ -70,6 +70,98 @@ def awards_by_player() -> dict:
     return grouped
 
 
+@lru_cache(maxsize=1)
+def champion_counts() -> dict:
+    """Сколько чемпионств у каждого игрока (по нашему правилу участия)."""
+    d = data()
+    stages = d["stage_by_id"]
+    name_to_team = {t["name"]: t["id"] for t in d["teams"]}
+    champs = {}
+    for row in champions():
+        winner = row["teams"][0][0] if row["teams"] else None
+        team_id = name_to_team.get(winner)
+        if team_id:
+            champs[row["season"]] = team_id
+
+    counts: dict = {}
+    for player in d["players"]:
+        per = {}
+        for row in player.get("by_stage", []):
+            stage = stages.get(row[0])
+            if not stage or not row[3]:
+                continue
+            stat = per.setdefault((stage["season"], row[3]), {"stages": 0, "final": False})
+            stat["stages"] += 1
+            if "Финал" in (stage.get("name") or ""):
+                stat["final"] = True
+        seasons = []
+        for season, team_id in champs.items():
+            stat = per.get((season, team_id))
+            if not stat:
+                continue
+            if season in ("2024/25", "2025/26"):
+                ok = stat["final"]
+            else:
+                ok = stat["stages"] >= 2
+            if ok:
+                seasons.append(season)
+        if seasons:
+            counts[player["id"]] = sorted(seasons)
+    return counts
+
+
+@lru_cache(maxsize=1)
+def leader_tiles() -> list:
+    """Три плитки-рекорда над лидерами: этапы, чемпионства, личные награды."""
+    d = data()
+    players = {p["id"]: p for p in d["players"]}
+
+    stage_leader = max(p["stages"] for p in d["players"])
+    stage_people = [p for p in d["players"] if p["stages"] == stage_leader]
+    stage_people.sort(key=lambda p: p["name"].split()[-1])
+
+    champs = champion_counts()
+    champ_max = max(len(v) for v in champs.values())
+    champ_people = sorted((players[pid] for pid, seasons in champs.items() if len(seasons) == champ_max),
+                          key=lambda p: p["name"].split()[-1])
+
+    personal: dict = {}
+    for award in awards():
+        for player in award["players"]:
+            personal[player["id"]] = personal.get(player["id"], 0) + 1
+    mvp_max = max(personal.values()) if personal else 0
+    mvp_people = [players[pid] for pid, n in personal.items() if n == mvp_max]
+
+    def short(player):
+        parts = player["name"].split()
+        if len(parts) < 2:
+            return player["name"]
+        return f"{parts[0][0]}. {' '.join(parts[1:])}"
+
+    def name_groups(people):
+        if len(people) == 1:
+            return [[{"id": people[0]["id"], "short": people[0]["name"]}]]
+        rows, row = [], []
+        for person in people:
+            row.append({"id": person["id"], "short": short(person)})
+            if len(row) == 2:
+                rows.append(row)
+                row = []
+        if row:
+            rows.append(row)
+        return rows
+
+    return [
+        {"value": stage_leader, "forms": ("этап", "этапа", "этапов"),
+         "note": "(все —<br>в своём регионе)",
+         "people": stage_people, "name_groups": name_groups(stage_people), "badge": None},
+        {"value": champ_max, "forms": ("чемпионство", "чемпионства", "чемпионств"),
+         "people": champ_people, "name_groups": name_groups(champ_people), "badge": "★"},
+        {"value": mvp_max, "forms": ("титул", "титула", "титулов"),
+         "people": mvp_people, "name_groups": name_groups(mvp_people), "badge": "MVP"},
+    ]
+
+
 def regular_mvp(season: str) -> list:
     for award in awards():
         if award["season"] == season and award["type"] == "regular_mvp":

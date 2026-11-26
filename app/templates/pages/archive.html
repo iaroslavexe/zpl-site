@@ -60,6 +60,30 @@
 </div>
 
 <h2 class="archive-h2 archive-h2--yellow">Лидеры за всё время</h2>
+
+<div class="leader-tiles">
+  {% for tile in leader_tiles %}
+  <div class="ltile">
+    <div class="ltile__left">
+      <span class="ltile__avatars">
+        {% for person in tile.people %}
+        {% if person.avatar %}<a class="ltile__avatar-link" href="/archive/player/{{ person.id }}"><img class="ltile__avatar{% if tile.people|length == 1 %} ltile__avatar--single{% endif %}" src="{{ person.avatar }}" alt="" loading="lazy"></a>{% endif %}
+        {% endfor %}
+      </span>
+      <div class="ltile__names">
+        {% for group in tile.name_groups %}
+        <span class="ltile__name-row">{% for person in group %}<a href="/archive/player/{{ person.id }}">{{ person.short }}</a>{% if not loop.last %} <span class="ltile__sep">·</span> {% endif %}{% endfor %}</span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="ltile__right">
+      <span class="ltile__value">{% if tile.badge %}<span class="mvp-badge ltile__badge{% if tile.badge == '★' %} ltile__badge--star{% endif %}">{{ tile.badge }}</span>{% endif %}{{ tile.value }}</span>
+      <span class="ltile__label">{{ tile.label }}{% if tile.note %} {{ tile.note|safe }}{% endif %}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 <div class="archive-leaders">
   {% for item in leaders %}
   <a class="leader" href="/archive/player/{{ item.player.id }}">
