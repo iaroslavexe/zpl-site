@@ -1141,3 +1141,28 @@
 @media (max-width: 720px) {
   .leader-tiles { grid-template-columns: 1fr; }
 }
+
+/* Статистика игрока: три колонки (B2) */
+.archive-player__meta { margin: 6px 0 16px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.pstats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); margin: 0 0 26px; }
+.pstats--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pstats__col { padding: 16px 26px 2px 0; border-right: 1px solid var(--line); }
+.pstats__col:last-child { border-right: 0; padding-right: 0; }
+.pstats__col + .pstats__col { padding-left: 26px; }
+.pstats__title { margin: 0 0 12px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); }
+.pstat { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 12px 0; min-height: 66px; border-bottom: 1px solid var(--line); }
+.pstat:last-child { border-bottom: 0; }
+.pstat__name { font-size: 13px; letter-spacing: .06em; color: var(--muted); padding-top: 4px; }
+.pstat__right { text-align: right; }
+.pstat__val { display: block; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.pstat__val--top { color: var(--yellow); }
+.pstat__val--uni { color: var(--pink); }
+.pstat__sub { display: block; margin-top: 5px; font-size: 11px; letter-spacing: .04em; color: var(--dim); font-variant-numeric: tabular-nums; }
+.pstat__sub--top { color: rgba(250, 183, 44, .72); }
+@media (max-width: 860px) {
+  .pstats, .pstats--two { grid-template-columns: 1fr; }
+  .pstats__col { border-right: 0; border-bottom: 1px solid var(--line); padding: 14px 0 4px; }
+  .pstats__col + .pstats__col { padding-left: 0; }
+  .pstats__col:last-child { border-bottom: 0; }
+  .pstat { min-height: 0; }
+}

@@ -373,6 +373,63 @@
       : '';
 
     var points = totals.goals + totals.assists;
+    var ranks = player.ranks || {};
+    var universe = player.universe || { wins: 0, goals: 0, assists: 0 };
+    var playedGames = player.games || totals.games;
+    var wins = player.wins || 0;
+    var winRate = playedGames ? Math.round(wins / playedGames * 100) : 0;
+    var seasonsCount = (player.seasons || []).length;
+
+    function placeText(rank) {
+      return rank && rank <= 50 ? rank + '-е место в лиге' : '';
+    }
+
+    function pstat(name, value, rank, opts) {
+      opts = opts || {};
+      var sub = opts.sub || placeText(rank);
+      var top = rank === 1;
+      var valClass = 'pstat__val';
+      if (opts.universe) valClass += ' pstat__val--uni';
+      else if (top) valClass += ' pstat__val--top';
+      var subClass = 'pstat__sub' + (top && !opts.universe ? ' pstat__sub--top' : '');
+      return '<div class="pstat">' +
+        '<span class="pstat__name">' + name + '</span>' +
+        '<span class="pstat__right">' +
+          '<span class="' + valClass + '">' + value + '</span>' +
+          (sub ? '<span class="' + subClass + '">' + sub + '</span>' : '') +
+        '</span>' +
+      '</div>';
+    }
+
+    var uniRows = '';
+    if (universe.wins) uniRows += pstat('Побед', universe.wins, null, { universe: true });
+    if (universe.goals) uniRows += pstat('Голы', universe.goals, null, { universe: true });
+    if (universe.assists) uniRows += pstat('Ассисты', universe.assists, null, { universe: true });
+    var hasUniverse = uniRows !== '';
+
+    var statsBlock =
+      '<div class="pstats' + (hasUniverse ? '' : ' pstats--two') + '">' +
+        '<div class="pstats__col">' +
+          '<p class="pstats__title">Игры</p>' +
+          pstat('Сыграно', playedGames, ranks.games) +
+          pstat('Победы', wins, ranks.wins, { sub: winRate + '%' + (placeText(ranks.wins) ? ' · ' + placeText(ranks.wins) : '') }) +
+        '</div>' +
+        '<div class="pstats__col">' +
+          '<p class="pstats__title">Результативность</p>' +
+          pstat('Очки', points, ranks.points) +
+          pstat('Голы', totals.goals, ranks.goals) +
+          pstat('Ассисты', totals.assists, ranks.assists) +
+        '</div>' +
+        (hasUniverse
+          ? '<div class="pstats__col pstats__col--universe">' +
+              '<p class="pstats__title">На юниверсе</p>' + uniRows +
+            '</div>'
+          : '') +
+      '</div>';
+
+    var stagesCount = player.stages || totals.stages;
+    var meta = seasonsCount + ' ' + plural(seasonsCount, 'сезон', 'сезона', 'сезонов') + ' · ' +
+      stagesCount + ' ' + plural(stagesCount, 'этап', 'этапа', 'этапов');
 
     root.innerHTML =
       crumbs([['/archive', 'Архив'], ['/archive/players', 'Игроки'], [null, player.name]]) +
@@ -380,14 +437,9 @@
         '<div class="archive-player__head">' +
           '<h1 class="archive-title">' + player.name + '</h1>' + avatar +
         '</div>' +
+        '<p class="archive-player__meta">' + meta + '</p>' +
         (player.note ? '<p class="archive-lead">' + player.note + '</p>' : '') +
-        stats([
-          [totals.stages, plural(totals.stages, 'этап', 'этапа', 'этапов')],
-          [totals.games, plural(totals.games, 'игра', 'игры', 'игр')],
-          [points, plural(points, 'очко', 'очка', 'очков')],
-          [totals.goals, plural(totals.goals, 'гол', 'гола', 'голов')],
-          [totals.assists, plural(totals.assists, 'ассист', 'ассиста', 'ассистов')]
-        ]) +
+        statsBlock +
         awardsBlock(data, player) +
         '<h2 class="archive-h2">Сезоны и команды</h2>' +
         table(['Сезон', 'Команды', 'Этапов', 'Игр', 'Очки', 'Голы', 'Ассисты'], seasonsRows) +
